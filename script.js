@@ -4,14 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 1,
             name: "ZipZop AR-Bril",
-            price: "€299,99",
-            image: "images/zipzop-main.jpg",
-            description: "Geavanceerde AR-bril met ESP32 technologie",
+            price: "99,99",
+            image: "images/ar-zipzop.png",
+            description: "De goedkoopste en geavanceerde AR-bril",
             specs: {
-                processor: "ESP32-WROOM-32",
-                display: "1.3\" OLED",
-                battery: "3000mAh",
-                connectivity: "WiFi & Bluetooth"
+                processor: "ESP32-cam",
+                display: "0.96\" OLED",
+                battery: "25000mAh",
+                connectivity: "WiFi & Bluetooth",
+                Usable: "Iphone & androit",
+                Systeem: "Pjotters"
             },
             url: "product-zipzop.html"
         },
