@@ -59,7 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 Hulp: "VIP support",
                 Pro: "Alles van Pjotters-Pro",
                 "ZipZop-Online": "Extra toegang tot ZipZop (web en app)",
-                Verzekering: "Tijdelijk Gratis"
+                Extra: "Exclusieve Content",
+                Verzekering: "Tijdelijk Gratis",
+                "ZipZop-AR": "Extra toegang tot ZipZop-AR",
             },
             url: "https://pjotters.github.io/company/subscriptions.html"
         },
@@ -75,10 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
             productCard.className = 'product-card animate__animated animate__fadeIn';
             productCard.innerHTML = `
                 <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p>${product.description}</p>
-                <div class="price">${product.price}</div>
-                <a href="${product.url}" class="view-details">Bekijk details</a>
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <div class="price">${product.price}</div>
+                    <a href="${product.url}" class="product-button">Ontdek Meer</a>
+                </div>
             `;
             productGrid.appendChild(productCard);
         });

@@ -14,44 +14,78 @@
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#producten">Producten</a></li>
-            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#about">Over Ons</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="shopping-cart">🛒</div>
     </nav>
 
     <header class="hero animate__animated animate__fadeIn">
-        <h1>Ontdek de Toekomst</h1>
-        <p>Innovatieve technologie voor iedereen</p>
-        <a href="#featured-products" class="cta-button">Bekijk onze producten</a>
+        <div class="hero-content">
+            <h1>Ontdek de Toekomst</h1>
+            <p>Innovatieve technologie voor iedereen</p>
+            <a href="#featured-products" class="cta-button">Ontdek Onze Producten</a>
+        </div>
+        <div class="hero-image">
+            <img src="images/hero-tech.png" alt="Innovatieve Technologie">
+        </div>
     </header>
 
     <main>
-        <section class="featured-section">
+        <section id="featured-products" class="featured-section">
             <h2>Uitgelichte Producten</h2>
-            <div id="featured-products" class="product-grid">
+            <div class="product-grid">
                 <!-- Producten worden hier dynamisch toegevoegd -->
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2>Over Pjotters-Shop</h2>
+                <p>Bij Pjotters-Shop geloven we in het toegankelijk maken van innovatieve technologie voor iedereen. Onze missie is om de toekomst vandaag al bereikbaar te maken.</p>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <h3>Innovatie</h3>
+                        <p>Wij streven ernaar om de nieuwste technologische ontwikkelingen beschikbaar te maken voor iedereen.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Toegankelijkheid</h3>
+                        <p>Technologie moet niet alleen beschikbaar zijn voor de happy few, maar voor iedereen.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Duurzaamheid</h3>
+                        <p>We denken aan de toekomst door te kiezen voor duurzame oplossingen en materialen.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
+    <footer class="modern-footer">
         <div class="footer-content">
-            <div class="footer-logo">
-                <img src="Image/Logo/2.png" alt="ZipZop Logo" height="30">  
-
-                   <p>Pjotters-Shop A product of the ©Pjotters-Company, The way that is made for you and is free!</p>
+            <div class="footer-brand">
+                <img src="Image/Logo/2.png" alt="Pjotters Logo" height="40">
+                <p>Pjotters-Shop: De weg naar de toekomst</p>
             </div>
-            <div class="footer-links">
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Voorwaarden</a>
-                <a href="mailto:pjotters.zipzop@gmail.com">Contact</a>
+            <div class="footer-sections">
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: info@pjotters.nl</p>
+                    <p>Tel: +31 (0)6 12345678</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links</h3>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Voorwaarden</a>
+                    <a href="#contact">Contact</a>
+                </div>
             </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Pjotters-Shop - Een product van Pjotters-Company</p>
         </div>
     </footer>
 
-    <script src="products.json" type="application/json"></script>
-    <script src="cart.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
