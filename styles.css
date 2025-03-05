@@ -27,10 +27,14 @@
 
 .hero {
     height: 80vh;
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    background: linear-gradient(45deg, #2c3e50 0%, #3498db 100%);
     color: white;
     text-align: center;
     padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero h1 {
@@ -48,15 +52,18 @@
 .cta-button {
     display: inline-block;
     padding: 1rem 2rem;
-    background: white;
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
     text-decoration: none;
     border-radius: 30px;
     font-weight: 600;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    border: 2px solid white;
 }
 
 .cta-button:hover {
+    background: white;
+    color: var(--primary-color);
     transform: translateY(-2px);
 }
 

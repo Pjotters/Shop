@@ -1,3 +1,13 @@
+let products = [];
+
+// Producten ophalen
+fetch('products.json')
+    .then(response => response.json())
+    .then(data => {
+        products = data;
+    })
+    .catch(error => console.error('Error loading products:', error));
+
 class ShoppingCart {
     constructor() {
         this.items = [];
@@ -26,10 +36,18 @@ class ShoppingCart {
     addItem(productId, quantity) {
         const product = products.find(p => p.id === parseInt(productId));
         if (product) {
-            this.items.push({
-                ...product,
-                quantity: parseInt(quantity)
-            });
+            // Check of het product al in de winkelwagen zit
+            const existingItem = this.items.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += parseInt(quantity);
+            } else {
+                this.items.push({
+                    ...product,
+                    quantity: parseInt(quantity)
+                });
+            }
+            
             this.updateCart();
             this.showNotification('Product toegevoegd aan winkelwagen');
         }
@@ -43,7 +61,8 @@ class ShoppingCart {
 
     updateTotal() {
         this.total = this.items.reduce((sum, item) => {
-            return sum + (parseFloat(item.price.replace('€', '')) * item.quantity);
+            const price = item.price === "Gratis" ? 0 : parseFloat(item.price.replace(',', '.').replace('€', ''));
+            return sum + (price * item.quantity);
         }, 0);
     }
 

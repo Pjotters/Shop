@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "ZipZop AR-Bril",
+        "price": "99,99",
+        "image": "images/ar-zipzop.png",
+        "description": "De goedkoopste en geavanceerde AR-bril",
+        "specs": {
+            "processor": "ESP32-cam",
+            "display": "0.96\" OLED",
+            "battery": "25000mAh",
+            "connectivity": "WiFi & Bluetooth",
+            "Usable": "Iphone & androit",
+            "Systeem": "Pjotters"
+        },
+        "url": "product-zipzop.html"
+    },
+    {
+        "id": 2,
+        "name": "Pjotters-Basis",
+        "price": "Gratis",
+        "image": "images/AB-Basic.png",
+        "description": "3 Gratis bedrijven",
+        "specs": {
+            "Toegang": "Basis Pjotters",
+            "Bedrijven": "3 gratis bedrijven",
+            "Hulp": "Community support",
+            "Verzekering": "Voor Altijd Gratis"
+        },
+        "url": "subscription-basis.html"
+    }
+] 
