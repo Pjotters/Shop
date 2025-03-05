@@ -17,7 +17,53 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             url: "product-zipzop.html"
         },
-        // Voeg meer producten toe
+        {
+            id: 2,
+            name: "Pjotters-Basis",
+            price: "Gratis",
+            image: "images/AB-Basic.png",
+            description: "3 Gratis bedrijven",
+            specs: {
+                Toegang: "Basis Pjotters",
+                Bedrijven: "3 gratis bedrijven",
+                Hulp: "Community support",
+                Verzekering: "Voor Altijd Gratis"
+            },
+            url: "https://pjotters.github.io/company/subscriptions.html"
+        },
+        {
+            id: 3,
+            name: "Pjotters-Pro",
+            price: "9.99/maand",
+            image: "images/AB-Pro.png",
+            description: "10 Gratis bedrijven",
+            specs: {
+                Toegang: "Basis Pjotters",
+                Bedrijven: "10 gratis bedrijven",
+                Hulp: "Priority support",
+                Extra: "News, Updates, Pjotters-Apps, game-realeses, en meer",
+                ZipZop: "Extra toegang tot ZipZop (web en app)",
+                Verzekering: "Tijdelijk Gratis"
+            },
+            url: "https://pjotters.github.io/company/subscriptions.html"
+        },
+        {
+            id: 4,
+            name: "Pjotters-Premium",
+            price: "99.99/maand",
+            image: "images/AB-Premium.png",
+            description: "Toegang tot alle Pjotters-bedrijven",
+            specs: {
+                Toegang: "Basis Pjotters",
+                Bedrijven: "Alle bedrijven",
+                Hulp: "VIP support",
+                Pro: "Alles van Pjotters-Pro",
+                "ZipZop-Online": "Extra toegang tot ZipZop (web en app)",
+                Verzekering: "Tijdelijk Gratis"
+            },
+            url: "https://pjotters.github.io/company/subscriptions.html"
+        },
+       
     ];
 
     // Functie om producten te tonen
