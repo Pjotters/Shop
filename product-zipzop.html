@@ -3,57 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZipZop AR-Bril - Pjotters-Shop</title>
+    <title>ZipZop AR-Bril - De Toekomst van AR</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="animations.css">
     <link rel="stylesheet" href="product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
-<body>
+<body class="product-page">
     <nav class="navbar animate__animated animate__fadeIn">
-        <!-- Hergebruik van bestaande navigatie -->
+        <div class="logo">Pjotters-Shop</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#producten">Producten</a></li>
+            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="shopping-cart">🛒</div>
     </nav>
 
+    <div class="hero-product">
+        <h1 class="product-title animate__animated animate__fadeInUp">ZipZop AR</h1>
+        <p class="tagline animate__animated animate__fadeInUp">De toekomst van augmented reality begint hier</p>
+    </div>
+
     <main class="product-detail">
-        <div class="product-showcase">
-            <div class="product-images">
-                <model-viewer 
-                    src="assets/ar-glasses.glb" 
-                    alt="ZipZop AR-Bril 3D Model" 
-                    auto-rotate 
-                    camera-controls 
-                    ar 
-                    ar-modes="webxr scene-viewer quick-look"
-                    class="3d-viewer">
-                </model-viewer>
-                <div class="thumbnail-gallery">
-                    <img src="images/zipzop-angle1.jpg" alt="ZipZop zijkant">
-                    <img src="images/zipzop-angle2.jpg" alt="ZipZop bovenkant">
-                    <img src="images/zipzop-components.jpg" alt="ZipZop componenten">
-                </div>
+        <div class="model-viewer-container">
+            <model-viewer 
+                src="assets/ar-glasses.glb" 
+                alt="ZipZop AR-Bril 3D Model" 
+                auto-rotate 
+                camera-controls 
+                ar 
+                ar-modes="webxr scene-viewer quick-look"
+                exposure="1.5"
+                shadow-intensity="1"
+                camera-orbit="45deg 55deg 2.5m"
+                class="viewer-3d">
+            </model-viewer>
+        </div>
+
+        <div class="product-features">
+            <div class="feature">
+                <h2>Revolutionaire Technologie</h2>
+                <p>Aangedreven door de ESP32-cam processor voor naadloze AR-ervaringen</p>
             </div>
-            <div class="product-info">
-                <h1>ZipZop AR-Bril</h1>
-                <div class="price">€299,99</div>
-                <div class="specs">
-                    <h2>Specificaties</h2>
-                    <ul>
-                        <li>ESP32-WROOM-32 Processor</li>
-                        <li>1.3" OLED Display</li>
-                        <li>6-DOF Motion Tracking</li>
-                        <li>WiFi & Bluetooth connectiviteit</li>
-                        <li>3000mAh Batterij</li>
-                    </ul>
+            <div class="feature">
+                <h2>Langdurige Batterij</h2>
+                <p>25000mAh voor urenlang gebruik zonder opladen</p>
+            </div>
+            <div class="feature">
+                <h2>Universele Compatibiliteit</h2>
+                <p>Werkt naadloos met zowel iPhone als Android</p>
+            </div>
+        </div>
+
+        <div class="product-purchase-section">
+            <div class="price-container">
+                <span class="price">€99,99</span>
+                <span class="shipping">Gratis verzending</span>
+            </div>
+            <div class="purchase-actions">
+                <div class="quantity-selector">
+                    <button class="qty-btn minus">−</button>
+                    <input type="number" value="1" min="1" max="10" class="qty-input">
+                    <button class="qty-btn plus">+</button>
                 </div>
-                <div class="cart-actions">
-                    <div class="quantity-selector">
-                        <button class="qty-btn minus">-</button>
-                        <input type="number" value="1" min="1" max="10" class="qty-input">
-                        <button class="qty-btn plus">+</button>
-                    </div>
-                    <button class="add-to-cart" data-product-id="1">In winkelwagen</button>
-                </div>
+                <button class="add-to-cart-large" data-product-id="1">
+                    <span>In winkelwagen</span>
+                    <span class="button-description">Levertijd: 2-3 werkdagen</span>
+                </button>
             </div>
         </div>
     </main>

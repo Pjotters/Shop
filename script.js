@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Functie om producten te tonen
     function displayProducts() {
         const productGrid = document.getElementById('featured-products');
+        productGrid.className = 'product-grid';
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card animate__animated animate__fadeIn';
