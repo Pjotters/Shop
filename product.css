@@ -1,3 +1,14 @@
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --accent-secondary: #e74c3c;
+    --gradient-start: #2c3e50;
+    --gradient-end: #3498db;
+    --card-bg: #ffffff;
+    --text-light: #ffffff;
+    --text-dark: #2c3e50;
+}
+
 .product-detail {
     margin-top: 80px;
     padding: 2rem;
@@ -335,4 +346,84 @@ body {
     .product-title {
         font-size: 3rem;
     }
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-light);
+    padding: 4rem 2rem;
+}
+
+.hero-product {
+    text-align: center;
+    padding: 6rem 2rem;
+}
+
+.product-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 4rem 2rem;
+    background: var(--card-bg);
+}
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.accent-section {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+    color: var(--text-light);
+    padding: 4rem 2rem;
+    margin: 4rem 0;
+}
+
+.feature {
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.daily-life-section {
+    padding: 4rem 2rem;
+    background: var(--background-color);
+}
+
+.use-cases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.use-case-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.use-case-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-purchase-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin: 4rem auto;
+    max-width: 600px;
 } 

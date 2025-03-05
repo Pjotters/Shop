@@ -22,41 +22,90 @@
         <div class="shopping-cart">🛒</div>
     </nav>
 
-    <div class="hero-product">
-        <h1 class="product-title animate__animated animate__fadeInUp">ZipZop AR</h1>
-        <p class="tagline animate__animated animate__fadeInUp">De toekomst van augmented reality begint hier</p>
+    <div class="hero-product gradient-bg">
+        <div class="hero-content">
+            <h1 class="product-title animate__animated animate__fadeInUp">ZipZop AR</h1>
+            <p class="tagline animate__animated animate__fadeInUp">De toekomst van augmented reality begint hier</p>
+        </div>
     </div>
 
     <main class="product-detail">
-        <div class="model-viewer-container">
-            <model-viewer 
-                src="assets/ar-glasses.glb" 
-                alt="ZipZop AR-Bril 3D Model" 
-                auto-rotate 
-                camera-controls 
-                ar 
-                ar-modes="webxr scene-viewer quick-look"
-                exposure="1.5"
-                shadow-intensity="1"
-                camera-orbit="45deg 55deg 2.5m"
-                class="viewer-3d">
-            </model-viewer>
+        <div class="product-intro">
+            <div class="model-viewer-container">
+                <model-viewer 
+                    src="assets/ar-glasses.glb" 
+                    alt="ZipZop AR-Bril 3D Model" 
+                    auto-rotate 
+                    camera-controls 
+                    ar 
+                    ar-modes="webxr scene-viewer quick-look"
+                    exposure="1.5"
+                    shadow-intensity="1"
+                    camera-orbit="45deg 55deg 2.5m"
+                    class="viewer-3d">
+                </model-viewer>
+            </div>
+            <div class="intro-text">
+                <h2>Ervaar de Toekomst</h2>
+                <p>De ZipZop AR-bril combineert geavanceerde technologie met comfort en stijl. Ontdek een nieuwe manier van zien en interacteren met de wereld om je heen.</p>
+            </div>
         </div>
 
-        <div class="product-features">
+        <div class="product-features accent-section">
             <div class="feature">
+                <div class="feature-icon">🚀</div>
                 <h2>Revolutionaire Technologie</h2>
                 <p>Aangedreven door de ESP32-cam processor voor naadloze AR-ervaringen</p>
             </div>
             <div class="feature">
+                <div class="feature-icon">⚡</div>
                 <h2>Langdurige Batterij</h2>
                 <p>25000mAh voor urenlang gebruik zonder opladen</p>
             </div>
             <div class="feature">
+                <div class="feature-icon">🔄</div>
                 <h2>Universele Compatibiliteit</h2>
                 <p>Werkt naadloos met zowel iPhone als Android</p>
             </div>
         </div>
+
+        <section class="daily-life-section">
+            <h2>ZipZop AR in het Dagelijks Leven</h2>
+            <div class="use-cases">
+                <div class="use-case-card">
+                    <h3>Werk & Productiviteit</h3>
+                    <h5>Alles op je hoofd</h5>
+                    <p>Omdat de bril over de functies als Bluthooth en Wifi beschikken, kan er gebruik worden gemaakt van de Pjotters-App.</p>
+                    <p>Deze app is gemaakt om de bril te kunnen gebruiken en om de speciale functies te kunnen gebruiken.</p>
+                    <p>Omdat de ZipZop AR-Bril over de Pjotters-Software beschikt, gebruik het een speciale manier om video's, berichten en audio te bekijken of the beluisteren.</p>
+                    <p>Op deze manier kan de ZipZop AR-Bril ook gebruikt worden voor werk.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>Entertainment & Gaming</h3>
+                    <h5>Famlix</h5>
+                    <p>In onze app is er een kopje Famlix. Hier kunt u uw streaming diensten koppelen en zo bekijken via de bril.</p>
+                    <p>Het enige wat u hoeft te doen is naar de streaming dienst, een film downloaden en ZipZop doet de rest.</p>
+                    <p>Het kijken van video's is niet het enige wat u kunt doen met de bril. U kunt ook audio afspelen via de bril.</p>
+                    
+                </div>
+                <div class="use-case-card">
+                    <h3>Toekomstige Ontwikkeling</h3>
+                    <h5>ZipZop zit zeker niet stil</h5>
+                    <p>We zijn bezig om door middel van AI de bril te verbeteren en om de mogelijkheden te vergroten.</p>
+                    <p>Zo willen we de bril laten besturen door uw ogen en uw stem. Nu kan het alleen nog via de App. </p>
+                    <p>Omdat bij ons klant op nummer 1 staat, komt deze functie nog in ZipZop-AR.</p>
+                    <p>Want geloof het of niet, we komen binnenkort met de ZipZop-AR-Pro.</p>
+                </div>
+                <div class="use-case-card">
+                    <h3>Klimaat </h3>
+                    <h5>Safe the planet</h5>
+                    <p>We proberen om de bril zo klimaatvriendelijk en duurzaam mogelijk te maken.</p>
+                    <p>Omdat wij, Pjotters eerlijkheid het belangrijkst vinden, zeggen we jullie dat de bril niet 100% klimaatvriendelijk is. </p>
+                    <p>We zijn hier naartuurlijk wel mee bezig en proberen om de bril zo klimaatvriendelijk en duurzaam mogelijk te maken.</p>
+                    <p>en naar die 100% te gaan!</p>
+                </div>
+            </div>
+        </section>
 
         <div class="product-purchase-section">
             <div class="price-container">
@@ -71,10 +120,14 @@
                 </div>
                 <button class="add-to-cart-large" data-product-id="1">
                     <span>In winkelwagen</span>
-                    <span class="button-description">Levertijd: 2-3 werkdagen</span>
+                    <span class="button-description">Levertijd: 2-7 werkdagen</span>
                 </button>
             </div>
         </div>
     </main>
+
+    <footer class="modern-footer">
+        <!-- Footer content zoals in index.html -->
+    </footer>
 </body>
 </html> 
