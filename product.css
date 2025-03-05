@@ -1,0 +1,129 @@
+.product-detail {
+    margin-top: 80px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-showcase {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 2rem;
+}
+
+.product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.main-image {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.main-image:hover {
+    transform: scale(1.02);
+}
+
+.thumbnail-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.thumbnail-gallery img {
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail-gallery img:hover {
+    opacity: 0.8;
+}
+
+.product-info {
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.product-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.price {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+}
+
+.specs {
+    margin: 2rem 0;
+}
+
+.specs ul {
+    list-style: none;
+    padding: 0;
+}
+
+.specs li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.add-to-cart {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+    transform: translateY(-2px);
+    background-color: #2980b9;
+}
+
+.viewer-3d {
+    width: 100%;
+    height: 400px;
+    background-color: #fafafa;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+}
+
+.cart-actions {
+    margin-top: 2rem;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.qty-btn {
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.qty-input {
+    width: 60px;
+    text-align: center;
+    margin: 0 1rem;
+    padding: 0.5rem;
+} 
