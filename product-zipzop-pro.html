@@ -10,47 +10,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
-<body class="product-page">
-    <!-- Gebruik dezelfde navbar als in product-zipzop.html -->
+<body class="product-page premium-theme">
+    <nav class="navbar animate__animated animate__fadeIn">
+        <div class="logo">Pjotters-Shop</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#producten">Producten</a></li>
+            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="shopping-cart">🛒</div>
+    </nav>
     
     <div class="hero-product premium">
         <div class="hero-content">
             <h1 class="product-title animate__animated animate__fadeInUp">ZipZop AR Pro</h1>
             <p class="tagline animate__animated animate__fadeInUp">De ultieme AR ervaring</p>
             <div class="hero-badges">
-                <span>🚀 Premium AR</span>
-                <span>⚡ 3500mAh Batterij</span>
-                <span>🔄 Universal Pro Compatible</span>
-                <span>💎 Premium Support</span>
+                <span class="badge premium">💎 Premium AR</span>
+                <span class="badge battery-pro">⚡ 3500mAh Batterij</span>
+                <span class="badge compatibility-pro">🔄 Universal Pro Compatible</span>
+                <span class="badge support-pro">🌟 Premium Support</span>
             </div>
+        </div>
+        <div class="hero-visual">
+            <model-viewer src="models/zipzop-pro.glb" 
+                         auto-rotate 
+                         camera-controls 
+                         class="ar-model animate__animated animate__fadeIn">
+            </model-viewer>
         </div>
     </div>
 
     <main class="product-detail">
-        <!-- Voeg hier dezelfde structuur toe als product-zipzop.html -->
+        <div class="feature-grid">
+            <div class="feature-card premium animate__animated animate__fadeInUp">
+                <div class="feature-icon">🎮</div>
+                <h3>Geavanceerde Besturing</h3>
+                <p>Besturing via de app, AI voice assistant, handgebaren en iris-motion.</p>
+            </div>
+            <div class="feature-card premium animate__animated animate__fadeInUp">
+                <div class="feature-icon">🔋</div>
+                <h3>Extra Lange Batterijduur</h3>
+                <p>Tot 12 uur non-stop premium AR ervaring</p>
+            </div>
+            <div class="feature-card premium animate__animated animate__fadeInUp">
+                <div class="feature-icon">🌟</div>
+                <h3>Premium Features</h3>
+                <p>Exclusieve AR-functies en content</p>
+            </div>
+        </div>
         
-        <div class="product-purchase-section">
+        <div class="product-purchase-section premium">
             <div class="price-container">
-                <span class="price">€199,99</span>
-                <span class="shipping">Gratis verzending</span>
+                <span class="price">€149,99</span>
+                <span class="shipping">Premium Verzending</span>
+                <div class="price-badges">
+                    <span class="price-badge premium">💎 Premium Kwaliteit</span>
+                    <span class="price-badge premium">✨ 2 Jaar Garantie</span>
+                </div>
             </div>
             <div class="purchase-actions">
-                <div class="quantity-selector">
+                <div class="quantity-selector premium">
                     <button class="qty-btn minus">−</button>
                     <input type="number" value="1" min="1" max="10" class="qty-input">
                     <button class="qty-btn plus">+</button>
                 </div>
                 <button class="add-to-cart-large premium" data-product-id="2">
                     <span>In winkelwagen</span>
-                    <span class="button-description">Levertijd: 2-7 werkdagen</span>
+                    <span class="button-description">Priority verzending binnen 1-3 werkdagen</span>
                 </button>
             </div>
         </div>
 
         <div class="specs-button-container">
-            <a href="product-zipzop-specs.html" class="specs-button animate__animated animate__pulse animate__infinite">
+            <a href="product-zipzop-pro-specs.html" class="specs-button premium animate__animated animate__pulse animate__infinite">
                 <span class="icon">📋</span>
-                <span class="text">Bekijk Specificaties</span>
+                <span class="text">Bekijk Premium Specificaties</span>
                 <span class="arrow">→</span>
             </a>
         </div>

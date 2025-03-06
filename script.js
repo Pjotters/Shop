@@ -107,4 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     displayProducts();
+
+    function addToCart(productId) {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push(productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.location.href = 'cart.html';
+    }
+
+    // Update de click handlers voor de knoppen
+    document.querySelectorAll('.add-to-cart-large').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.dataset.productId;
+            addToCart(productId);
+        });
+    });
 }); 

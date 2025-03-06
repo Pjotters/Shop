@@ -502,4 +502,182 @@ body {
 .hero-product.premium .hero-badges span,
 .hero-product.lite .hero-badges span {
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* Thema kleuren voor Lite versie */
+.lite-theme {
+    --product-primary: #4ECDC4;
+    --product-secondary: #45B7AF;
+    --product-accent: #FFD93D;
+    --product-text: #2B3A67;
+}
+
+.hero-product.lite {
+    background: linear-gradient(135deg, var(--product-primary), var(--product-secondary));
+    padding: 4rem 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.badge {
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 500;
+    animation: fadeInUp 0.5s ease forwards;
+    backdrop-filter: blur(10px);
+}
+
+.badge.basic { background: rgba(255, 255, 255, 0.2); }
+.badge.battery { background: rgba(255, 217, 61, 0.2); }
+.badge.compatibility { background: rgba(78, 205, 196, 0.2); }
+.badge.support { background: rgba(43, 58, 103, 0.2); }
+
+.hero-visual {
+    position: relative;
+    height: 400px;
+    margin-top: 2rem;
+}
+
+.ar-model {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 4rem 0;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.price-badges {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.price-badge {
+    background: var(--product-accent);
+    color: var(--product-text);
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-badges {
+        justify-content: center;
+    }
+    
+    .badge {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Premium thema kleuren */
+.premium-theme {
+    --product-primary: #9B6B9E;
+    --product-secondary: #845EC2;
+    --product-accent: #FFD93D;
+    --product-text: #2B2D42;
+}
+
+.hero-product.premium {
+    background: linear-gradient(135deg, var(--product-primary), var(--product-secondary));
+    position: relative;
+}
+
+.hero-product.premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('patterns/premium-pattern.svg');
+    opacity: 0.1;
+    animation: shimmer 10s linear infinite;
+}
+
+.badge.premium { 
+    background: rgba(255, 217, 61, 0.3);
+    border: 1px solid rgba(255, 217, 61, 0.5);
+}
+
+.badge.battery-pro { 
+    background: rgba(132, 94, 194, 0.3);
+    border: 1px solid rgba(132, 94, 194, 0.5);
+}
+
+.badge.compatibility-pro { 
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.badge.support-pro { 
+    background: rgba(255, 217, 61, 0.2);
+    border: 1px solid rgba(255, 217, 61, 0.3);
+}
+
+.feature-card.premium {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: 1px solid rgba(132, 94, 194, 0.1);
+    box-shadow: 0 10px 30px rgba(132, 94, 194, 0.1);
+}
+
+.feature-card.premium:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(132, 94, 194, 0.2);
+}
+
+.add-to-cart-large.premium {
+    background: linear-gradient(135deg, #845EC2, #9B6B9E);
+    box-shadow: 0 5px 15px rgba(132, 94, 194, 0.3);
+}
+
+.add-to-cart-large.premium:hover {
+    background: linear-gradient(135deg, #9B6B9E, #845EC2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(132, 94, 194, 0.4);
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 200%; }
 } 

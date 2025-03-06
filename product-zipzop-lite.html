@@ -10,29 +10,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
-<body class="product-page">
-    <!-- Gebruik dezelfde navbar als in product-zipzop.html -->
+<body class="product-page lite-theme">
+    <nav class="navbar animate__animated animate__fadeIn">
+        <div class="logo">Pjotters-Shop</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#producten">Producten</a></li>
+            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="shopping-cart">🛒</div>
+    </nav>
     
     <div class="hero-product lite">
         <div class="hero-content">
             <h1 class="product-title animate__animated animate__fadeInUp">ZipZop AR Lite</h1>
             <p class="tagline animate__animated animate__fadeInUp">AR voor iedereen</p>
             <div class="hero-badges">
-                <span>🚀 Basis AR</span>
-                <span>⚡ 2000mAh Batterij</span>
-                <span>🔄 Universal Compatible</span>
-                <span>💬 Community Support</span>
+                <span class="badge basic">🚀 Basis AR</span>
+                <span class="badge battery">⚡ 2000mAh Batterij</span>
+                <span class="badge compatibility">🔄 Universal Compatible</span>
+                <span class="badge support">💬 Community Support</span>
             </div>
+        </div>
+        <div class="hero-visual">
+            <model-viewer src="models/zipzop-lite.glb" 
+                         auto-rotate 
+                         camera-controls 
+                         class="ar-model animate__animated animate__fadeIn">
+            </model-viewer>
         </div>
     </div>
 
     <main class="product-detail">
-        <!-- Voeg hier dezelfde structuur toe als product-zipzop.html -->
+        <div class="feature-grid">
+            <div class="feature-card animate__animated animate__fadeInUp">
+                <div class="feature-icon">🎮</div>
+                <h3>Eenvoudige Bediening</h3>
+                <p>Gebruik de app om de bril te bedienen.</p>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp">
+                <div class="feature-icon">🔋</div>
+                <h3>Lange Batterijduur</h3>
+                <p>Tot 8 uur non-stop AR plezier</p>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp">
+                <div class="feature-icon">📱</div>
+                <h3>App Compatibel</h3>
+                <p>Werkt met veel streaming apps.</p>
+            </div>
+        </div>
         
         <div class="product-purchase-section">
             <div class="price-container">
                 <span class="price">€74,99</span>
                 <span class="shipping">Gratis verzending</span>
+                <div class="price-badges">
+                    <span class="price-badge">🏷️ Beste Prijs</span>
+                    <span class="price-badge">✨ Incl. BTW</span>
+                </div>
             </div>
             <div class="purchase-actions">
                 <div class="quantity-selector">
@@ -55,5 +91,9 @@
             </a>
         </div>
     </main>
+
+    <footer class="modern-footer">
+        <!-- Voeg hier de footer toe van index.html -->
+    </footer>
 </body>
 </html> 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winkelwagen - Pjotters Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <nav class="navbar animate__animated animate__fadeIn">
+        <div class="logo">Pjotters-Shop</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#producten">Producten</a></li>
+            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="shopping-cart">🛒</div>
+    </nav>
+    
+    <main class="cart-container">
+        <h1>Winkelwagen</h1>
+        
+        <div class="cart-grid">
+            <div class="cart-items">
+                <div id="cartItemsList">
+                    <!-- Hier komen de winkelwagen items via JavaScript -->
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <h2>Overzicht</h2>
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotaal</span>
+                        <span id="subtotal">€0,00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Verzendkosten</span>
+                        <span>Gratis</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Totaal</span>
+                        <span id="total">€0,00</span>
+                    </div>
+                </div>
+                <button class="checkout-button">Afrekenen</button>
+            </div>
+        </div>
+
+        <section class="recommended-products">
+            <h2>Aanbevolen Producten</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="images/zipzop-case.jpg" alt="ZipZop Beschermhoes">
+                    <h3>ZipZop Beschermhoes</h3>
+                    <p>€24,99</p>
+                    <button class="add-to-cart">In winkelwagen</button>
+                </div>
+                <div class="product-card">
+                    <img src="images/zipzop-charger.jpg" alt="ZipZop Snellader">
+                    <h3>ZipZop Snellader</h3>
+                    <p>€29,99</p>
+                    <button class="add-to-cart">In winkelwagen</button>
+                </div>
+                <div class="product-card">
+                    <img src="images/zipzop-charger.jpg" alt="ZipZop Batterij">
+                    <h3>ZipZop Batterij</h3>
+                    <h5>25000 mAh</h5>
+                    <p>€14,99</p>
+                    <h8>Let op: Dit product zit niet in de bril verwerkt, maar is een externe batterij die je in de bril kan helpen voor langere gebruik tijd.</h8>
+                    <button class="add-to-cart">In winkelwagen</button>
+                </div>
+                <!-- Meer aanbevolen producten -->
+            </div>
+        </section>
+    </main>
+</body>
+</html> 
