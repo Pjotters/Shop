@@ -68,3 +68,131 @@
     border-bottom: 1px solid rgba(0,0,0,0.1);
     color: var(--text-secondary);
 }
+
+.specs-comparison {
+    padding: 4rem 2rem;
+    background: #fff;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.model-column {
+    text-align: center;
+    padding: 2rem;
+}
+
+.model-column.current {
+    background: rgba(0,0,0,0.02);
+    border-radius: 20px;
+}
+
+.model-header img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.model-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.buy-button {
+    background: #0071e3;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+    background: #0077ed;
+}
+
+.learn-more {
+    color: #0071e3;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.comparison-details {
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+.spec-row {
+    border-top: 1px solid #d2d2d7;
+    padding: 2.4rem 0;
+    margin: 0 2rem;
+}
+
+.spec-row:last-child {
+    border-bottom: 1px solid #d2d2d7;
+}
+
+.spec-row h3 {
+    color: #1d1d1f;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.spec-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.spec-values div {
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.spec-values div:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -1rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #d2d2d7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .spec-values {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .spec-values div:not(:last-child)::after {
+        display: none;
+    }
+    
+    .spec-row {
+        margin: 0 1rem;
+        padding: 1.5rem 0;
+    }
+}
