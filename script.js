@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 1,
             name: "ZipZop AR-Bril",
-            price: "99,99",
+            price: "Vanaf €99,99",
             image: "images/ar-zipzop.png",
             description: "De goedkoopste en geavanceerde AR-bril",
             specs: {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 3,
             name: "Pjotters-Pro",
-            price: "9.99/maand",
+            price: "€9.99/maand",
             image: "images/AB-Pro.png",
             description: "10 Gratis bedrijven",
             specs: {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 4,
             name: "Pjotters-Premium",
-            price: "99.99/maand",
+            price: "€99.99/maand",
             image: "images/AB-Premium.png",
             description: "Toegang tot alle Pjotters-bedrijven",
             specs: {

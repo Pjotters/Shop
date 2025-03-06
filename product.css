@@ -481,4 +481,25 @@ body {
 
 .specs-button:hover .arrow {
     transform: translateX(5px);
+}
+
+.hero-product.premium {
+    background: linear-gradient(135deg, #2B3A67, #4ECDC4);
+}
+
+.hero-product.lite {
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+}
+
+.add-to-cart-large.premium {
+    background: #2B3A67;
+}
+
+.add-to-cart-large.lite {
+    background: #3498db;
+}
+
+.hero-product.premium .hero-badges span,
+.hero-product.lite .hero-badges span {
+    background: rgba(255, 255, 255, 0.2);
 } 
