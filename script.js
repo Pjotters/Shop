@@ -65,6 +65,24 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             url: "https://pjotters.github.io/company/subscriptions.html"
         },
+        {
+            id: 5,
+            name: "Securis",
+            price: "vanaf €0",
+            image: "images/Securis.png",
+            description: "Securis is een veiligheids systeem voor uw website.",
+            specs: {
+                Admin: "U kunt een admin account aanmaken",
+                Bezoekers: "Bezoekers maken gratis gebruik van de software",
+                "Beveiliging": "Beveiliging tegen hackers",
+                "Backup": "Automatische back-ups",
+                "Updates": "Updates zijn gratis",
+                "Persoonlijk": "Er kan een persoonlijke versie worden gemaakt",
+                "Systeem": "Pjotters-Securis"
+            },
+            url: "product-zipzop.html"
+        },
+
        
     ];
 
