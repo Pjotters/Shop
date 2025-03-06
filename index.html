@@ -3,89 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pjotters-Shop - Innovatieve Tech Producten</title>
+    <title>ZipZop AR - De Toekomst van Augmented Reality</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="home-page">
     <nav class="navbar animate__animated animate__fadeIn">
-        <div class="logo">Pjotters-Shop</div>
+        <div class="logo">ZipZop</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#producten">Producten</a></li>
-            <li><a href="#about">Over Ons</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#modellen">Modellen</a></li>
+            <li><a href="#apps">Apps</a></li>
+            <li><a href="#support">Support</a></li>
+            <li><a href="#zakelijk">Zakelijk</a></li>
         </ul>
-        <div class="shopping-cart">🛒</div>
+        <div class="nav-actions">
+            <a href="#land" class="lang-selector">NL</a>
+            <div class="shopping-cart">🛒</div>
+        </div>
     </nav>
 
-    <header class="hero animate__animated animate__fadeIn">
+    <header class="hero-section">
+        <video autoplay muted loop class="hero-video">
+            <source src="videos/ar-experience.mp4" type="video/mp4">
+        </video>
         <div class="hero-content">
-            <h1>Ontdek de Toekomst</h1>
-            <p>Innovatieve technologie voor iedereen</p>
-            <a href="#featured-products" class="cta-button">Ontdek Onze Producten</a>
-        </div>
-        <div class="hero-image">
-            <img src="images/hero-tech.png" alt="Innovatieve Technologie">
+            <h1 class="animate__animated animate__fadeInUp">ZipZop AR</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">
+                Ontdek een nieuwe dimensie van realiteit
+            </p>
+            <div class="hero-cta animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="#modellen" class="cta-button primary">Ontdek de Modellen</a>
+                <a href="#demo" class="cta-button secondary">Bekijk Demo</a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section id="featured-products" class="featured-section">
-            <h2>Uitgelichte Producten</h2>
-            <div class="product-grid">
-                <!-- Producten worden hier dynamisch toegevoegd -->
+    <section class="products-showcase">
+        <div class="product-card premium">
+            <div class="product-image">
+                <model-viewer src="models/zipzop-pro.glb" 
+                            auto-rotate 
+                            camera-controls
+                            class="ar-model">
+                </model-viewer>
             </div>
-        </section>
+            <div class="product-info">
+                <h2>ZipZop AR Pro</h2>
+                <p>Premium AR ervaring</p>
+                <span class="price">€199,99</span>
+                <a href="product-zipzop-pro.html" class="buy-button">Meer Info</a>
+            </div>
+        </div>
 
-        <section id="about" class="about-section">
-            <div class="about-content">
-                <h2>Over Pjotters-Shop</h2>
-                <p>Bij Pjotters-Shop geloven we in het toegankelijk maken van innovatieve technologie voor iedereen. Onze missie is om de toekomst vandaag al bereikbaar te maken.</p>
-                <div class="values-grid">
-                    <div class="value-card">
-                        <h3>Innovatie</h3>
-                        <p>Wij streven ernaar om de nieuwste technologische ontwikkelingen beschikbaar te maken voor iedereen.</p>
-                    </div>
-                    <div class="value-card">
-                        <h3>Toegankelijkheid</h3>
-                        <p>Technologie moet niet alleen beschikbaar zijn voor de happy few, maar voor iedereen.</p>
-                    </div>
-                    <div class="value-card">
-                        <h3>Duurzaamheid</h3>
-                        <p>We denken aan de toekomst door te kiezen voor duurzame oplossingen en materialen.</p>
-                    </div>
-                </div>
+        <div class="product-card standard">
+            <div class="product-image">
+                <model-viewer src="models/zipzop-standard.glb" 
+                            auto-rotate 
+                            camera-controls
+                            class="ar-model">
+                </model-viewer>
             </div>
-        </section>
-    </main>
+            <div class="product-info">
+                <h2>ZipZop AR</h2>
+                <p>De perfecte balans</p>
+                <span class="price">€99,99</span>
+                <a href="product-zipzop.html" class="buy-button">Meer Info</a>
+            </div>
+        </div>
+
+        <div class="product-card lite">
+            <div class="product-image">
+                <model-viewer src="models/zipzop-lite.glb" 
+                            auto-rotate 
+                            camera-controls
+                            class="ar-model">
+                </model-viewer>
+            </div>
+            <div class="product-info">
+                <h2>ZipZop AR Lite</h2>
+                <p>AR voor iedereen</p>
+                <span class="price">€74,99</span>
+                <a href="product-zipzop-lite.html" class="buy-button">Meer Info</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <h2>Waarom ZipZop?</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🎮</div>
+                <h3>Intuïtieve Bediening</h3>
+                <p>Eenvoudige app-besturing en handgebaren</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Lange Batterijduur</h3>
+                <p>Tot 12 uur non-stop gebruik</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌐</div>
+                <h3>Universal Compatible</h3>
+                <p>Werkt met iOS en Android</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="app-showcase">
+        <h2>ZipZop Apps</h2>
+        <div class="app-grid">
+            <div class="app-card">
+                <img src="images/famlix-app.png" alt="Famlix App">
+                <h3>Famlix</h3>
+                <p>Stream je favoriete content</p>
+            </div>
+            <div class="app-card">
+                <img src="images/pjotters-app.png" alt="Pjotters App">
+                <h3>Pjotters</h3>
+                <p>Beheer je AR ervaring</p>
+            </div>
+        </div>
+    </section>
 
     <footer class="modern-footer">
         <div class="footer-content">
-            <div class="footer-brand">
-                <img src="Image/Logo/2.png" alt="Pjotters Logo" height="40">
-                <p>Pjotters-Shop: De weg naar de toekomst</p>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>support@zipzop.nl</p>
+                <p>+31 (0)20 1234567</p>
             </div>
-            <div class="footer-sections">
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <p>Email: info@pjotters.nl</p>
-                    <p>Tel: +31 (0)6 12345678</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Links</h3>
-                    <a href="privacy.html">Privacy</a>
-                    <a href="terms.html">Voorwaarden</a>
-                    <a href="#contact">Contact</a>
+            <div class="footer-section">
+                <h4>Volg Ons</h4>
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 Pjotters-Shop - Een product van Pjotters-Company</p>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html> 
