@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             specs: {
                 processor: "ESP32-cam",
                 display: "0.96\" OLED",
-                battery: "25000mAh",
+                battery: "2500mAh",
                 connectivity: "WiFi & Bluetooth",
                 Usable: "Iphone & androit",
                 Systeem: "Pjotters"

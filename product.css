@@ -448,4 +448,37 @@ body {
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 1rem;
+}
+
+.specs-button-container {
+    text-align: center;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, var(--section-bg), white);
+}
+
+.specs-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 1.2rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 20px rgba(43, 58, 103, 0.2);
+}
+
+.specs-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(43, 58, 103, 0.3);
+}
+
+.specs-button .arrow {
+    transition: transform 0.3s ease;
+}
+
+.specs-button:hover .arrow {
+    transform: translateX(5px);
 } 

@@ -1,0 +1,70 @@
+.specs-page {
+    background: linear-gradient(135deg, #f8f9fc, #ffffff);
+}
+
+.specs-hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.specs-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.specs-card:hover {
+    transform: translateY(-5px);
+}
+
+.specs-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.specs-card:hover .parallax-image {
+    transform: scale(1.1);
+}
+
+.specs-details {
+    padding: 2rem;
+}
+
+.specs-details h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.specs-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.specs-details li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    color: var(--text-secondary);
+}
