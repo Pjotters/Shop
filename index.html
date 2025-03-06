@@ -293,5 +293,40 @@
             </div>
         </div>
     </footer>
+
+    <div id="popup-overlay" class="popup-overlay">
+        <div class="popup-content">
+            <button class="close-popup">×</button>
+            <div class="popup-header">
+                <h2>🌟 ZipZop-Lite</h2>
+                <p class="popup-subtitle">De meest bestelde AR-bril van Nederland!</p>
+            </div>
+            <div class="popup-body">
+                <img src="images/zipzop-lite.png" alt="ZipZop Lite">
+                <div class="popup-features">
+                    <span>✨ Pro functies, als Voice Control</span>
+                    <span>💰 Goedkoopste AR-bril in Nederland</span>
+                    <span>🥇 Meest verkocht van ZipZop</span>
+                    <span>🏆 1 maand gratis Pjotters-Pro</span>
+                </div>
+                <div class="popup-price">
+                    <span class="price">€74,99</span>
+                    <span class="original-price">€69,99</span>
+                </div>
+                <a href="product-zipzop-lite.html" class="popup-cta">Ontdek Nu</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const popup = document.getElementById('popup-overlay');
+            popup.style.display = 'flex';
+        }, 30000); // 30 seconden
+
+        document.querySelector('.close-popup').addEventListener('click', () => {
+            document.getElementById('popup-overlay').style.display = 'none';
+        });
+    </script>
 </body>
 </html> 

@@ -451,4 +451,108 @@
     .accessories-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: popupSlideIn 0.5s ease;
+}
+
+.close-popup {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.popup-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.popup-subtitle {
+    color: #4ECDC4;
+    font-weight: 600;
+}
+
+.popup-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.popup-features span {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    border-radius: 10px;
+}
+
+.popup-price {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.popup-price .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2B3A67;
+}
+
+.popup-price .original-price {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.popup-cta {
+    display: block;
+    background: #4ECDC4;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.popup-cta:hover {
+    background: #45B7AF;
+    transform: translateY(-2px);
+}
+
+@keyframes popupSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 } 
