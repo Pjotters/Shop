@@ -153,20 +153,24 @@ class FlappyBird {
 
 // Game initialisatie
 document.addEventListener('DOMContentLoaded', async () => {
-    const canvas = document.getElementById('gameCanvas');
-    canvas.width = 800;
-    canvas.height = 500;
-    
-    const termsAccepted = await checkTermsAcceptance();
-    if (!termsAccepted) return;
-    
-    const game = new FlappyBird(canvas);
-    
-    document.getElementById('startGame').addEventListener('click', () => {
-        game.start();
-    });
+    try {
+        const termsAccepted = await checkTermsAcceptance();
+        if (!termsAccepted) return;
 
-    document.getElementById('backToDashboard').addEventListener('click', () => {
-        window.location.href = '../dashboard.html';
-    });
+        const canvas = document.getElementById('gameCanvas');
+        canvas.width = 800;
+        canvas.height = 500;
+        
+        const game = new FlappyBird(canvas);
+        
+        document.getElementById('startGame').addEventListener('click', () => {
+            game.start();
+        });
+
+        document.getElementById('backToDashboard').addEventListener('click', () => {
+            window.location.href = '../dashboard.html';
+        });
+    } catch (error) {
+        console.error('Game initialization error:', error);
+    }
 }); 

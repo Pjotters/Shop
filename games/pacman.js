@@ -268,18 +268,25 @@ class PacMan {
 }
 
 // Game initialisatie
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('gameCanvas');
-    canvas.width = 400;
-    canvas.height = 400;
-    
-    const game = new PacMan(canvas);
-    
-    document.getElementById('startGame').addEventListener('click', () => {
-        game.start();
-    });
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const termsAccepted = await checkTermsAcceptance();
+        if (!termsAccepted) return;
 
-    document.getElementById('backToDashboard').addEventListener('click', () => {
-        window.location.href = '../dashboard.html';
-    });
+        const canvas = document.getElementById('gameCanvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        
+        const game = new PacMan(canvas);
+        
+        document.getElementById('startGame').addEventListener('click', () => {
+            game.start();
+        });
+
+        document.getElementById('backToDashboard').addEventListener('click', () => {
+            window.location.href = '../dashboard.html';
+        });
+    } catch (error) {
+        console.error('Game initialization error:', error);
+    }
 }); 
