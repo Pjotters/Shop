@@ -6,23 +6,48 @@
     <title>Flappy Bird - Pjotters Games</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="games.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="module">
         import { checkAuthState } from '../auth-helper.js';
         checkAuthState();
     </script>
 </head>
 <body class="game-page">
-    <div class="game-header">
-        <div class="score-display">Score: <span id="currentScore">0</span></div>
-        <div class="points-display">Punten: <span id="earnedPoints">0</span></div>
-        <div class="highscore-display">Highscore: <span id="highScore">0</span></div>
+    <nav class="game-nav">
+        <button id="backToDashboard">← Terug naar Dashboard</button>
+        <div class="game-stats">
+            <div class="score-display">
+                <i class="fas fa-star"></i>
+                Score: <span id="currentScore">0</span>
+            </div>
+            <div class="points-display">
+                <i class="fas fa-coins"></i>
+                Punten: <span id="earnedPoints">0</span>
+            </div>
+            <div class="highscore-display">
+                <i class="fas fa-trophy"></i>
+                Highscore: <span id="highScore">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="game-controls">
+            <button id="startGame">
+                <i class="fas fa-play"></i> Start Game
+            </button>
+            <div class="game-instructions">
+                <h3><i class="fas fa-info-circle"></i> Instructies:</h3>
+                <p><i class="fas fa-mouse-pointer"></i> Klik of druk op spatiebalk om te vliegen</p>
+                <p><i class="fas fa-coins"></i> Verdien 10 punten per pipe</p>
+                <p><i class="fas fa-exclamation-triangle"></i> Vermijd de groene pijpen!</p>
+            </div>
+        </div>
     </div>
-    
-    <canvas id="gameCanvas"></canvas>
-    
-    <div class="game-controls">
-        <button id="startGame">Start Game</button>
-        <button id="backToDashboard">Terug naar Dashboard</button>
-    </div>
+
+    <script type="module" src="../firebase-config.js"></script>
+    <script type="module" src="flappy.js"></script>
 </body>
 </html> 

@@ -16,7 +16,10 @@
 <body class="dashboard-page">
     <div class="dashboard-container">
         <header class="dashboard-header">
-            <h1>Mijn Dashboard</h1>
+            <div class="header-left">
+                <img src="images/logo.png" alt="Pjotters Logo" class="dashboard-logo">
+                <h1>Mijn Games Dashboard</h1>
+            </div>
             <div class="user-points">
                 <i class="fas fa-coins"></i>
                 <span id="totalPoints">0</span> punten
@@ -24,26 +27,79 @@
         </header>
 
         <section class="games-section">
-            <h2>Games</h2>
+            <h2><i class="fas fa-gamepad"></i> Beschikbare Games</h2>
             <div class="games-grid">
                 <div class="game-card">
-                    <img src="images/flappy-bird.png" alt="Flappy Bird">
+                    <div class="game-banner">
+                        <img src="images/games/flappy-bird.png" alt="Flappy Bird">
+                        <div class="game-overlay">
+                            <button class="play-button" onclick="location.href='games/flappy.html'">
+                                <i class="fas fa-play"></i> Spelen
+                            </button>
+                        </div>
+                    </div>
                     <h3 class="game-title">Flappy Bird</h3>
                     <div class="game-stats">
                         <div class="stat">
-                            <div class="stat-label">Highscore</div>
+                            <i class="fas fa-trophy"></i>
                             <div class="stat-value" id="flappyHighscore">0</div>
+                            <div class="stat-label">Highscore</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-label">Verdiende Punten</div>
+                            <i class="fas fa-coins"></i>
                             <div class="stat-value" id="flappyPoints">0</div>
+                            <div class="stat-label">Punten</div>
                         </div>
                     </div>
-                    <button class="play-button" onclick="location.href='games/flappy.html'">
-                        <i class="fas fa-play"></i> Spelen
-                    </button>
                 </div>
-                <!-- Voeg hier meer game-cards toe -->
+
+                <div class="game-card">
+                    <div class="game-banner">
+                        <img src="images/games/snake.png" alt="Snake">
+                        <div class="game-overlay">
+                            <button class="play-button" onclick="location.href='games/snake.html'">
+                                <i class="fas fa-play"></i> Spelen
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="game-title">Snake</h3>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <i class="fas fa-trophy"></i>
+                            <div class="stat-value" id="snakeHighscore">0</div>
+                            <div class="stat-label">Highscore</div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-coins"></i>
+                            <div class="stat-value" id="snakePoints">0</div>
+                            <div class="stat-label">Punten</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-banner">
+                        <img src="images/games/pacman.png" alt="Pac-Man">
+                        <div class="game-overlay">
+                            <button class="play-button" onclick="location.href='games/pacman.html'">
+                                <i class="fas fa-play"></i> Spelen
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="game-title">Pac-Man</h3>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <i class="fas fa-trophy"></i>
+                            <div class="stat-value" id="pacmanHighscore">0</div>
+                            <div class="stat-label">Highscore</div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-coins"></i>
+                            <div class="stat-value" id="pacmanPoints">0</div>
+                            <div class="stat-label">Punten</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

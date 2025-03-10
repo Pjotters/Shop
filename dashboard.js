@@ -1,38 +1,45 @@
-import { auth, db, dbRef } from './firebase-config.js';
-import { onAuthStateChanged } from 'firebase/auth';
-import { onValue } from 'firebase/database';
+import { auth, db } from './firebase-config.js';
+import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            loadUserData(user);
-        } else {
-            window.location.href = 'login.html';
-        }
-    });
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const user = await requireAuth();
+        loadUserData(user);
+    } catch (error) {
+        console.error('Auth error:', error);
+        window.location.href = 'login.html';
+    }
 });
 
 function loadUserData(user) {
-    // Laad gebruikerspunten
-    const userPointsRef = dbRef.points(user.uid);
-    onValue(userPointsRef, (snapshot) => {
-        const points = snapshot.val() || 0;
-        document.getElementById('totalPoints').textContent = points;
-    });
-
-    // Laad game statistieken
-    const userGamesRef = dbRef.games(user.uid);
-    onValue(userGamesRef, (snapshot) => {
-        const games = snapshot.val() || {};
+    const userRef = ref(db, `users/${user.uid}`);
+    onValue(userRef, (snapshot) => {
+        const userData = snapshot.val() || {};
         
-        // Update Flappy Bird stats
+        // Update totale punten
+        document.getElementById('totalPoints').textContent = userData.points || 0;
+        
+        // Update game statistieken
+        const games = userData.games || {};
+        
+        // Flappy Bird stats
         if (games.flappyBird) {
             document.getElementById('flappyHighscore').textContent = games.flappyBird.highscore || 0;
             document.getElementById('flappyPoints').textContent = games.flappyBird.totalPoints || 0;
         }
         
-        // Voeg hier meer game statistieken toe
+        // Snake stats
+        if (games.snake) {
+            document.getElementById('snakeHighscore').textContent = games.snake.highscore || 0;
+            document.getElementById('snakePoints').textContent = games.snake.totalPoints || 0;
+        }
+        
+        // Pacman stats
+        if (games.pacman) {
+            document.getElementById('pacmanHighscore').textContent = games.pacman.highscore || 0;
+            document.getElementById('pacmanPoints').textContent = games.pacman.totalPoints || 0;
+        }
     });
 }
 

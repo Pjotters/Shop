@@ -1,158 +1,171 @@
-import { auth, db, dbRef } from '../firebase-config.js';
-import { ref, update, get } from 'firebase/database';
+import { auth, db } from '../firebase-config.js';
+import { ref, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { checkTermsAcceptance } from './terms-popup.js';
 
 class FlappyBird {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.bird = { x: 50, y: 150, velocity: 0 };
+        this.bird = {
+            x: 50,
+            y: canvas.height / 2,
+            velocity: 0,
+            gravity: 0.5,
+            jump: -8,
+            size: 20
+        };
         this.pipes = [];
         this.score = 0;
-        this.gameOver = false;
-        this.gravity = 0.5;
-        this.jump = -8;
-        this.pipeGap = 120;
-        
-        // Points systeem
-        this.pointsMultiplier = 10; // 10 punten per pipe
         this.earnedPoints = 0;
+        this.gameLoop = null;
+        this.isGameOver = false;
         
-        this.setupEventListeners();
+        // Event listeners
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') this.jump();
+        });
+        
+        canvas.addEventListener('click', () => this.jump());
+        
+        // Pipe generation
+        setInterval(() => {
+            if (!this.isGameOver) this.addPipe();
+        }, 2000);
     }
 
-    setupEventListeners() {
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !this.gameOver) {
-                this.bird.velocity = this.jump;
-            }
-        });
+    jump() {
+        if (!this.isGameOver) {
+            this.bird.velocity = this.bird.jump;
+        }
+    }
 
-        document.addEventListener('touchstart', () => {
-            if (!this.gameOver) {
-                this.bird.velocity = this.jump;
-            }
+    addPipe() {
+        const gap = 150;
+        const minHeight = 50;
+        const maxHeight = this.canvas.height - gap - minHeight;
+        const height = Math.random() * (maxHeight - minHeight) + minHeight;
+
+        this.pipes.push({
+            x: this.canvas.width,
+            top: height,
+            bottom: height + gap,
+            counted: false
         });
     }
 
     update() {
-        if (this.gameOver) return;
+        if (this.isGameOver) return;
 
         // Update bird
-        this.bird.velocity += this.gravity;
+        this.bird.velocity += this.bird.gravity;
         this.bird.y += this.bird.velocity;
 
-        // Generate pipes
-        if (this.pipes.length === 0 || this.pipes[this.pipes.length - 1].x < this.canvas.width - 200) {
-            const y = Math.random() * (this.canvas.height - this.pipeGap - 100) + 50;
-            this.pipes.push({ x: this.canvas.width, y });
+        // Check collisions
+        if (this.bird.y < 0 || this.bird.y > this.canvas.height) {
+            this.endGame();
+            return;
         }
 
         // Update pipes
-        this.pipes.forEach(pipe => {
-            pipe.x -= 2;
+        this.pipes.forEach((pipe, index) => {
+            pipe.x -= 3;
 
-            // Check collision
-            if (this.checkCollision(pipe)) {
-                this.gameOver = true;
+            // Remove off-screen pipes
+            if (pipe.x + 50 < 0) {
+                this.pipes.splice(index, 1);
+            }
+
+            // Check collisions
+            if (
+                this.bird.x + this.bird.size > pipe.x &&
+                this.bird.x < pipe.x + 50 &&
+                (this.bird.y < pipe.top || this.bird.y + this.bird.size > pipe.bottom)
+            ) {
                 this.endGame();
             }
 
-            // Score point
-            if (pipe.x === 48) {
+            // Score points
+            if (!pipe.counted && pipe.x < this.bird.x) {
                 this.score++;
-                this.earnedPoints += this.pointsMultiplier;
+                this.earnedPoints += 10;
+                pipe.counted = true;
                 document.getElementById('currentScore').textContent = this.score;
                 document.getElementById('earnedPoints').textContent = this.earnedPoints;
             }
-        });
-
-        // Remove off-screen pipes
-        this.pipes = this.pipes.filter(pipe => pipe.x > -50);
-
-        // Check boundaries
-        if (this.bird.y > this.canvas.height || this.bird.y < 0) {
-            this.gameOver = true;
-            this.endGame();
-        }
-    }
-
-    async endGame() {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        // Update highscore en punten in database
-        const userGameRef = dbRef.games(user.uid);
-        const userPointsRef = dbRef.points(user.uid);
-
-        const snapshot = await get(userGameRef);
-        const currentData = snapshot.val() || {};
-        
-        if (!currentData.flappyBird || this.score > currentData.flappyBird.highscore) {
-            await update(userGameRef, {
-                'flappyBird/highscore': this.score
-            });
-        }
-
-        // Update punten
-        const pointsSnapshot = await get(userPointsRef);
-        const currentPoints = pointsSnapshot.val() || 0;
-        await update(ref(db, `users/${user.uid}`), {
-            points: currentPoints + this.earnedPoints
         });
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
+
         // Draw bird
-        this.ctx.fillStyle = 'yellow';
+        this.ctx.fillStyle = '#45B7AF';
         this.ctx.beginPath();
-        this.ctx.arc(this.bird.x, this.bird.y, 15, 0, Math.PI * 2);
+        this.ctx.arc(this.bird.x, this.bird.y, this.bird.size, 0, Math.PI * 2);
         this.ctx.fill();
 
         // Draw pipes
-        this.ctx.fillStyle = 'green';
         this.pipes.forEach(pipe => {
-            this.ctx.fillRect(pipe.x, 0, 30, pipe.y);
-            this.ctx.fillRect(pipe.x, pipe.y + this.pipeGap, 30, this.canvas.height);
+            this.ctx.fillStyle = '#4fd1c5';
+            this.ctx.fillRect(pipe.x, 0, 50, pipe.top);
+            this.ctx.fillRect(pipe.x, pipe.bottom, 50, this.canvas.height - pipe.bottom);
         });
     }
 
-    checkCollision(pipe) {
-        return (
-            this.bird.x + 15 > pipe.x &&
-            this.bird.x - 15 < pipe.x + 30 &&
-            (this.bird.y - 15 < pipe.y || this.bird.y + 15 > pipe.y + this.pipeGap)
-        );
-    }
+    async endGame() {
+        this.isGameOver = true;
+        clearInterval(this.gameLoop);
 
-    async start() {
-        const termsAccepted = await checkTermsAcceptance();
-        if (!termsAccepted) return;
-        this.gameLoop();
-    }
+        const user = auth.currentUser;
+        if (!user) return;
 
-    gameLoop() {
-        this.update();
-        this.draw();
-        if (!this.gameOver) {
-            requestAnimationFrame(() => this.gameLoop());
+        const userRef = ref(db, `users/${user.uid}`);
+        const snapshot = await get(userRef);
+        const userData = snapshot.val() || {};
+        
+        const updates = {};
+        if (!userData.games?.flappyBird?.highscore || this.score > userData.games.flappyBird.highscore) {
+            updates['games/flappyBird/highscore'] = this.score;
         }
+        updates.points = (userData.points || 0) + this.earnedPoints;
+        
+        await update(userRef, updates);
+    }
+
+    start() {
+        this.isGameOver = false;
+        this.bird.y = this.canvas.height / 2;
+        this.bird.velocity = 0;
+        this.pipes = [];
+        this.score = 0;
+        this.earnedPoints = 0;
+        
+        document.getElementById('currentScore').textContent = '0';
+        document.getElementById('earnedPoints').textContent = '0';
+        
+        if (this.gameLoop) clearInterval(this.gameLoop);
+        this.gameLoop = setInterval(() => {
+            this.update();
+            this.draw();
+        }, 1000 / 60);
     }
 }
 
 // Game initialisatie
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const canvas = document.getElementById('gameCanvas');
-    canvas.width = 400;
+    canvas.width = 800;
     canvas.height = 500;
+    
+    const termsAccepted = await checkTermsAcceptance();
+    if (!termsAccepted) return;
     
     const game = new FlappyBird(canvas);
     
     document.getElementById('startGame').addEventListener('click', () => {
         game.start();
     });
-    
+
     document.getElementById('backToDashboard').addEventListener('click', () => {
         window.location.href = '../dashboard.html';
     });
