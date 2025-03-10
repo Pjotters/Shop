@@ -12,11 +12,21 @@ class FlappyBird {
             velocity: 0,
             gravity: 0.5,
             jump: -8,
-            size: 20
+            size: 30,
+            rotation: 0
         };
+        this.background = new Image();
+        this.background.src = '../images/games/flappy-background.png';
+        this.birdSprite = new Image();
+        this.birdSprite.src = '../images/games/flappy-sprite.png';
+        this.pipeSprite = new Image();
+        this.pipeSprite.src = '../images/games/pipe-sprite.png';
+        
         this.pipes = [];
         this.score = 0;
         this.earnedPoints = 0;
+        this.gameSpeed = 1;
+        this.baseSpeed = 3;
         this.gameLoop = null;
         this.isGameOver = false;
         
@@ -56,9 +66,16 @@ class FlappyBird {
     update() {
         if (this.isGameOver) return;
 
-        // Update bird
+        // Update game speed based on score
+        if (this.score >= 5) this.gameSpeed = 1.2;
+        if (this.score >= 10) this.gameSpeed = 1.5;
+        if (this.score >= 15) this.gameSpeed = 1.75;
+        if (this.score >= 20) this.gameSpeed = 2.0;
+        
+        // Update bird physics
         this.bird.velocity += this.bird.gravity;
         this.bird.y += this.bird.velocity;
+        this.bird.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, this.bird.velocity * 0.1));
 
         // Check collisions
         if (this.bird.y < 0 || this.bird.y > this.canvas.height) {
@@ -66,9 +83,9 @@ class FlappyBird {
             return;
         }
 
-        // Update pipes
+        // Update pipes with current game speed
         this.pipes.forEach((pipe, index) => {
-            pipe.x -= 3;
+            pipe.x -= this.baseSpeed * this.gameSpeed;
 
             // Remove off-screen pipes
             if (pipe.x + 50 < 0) {
@@ -89,27 +106,44 @@ class FlappyBird {
                 this.score++;
                 this.earnedPoints += 10;
                 pipe.counted = true;
-                document.getElementById('currentScore').textContent = this.score;
-                document.getElementById('earnedPoints').textContent = this.earnedPoints;
+                
+                const scoreElement = document.getElementById('currentScore');
+                const pointsElement = document.getElementById('earnedPoints');
+                
+                scoreElement.textContent = this.score;
+                pointsElement.textContent = this.earnedPoints;
+                
+                // Voeg bounce animatie toe
+                scoreElement.classList.add('score-update');
+                pointsElement.classList.add('score-update');
+                
+                // Verwijder animatie klasse na afloop
+                setTimeout(() => {
+                    scoreElement.classList.remove('score-update');
+                    pointsElement.classList.remove('score-update');
+                }, 300);
             }
         });
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw bird
-        this.ctx.fillStyle = '#45B7AF';
-        this.ctx.beginPath();
-        this.ctx.arc(this.bird.x, this.bird.y, this.bird.size, 0, Math.PI * 2);
-        this.ctx.fill();
-
+        // Draw background
+        this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+        
         // Draw pipes
         this.pipes.forEach(pipe => {
-            this.ctx.fillStyle = '#4fd1c5';
-            this.ctx.fillRect(pipe.x, 0, 50, pipe.top);
-            this.ctx.fillRect(pipe.x, pipe.bottom, 50, this.canvas.height - pipe.bottom);
+            // Top pipe
+            this.ctx.drawImage(this.pipeSprite, pipe.x, 0, 50, pipe.top);
+            // Bottom pipe
+            this.ctx.drawImage(this.pipeSprite, pipe.x, pipe.bottom, 50, this.canvas.height - pipe.bottom);
         });
+
+        // Draw bird with rotation
+        this.ctx.save();
+        this.ctx.translate(this.bird.x + this.bird.size/2, this.bird.y + this.bird.size/2);
+        this.ctx.rotate(this.bird.rotation);
+        this.ctx.drawImage(this.birdSprite, -this.bird.size/2, -this.bird.size/2, this.bird.size, this.bird.size);
+        this.ctx.restore();
     }
 
     async endGame() {

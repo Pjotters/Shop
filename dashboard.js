@@ -17,30 +17,36 @@ function loadUserData(user) {
     onValue(userRef, (snapshot) => {
         const userData = snapshot.val() || {};
         
-        // Update totale punten
-        document.getElementById('totalPoints').textContent = userData.points || 0;
+        // Update welkomstboodschap
+        const username = userData.username || user.email.split('@')[0];
+        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+        
+        // Update totale punten met animatie
+        const pointsElement = document.getElementById('totalPoints');
+        const currentPoints = parseInt(pointsElement.textContent);
+        const newPoints = userData.points || 0;
+        animateNumber(currentPoints, newPoints, pointsElement);
         
         // Update game statistieken
-        const games = userData.games || {};
-        
-        // Flappy Bird stats
-        if (games.flappyBird) {
-            document.getElementById('flappyHighscore').textContent = games.flappyBird.highscore || 0;
-            document.getElementById('flappyPoints').textContent = games.flappyBird.totalPoints || 0;
-        }
-        
-        // Snake stats
-        if (games.snake) {
-            document.getElementById('snakeHighscore').textContent = games.snake.highscore || 0;
-            document.getElementById('snakePoints').textContent = games.snake.totalPoints || 0;
-        }
-        
-        // Pacman stats
-        if (games.pacman) {
-            document.getElementById('pacmanHighscore').textContent = games.pacman.highscore || 0;
-            document.getElementById('pacmanPoints').textContent = games.pacman.totalPoints || 0;
-        }
+        updateGameStats(userData.games || {});
     });
+}
+
+function animateNumber(start, end, element) {
+    const duration = 1000;
+    const steps = 60;
+    const increment = (end - start) / steps;
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            clearInterval(timer);
+            element.textContent = end;
+        } else {
+            element.textContent = Math.round(current);
+        }
+    }, duration / steps);
 }
 
 function updateRewards(points) {

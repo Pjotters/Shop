@@ -6,34 +6,49 @@
 }
 
 .dashboard-container {
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .dashboard-header {
+    background: linear-gradient(135deg, rgba(69, 183, 175, 0.2) 0%, rgba(69, 183, 175, 0.1) 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(69, 183, 175, 0.3);
+    animation: fadeIn 0.5s ease;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.welcome-message {
+    color: #45B7AF;
+    font-size: 1.8rem;
+    animation: slideIn 0.5s ease;
 }
 
 .user-points {
+    background: rgba(69, 183, 175, 0.3);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 1.2rem;
-    background: #45B7AF;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    box-shadow: 0 4px 15px rgba(69, 183, 175, 0.3);
+    animation: bounceIn 0.5s ease;
 }
 
 .games-section {
-    margin-bottom: 3rem;
+    animation: fadeIn 0.8s ease;
 }
 
 .games-section h2 {
@@ -52,14 +67,15 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    transform: translateY(0);
     border: 2px solid transparent;
 }
 
 .game-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
     border-color: #45B7AF;
-    box-shadow: 0 8px 25px rgba(69, 183, 175, 0.2);
+    box-shadow: 0 10px 20px rgba(69, 183, 175, 0.2);
 }
 
 .game-card img {
@@ -226,4 +242,21 @@
     display: flex;
     justify-content: space-between;
     padding: 0.25rem 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
 } 
