@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Commands - ZipZop AR</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="voice-commands.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body class="voice-demo-page">
+    <!-- Gebruik dezelfde navbar structuur als in andere pagina's -->
+    
+    <div class="voice-demo-container">
+        <div class="voice-interface">
+            <div class="voice-status">
+                <div class="voice-indicator"></div>
+                <span class="status-text">Gereed voor commando's</span>
+            </div>
+            
+            <div class="command-display">
+                <div class="recognized-text"></div>
+                <div class="ar-visualization">
+                    <!-- AR preview van commando effecten -->
+                </div>
+            </div>
+
+            <div class="command-list">
+                <h3>Beschikbare Commando's:</h3>
+                <ul>
+                    <li>"Open Menu"</li>
+                    <li>"Neem Foto"</li>
+                    <li>"Start Video"</li>
+                    <li>"Zoom In/Uit"</li>
+                    <li>"Schakel Nachtmodus"</li>
+                </ul>
+            </div>
+
+            <button class="start-demo-btn">Start Voice Demo</button>
+        </div>
+    </div>
+
+    <script>
+        const aiVoiceDemo = new AIVoiceCommandDemo('jouw-huggingface-api-key');
+    </script>
+</body>
+</html> 
