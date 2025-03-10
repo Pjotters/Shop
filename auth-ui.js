@@ -10,6 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const errorDisplay = document.querySelector('.auth-error');
 
+    // Functie om naar een specifieke tab te switchen
+    const switchToTab = (tabName) => {
+        const targetBtn = Array.from(tabBtns).find(btn => btn.dataset.tab === tabName);
+        if (targetBtn) {
+            targetBtn.click();
+        }
+    };
+
+    // Check URL parameters voor directe tab switch
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('tab') === 'register') {
+        switchToTab('register');
+    }
+
     // Tab switching
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
