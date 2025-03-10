@@ -235,21 +235,26 @@ class Snake {
 // Game initialisatie
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const termsAccepted = await checkTermsAcceptance();
-        if (!termsAccepted) return;
-
         const canvas = document.getElementById('gameCanvas');
-        canvas.width = 1000;
-        canvas.height = 600;
+        canvas.width = 800;
+        canvas.height = 800;
         
         const game = new Snake(canvas);
-        
-        document.getElementById('startGame').addEventListener('click', () => {
+
+        const startButton = document.getElementById('startGame');
+        startButton.addEventListener('click', () => {
             game.start();
+            startButton.style.display = 'none';
         });
 
-        document.getElementById('backToDashboard').addEventListener('click', () => {
-            window.location.href = '../dashboard.html';
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowUp': game.direction = 'up'; break;
+                case 'ArrowDown': game.direction = 'down'; break;
+                case 'ArrowLeft': game.direction = 'left'; break;
+                case 'ArrowRight': game.direction = 'right'; break;
+            }
         });
     } catch (error) {
         console.error('Game initialization error:', error);

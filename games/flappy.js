@@ -45,7 +45,7 @@ class FlappyBird {
     }
 
     jump() {
-        if (!this.isGameOver) {
+        if (!this.isGameOver && this.isGameStarted) {
             this.bird.velocity = this.bird.jump;
         }
     }
@@ -54,12 +54,12 @@ class FlappyBird {
         const gap = 150;
         const minHeight = 50;
         const maxHeight = this.canvas.height - gap - minHeight;
-        const height = Math.random() * (maxHeight - minHeight) + minHeight;
+        const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
 
         this.pipes.push({
             x: this.canvas.width,
-            top: height,
-            bottom: height + gap,
+            top: topHeight,
+            bottom: topHeight + gap,
             counted: false
         });
     }
@@ -193,43 +193,33 @@ class FlappyBird {
 // Game initialisatie
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const termsAccepted = await checkTermsAcceptance();
-        if (!termsAccepted) return;
-
         const canvas = document.getElementById('gameCanvas');
         canvas.width = 1000;
         canvas.height = 600;
         
         const game = new FlappyBird(canvas);
-        
-        // Event listeners voor game controls
-        document.getElementById('startGame').addEventListener('click', () => {
+
+        // Start game button event listener
+        const startButton = document.getElementById('startGame');
+        startButton.addEventListener('click', () => {
             game.start();
-            // Focus op canvas voor keyboard input
-            canvas.focus();
+            startButton.style.display = 'none'; // Verberg de start knop
         });
 
-        // Keyboard controls
-        document.addEventListener('keydown', (event) => {
-            if (event.code === 'Space') {
-                if (!game.isGameStarted) {
-                    game.start();
-                }
-                game.bird.velocity = game.bird.jump;
-            }
-        });
-
-        // Mouse/touch controls
-        canvas.addEventListener('click', () => {
-            if (!game.isGameStarted) {
-                game.start();
-            }
-            game.bird.velocity = game.bird.jump;
-        });
-
+        // Terug naar dashboard
         document.getElementById('backToDashboard').addEventListener('click', () => {
             window.location.href = '../dashboard.html';
         });
+
+        // Laad highscore
+        const user = auth.currentUser;
+        if (user) {
+            const userRef = ref(db, `users/${user.uid}/games/flappyBird`);
+            const snapshot = await get(userRef);
+            const userData = snapshot.val() || {};
+            document.getElementById('highScore').textContent = userData.highscore || '0';
+        }
+
     } catch (error) {
         console.error('Game initialization error:', error);
     }
