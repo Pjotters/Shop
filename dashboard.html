@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pjotters-Shop Dashboard</title>
+    <title>Pjotters Dashboard</title>
+    <link rel="stylesheet" href="games/games.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
     <script type="module">
@@ -12,37 +14,41 @@
     </script>
 </head>
 <body class="dashboard-page">
-    <nav class="dashboard-nav">
-        <div class="user-info">
-            <img src="default-avatar.png" alt="Profile" class="avatar">
-            <span class="username">Laden...</span>
-        </div>
-        <div class="points-display">
-            <span class="points-icon">🏆</span>
-            <span class="points-amount">0</span>
-        </div>
-    </nav>
-
-    <div class="dashboard-grid">
-        <div class="dashboard-card orders">
-            <h3>Mijn Bestellingen</h3>
-            <div class="orders-list"></div>
-        </div>
-
-        <div class="dashboard-card games">
-            <h3>Games</h3>
-            <div class="games-grid">
-                <div class="game-card" data-game="flappy">
-                    <img src="games/flappy.png" alt="Flappy Bird">
-                    <h4>Flappy Bird</h4>
-                    <span class="highscore">Highscore: 0</span>
-                </div>
-                <!-- Andere games hier -->
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Mijn Dashboard</h1>
+            <div class="user-points">
+                <i class="fas fa-coins"></i>
+                <span id="totalPoints">0</span> punten
             </div>
-        </div>
+        </header>
 
-        <div class="dashboard-card rewards">
-            <h3>Rewards Shop</h3>
+        <section class="games-section">
+            <h2>Games</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <img src="images/flappy-bird.png" alt="Flappy Bird">
+                    <h3 class="game-title">Flappy Bird</h3>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-label">Highscore</div>
+                            <div class="stat-value" id="flappyHighscore">0</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Verdiende Punten</div>
+                            <div class="stat-value" id="flappyPoints">0</div>
+                        </div>
+                    </div>
+                    <button class="play-button" onclick="location.href='games/flappy.html'">
+                        <i class="fas fa-play"></i> Spelen
+                    </button>
+                </div>
+                <!-- Voeg hier meer game-cards toe -->
+            </div>
+        </section>
+
+        <section class="rewards-section">
+            <h2>Rewards Shop</h2>
             <div class="rewards-grid">
                 <div class="reward-card">
                     <span class="reward-icon">🎫</span>
@@ -52,7 +58,9 @@
                 </div>
                 <!-- Meer rewards hier -->
             </div>
-        </div>
+        </section>
     </div>
+
+    <script type="module" src="dashboard.js"></script>
 </body>
 </html> 

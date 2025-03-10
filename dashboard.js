@@ -1,69 +1,40 @@
-import { auth, db } from './firebase-config.js';
-import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { auth, db, dbRef } from './firebase-config.js';
+import { onAuthStateChanged } from 'firebase/auth';
+import { onValue } from 'firebase/database';
 import { requireAuth } from './auth-helper.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const user = await requireAuth();
-        
-        // Realtime punten updates
-        const userRef = ref(db, `users/${user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val();
-            if (userData) {
-                document.querySelector('.points-amount').textContent = userData.points || 0;
-                document.querySelector('.username').textContent = userData.name || 'Gebruiker';
-                updateGameScores(userData.games);
-            }
-        });
-
-        // Games grid vullen
-        const gamesGrid = document.querySelector('.games-grid');
-        gamesGrid.innerHTML = `
-            <div class="game-card" data-game="flappy">
-                <img src="images/games/flappy.png" alt="Flappy Bird">
-                <h4>Flappy Bird</h4>
-                <span class="highscore">Highscore: 0</span>
-                <span class="points-info">Verdien 10 punten per pipe!</span>
-            </div>
-            <div class="game-card" data-game="snake">
-                <img src="images/games/snake.png" alt="Snake">
-                <h4>Snake</h4>
-                <span class="highscore">Highscore: 0</span>
-                <span class="points-info">Verdien 5 punten per appel!</span>
-            </div>
-            <div class="game-card" data-game="pacman">
-                <img src="images/games/pacman.png" alt="Pac-Man">
-                <h4>Pac-Man</h4>
-                <span class="highscore">Highscore: 0</span>
-                <span class="points-info">Verdien 2 punten per dot!</span>
-            </div>
-        `;
-
-        // Game cards klikbaar maken
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const game = card.dataset.game;
-                window.location.href = `games/${game}.html`;
-            });
-        });
-
-        // Update game scores
-        function updateGameScores(games) {
-            if (!games) return;
-            
-            Object.entries(games).forEach(([game, data]) => {
-                const card = document.querySelector(`[data-game="${game}"]`);
-                if (card) {
-                    card.querySelector('.highscore').textContent = `Highscore: ${data.highscore || 0}`;
-                }
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            loadUserData(user);
+        } else {
+            window.location.href = 'login.html';
         }
-    } catch (error) {
-        console.error('Auth error:', error);
-        window.location.href = 'login.html';
-    }
+    });
 });
+
+function loadUserData(user) {
+    // Laad gebruikerspunten
+    const userPointsRef = dbRef.points(user.uid);
+    onValue(userPointsRef, (snapshot) => {
+        const points = snapshot.val() || 0;
+        document.getElementById('totalPoints').textContent = points;
+    });
+
+    // Laad game statistieken
+    const userGamesRef = dbRef.games(user.uid);
+    onValue(userGamesRef, (snapshot) => {
+        const games = snapshot.val() || {};
+        
+        // Update Flappy Bird stats
+        if (games.flappyBird) {
+            document.getElementById('flappyHighscore').textContent = games.flappyBird.highscore || 0;
+            document.getElementById('flappyPoints').textContent = games.flappyBird.totalPoints || 0;
+        }
+        
+        // Voeg hier meer game statistieken toe
+    });
+}
 
 function updateRewards(points) {
     const rewards = [
