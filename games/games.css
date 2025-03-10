@@ -72,7 +72,9 @@
 }
 
 .score-display, .points-display, .highscore-display {
-    background: rgba(69, 183, 175, 0.2);
+    background: linear-gradient(135deg, rgba(69, 183, 175, 0.2) 0%, rgba(69, 183, 175, 0.1) 100%);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(69, 183, 175, 0.3);
     padding: 0.8rem 1.5rem;
     border-radius: 20px;
     font-size: 1.2rem;
@@ -194,4 +196,60 @@
 
 .play-button:hover {
     background: #2980b9;
+}
+
+/* Game stats met icons */
+.game-stats i {
+    margin-right: 8px;
+    color: #45B7AF;
+}
+
+.game-instructions {
+    background: rgba(69, 183, 175, 0.1);
+    border: 2px solid #45B7AF;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.game-instructions h3 {
+    color: #45B7AF;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-instructions p {
+    color: #fff;
+    margin: 0.8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.game-instructions i {
+    color: #45B7AF;
+    width: 20px;
+    text-align: center;
+}
+
+/* Verbeterde knoppen styling */
+#startGame, #backToDashboard {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+#startGame:hover, #backToDashboard:hover {
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(69, 183, 175, 0.3);
 } 
