@@ -137,21 +137,24 @@ class Snake {
     }
 
     start() {
-        this.isGameOver = false;
+        // Reset game state
         this.snake = [{x: 10, y: 10}];
         this.direction = 'right';
+        this.food = this.generateFood();
         this.score = 0;
         this.earnedPoints = 0;
-        this.food = this.generateFood();
-        
+        this.isGameOver = false;
+
+        // Reset UI
         document.getElementById('currentScore').textContent = '0';
         document.getElementById('earnedPoints').textContent = '0';
-        
+
+        // Start game loop
         if (this.gameLoop) clearInterval(this.gameLoop);
         this.gameLoop = setInterval(() => {
             this.update();
             this.draw();
-        }, 100);
+        }, 150);
     }
 }
 

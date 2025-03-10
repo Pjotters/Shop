@@ -133,16 +133,19 @@ class FlappyBird {
     }
 
     start() {
-        this.isGameOver = false;
+        // Reset game state
         this.bird.y = this.canvas.height / 2;
         this.bird.velocity = 0;
         this.pipes = [];
         this.score = 0;
         this.earnedPoints = 0;
+        this.isGameOver = false;
         
+        // Reset UI
         document.getElementById('currentScore').textContent = '0';
         document.getElementById('earnedPoints').textContent = '0';
         
+        // Start game loop
         if (this.gameLoop) clearInterval(this.gameLoop);
         this.gameLoop = setInterval(() => {
             this.update();

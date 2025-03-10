@@ -263,7 +263,27 @@ class PacMan {
     }
 
     start() {
-        this.gameLoop(0);
+        // Reset game state
+        this.pacman = {
+            x: this.canvas.width / 2,
+            y: this.canvas.height / 2,
+            direction: 'right',
+            speed: 5
+        };
+        this.score = 0;
+        this.earnedPoints = 0;
+        this.isGameOver = false;
+
+        // Reset UI
+        document.getElementById('currentScore').textContent = '0';
+        document.getElementById('earnedPoints').textContent = '0';
+
+        // Start game loop
+        if (this.gameLoop) clearInterval(this.gameLoop);
+        this.gameLoop = setInterval(() => {
+            this.update();
+            this.draw();
+        }, 1000 / 60);
     }
 }
 
