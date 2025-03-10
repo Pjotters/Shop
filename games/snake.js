@@ -46,6 +46,10 @@ class Snake {
         document.getElementById('downBtn').addEventListener('click', () => this.direction = 'down');
         document.getElementById('leftBtn').addEventListener('click', () => this.direction = 'left');
         document.getElementById('rightBtn').addEventListener('click', () => this.direction = 'right');
+
+        this.food = this.generateFood();
+        this.gameLoop = null;
+        this.isGameOver = false;
     }
 
     activateSpeedBoost() {
@@ -130,14 +134,19 @@ class Snake {
     }
 
     checkCollision(head) {
-        // Muur botsing
+        // Check muur botsingen
         if (head.x < 0 || head.x >= this.canvas.width / this.gridSize ||
             head.y < 0 || head.y >= this.canvas.height / this.gridSize) {
             return true;
         }
-
-        // Slang botsing met zichzelf
-        return this.snake.some(segment => segment.x === head.x && segment.y === head.y);
+        
+        // Check slang botsingen (behalve in ghost mode)
+        if (!this.activeEffects.ghostMode) {
+            return this.snake.some((segment, index) => 
+                index !== 0 && segment.x === head.x && segment.y === head.y
+            );
+        }
+        return false;
     }
 
     draw() {
@@ -211,24 +220,25 @@ class Snake {
     }
 
     start() {
-        // Reset game state
+        if (this.gameLoop) return;
+        this.isGameOver = false;
+        this.score = 0;
+        this.earnedPoints = 0;
         this.snake = [{x: 10, y: 10}];
         this.direction = 'right';
         this.food = this.generateFood();
-        this.score = 0;
-        this.earnedPoints = 0;
-        this.isGameOver = false;
-
-        // Reset UI
-        document.getElementById('currentScore').textContent = '0';
-        document.getElementById('earnedPoints').textContent = '0';
-
+        
         // Start game loop
-        if (this.gameLoop) clearInterval(this.gameLoop);
         this.gameLoop = setInterval(() => {
             this.update();
             this.draw();
-        }, 150);
+        }, this.gameSpeed);
+    }
+
+    generateFood() {
+        const x = Math.floor(Math.random() * (this.canvas.width / this.gridSize));
+        const y = Math.floor(Math.random() * (this.canvas.height / this.gridSize));
+        return {x, y};
     }
 }
 
