@@ -2,7 +2,7 @@ import { auth } from './firebase-config.js';
 import { 
     signInWithEmailAndPassword
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { registerUser } from './auth.js';
+import { loginUser, registerUser } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const email = loginForm.email.value;
             const password = loginForm.password.value;
-            await signInWithEmailAndPassword(auth, email, password);
+            await loginUser(email, password);
             window.location.href = 'dashboard.html';
         } catch (error) {
             showError('Login mislukt: ' + error.message);

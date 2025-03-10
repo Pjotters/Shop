@@ -4,10 +4,14 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateProfile,
-  serverTimestamp
+  updateProfile
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { ref, set, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { 
+  ref, 
+  set, 
+  get,
+  serverTimestamp 
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 export const loginUser = async (email, password) => {
   try {
