@@ -12,7 +12,7 @@ class FlappyBird {
             velocity: 0,
             gravity: 0.5,
             jump: -8,
-            size: 30,
+            size: 50,
             rotation: 0
         };
         this.background = new Image();
@@ -133,10 +133,15 @@ class FlappyBird {
         
         // Draw pipes
         this.pipes.forEach(pipe => {
-            // Top pipe
-            this.ctx.drawImage(this.pipeSprite, pipe.x, 0, 50, pipe.top);
             // Bottom pipe
             this.ctx.drawImage(this.pipeSprite, pipe.x, pipe.bottom, 50, this.canvas.height - pipe.bottom);
+            
+            // Top pipe (reversed)
+            this.ctx.save();
+            this.ctx.translate(pipe.x + 25, pipe.top);
+            this.ctx.scale(1, -1);
+            this.ctx.drawImage(this.pipeSprite, -25, 0, 50, pipe.top);
+            this.ctx.restore();
         });
 
         // Draw bird with rotation
