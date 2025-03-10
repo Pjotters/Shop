@@ -1,5 +1,6 @@
 import { auth, db, dbRef } from '../firebase-config.js';
 import { ref, update, get } from 'firebase/database';
+import { checkTermsAcceptance } from './terms-popup.js';
 
 class PacMan {
     constructor(canvas) {

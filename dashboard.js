@@ -1,5 +1,5 @@
-import { auth, db, dbRef } from './firebase-config.js';
-import { onValue } from 'firebase/database';
+import { auth, db } from './firebase-config.js';
+import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -7,14 +7,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const user = await requireAuth();
         
         // Realtime punten updates
-        const userRef = dbRef.user(user.uid);
+        const userRef = ref(db, `users/${user.uid}`);
         onValue(userRef, (snapshot) => {
             const userData = snapshot.val();
             if (userData) {
                 document.querySelector('.points-amount').textContent = userData.points || 0;
                 document.querySelector('.username').textContent = userData.name || 'Gebruiker';
                 updateGameScores(userData.games);
-                updateRewards(userData.points);
             }
         });
 
@@ -22,19 +21,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const gamesGrid = document.querySelector('.games-grid');
         gamesGrid.innerHTML = `
             <div class="game-card" data-game="flappy">
-                <img src="games/flappy.png" alt="Flappy Bird">
+                <img src="images/games/flappy.png" alt="Flappy Bird">
                 <h4>Flappy Bird</h4>
                 <span class="highscore">Highscore: 0</span>
                 <span class="points-info">Verdien 10 punten per pipe!</span>
             </div>
             <div class="game-card" data-game="snake">
-                <img src="games/snake.png" alt="Snake">
+                <img src="images/games/snake.png" alt="Snake">
                 <h4>Snake</h4>
                 <span class="highscore">Highscore: 0</span>
                 <span class="points-info">Verdien 5 punten per appel!</span>
             </div>
             <div class="game-card" data-game="pacman">
-                <img src="games/pacman.png" alt="Pac-Man">
+                <img src="images/games/pacman.png" alt="Pac-Man">
                 <h4>Pac-Man</h4>
                 <span class="highscore">Highscore: 0</span>
                 <span class="points-info">Verdien 2 punten per dot!</span>
@@ -48,20 +47,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = `games/${game}.html`;
             });
         });
+
+        // Update game scores
+        function updateGameScores(games) {
+            if (!games) return;
+            
+            Object.entries(games).forEach(([game, data]) => {
+                const card = document.querySelector(`[data-game="${game}"]`);
+                if (card) {
+                    card.querySelector('.highscore').textContent = `Highscore: ${data.highscore || 0}`;
+                }
+            });
+        }
     } catch (error) {
         console.error('Auth error:', error);
+        window.location.href = 'login.html';
     }
 });
-
-function updateGameScores(games) {
-    if (!games) return;
-    Object.entries(games).forEach(([game, data]) => {
-        const scoreElement = document.querySelector(`[data-game="${game}"] .highscore`);
-        if (scoreElement) {
-            scoreElement.textContent = `Highscore: ${data.highscore}`;
-        }
-    });
-}
 
 function updateRewards(points) {
     const rewards = [

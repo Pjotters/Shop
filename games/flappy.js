@@ -126,7 +126,9 @@ class FlappyBird {
         );
     }
 
-    start() {
+    async start() {
+        const termsAccepted = await checkTermsAcceptance();
+        if (!termsAccepted) return;
         this.gameLoop();
     }
 

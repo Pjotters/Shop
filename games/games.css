@@ -7,44 +7,112 @@
     padding: 2rem;
 }
 
-.game-header {
+.game-nav {
+    width: 100%;
+    max-width: 800px;
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 1rem;
-    color: white;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.game-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 #gameCanvas {
-    border: 2px solid #45B7AF;
+    border: 3px solid #45B7AF;
     border-radius: 10px;
     background: #2a2a2a;
+    box-shadow: 0 0 20px rgba(69, 183, 175, 0.2);
 }
 
 .game-controls {
-    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mobile-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.horizontal-controls {
     display: flex;
     gap: 1rem;
 }
 
 .game-controls button {
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 1.5rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     background: #45B7AF;
     color: white;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .game-controls button:hover {
     background: #3a9e97;
+    transform: translateY(-2px);
 }
 
 .score-display, .points-display, .highscore-display {
     background: rgba(69, 183, 175, 0.2);
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 1.5rem;
     border-radius: 20px;
     font-size: 1.2rem;
+    color: white;
+}
+
+/* Terms popup styling */
+.terms-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2a2a2a;
+    padding: 2rem;
+    border-radius: 15px;
+    border: 2px solid #45B7AF;
+    max-width: 500px;
+    width: 90%;
+    z-index: 1000;
+    color: white;
+}
+
+.terms-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+.terms-popup h2 {
+    color: #45B7AF;
+    margin-bottom: 1rem;
+}
+
+.terms-popup .buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
 } 
