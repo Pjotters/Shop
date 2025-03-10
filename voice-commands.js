@@ -1,6 +1,7 @@
 class AIVoiceCommandDemo {
     constructor(apiKey) {
-        this.API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill";
+        const HF_API_URL_WHISPER = "https://api-inference.huggingface.co/models/openai/whisper-large-v3";
+        const HF_API_URL_CHAT = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
         const HF_API_KEY = config.API_KEY;
         this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         this.synthesis = window.speechSynthesis;
