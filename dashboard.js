@@ -3,6 +3,9 @@ import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { CouponService } from './services/coupon-service.js';
+import { QuizService } from './services/quiz-service.js';
+import { AchievementService } from './services/achievement-service.js';
+import { LeaderboardService } from './services/leaderboard-service.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -77,8 +80,13 @@ class Dashboard {
     constructor() {
         this.shopService = new ShopService();
         this.couponService = new CouponService();
+        this.quizService = new QuizService();
+        this.achievementService = new AchievementService();
+        this.leaderboardService = new LeaderboardService();
+        
         this.setupEventListeners();
         this.loadUserCoupons();
+        this.initializeDashboard();
     }
 
     setupEventListeners() {
@@ -114,6 +122,59 @@ class Dashboard {
                 <p>Geldig tot: ${new Date(coupon.expiryDate).toLocaleDateString()}</p>
             </div>
         `).join('');
+    }
+
+    async initializeDashboard() {
+        await this.loadDailyQuiz();
+        await this.loadAchievements();
+        await this.loadLeaderboard();
+        this.updateLevelProgress();
+    }
+
+    calculateLevel(points) {
+        const level = Math.floor(points / 1000) + 1;
+        const progress = (points % 1000) / 10; // percentage tot volgend level
+        return { level, progress };
+    }
+
+    async loadDailyQuiz() {
+        const question = await this.quizService.getDailyQuestion(auth.currentUser.uid);
+        const container = document.getElementById('quizContainer');
+        
+        if (!question) {
+            container.innerHTML = '<p>Je hebt de dagelijkse quiz al gespeeld. Kom morgen terug!</p>';
+            return;
+        }
+
+        container.innerHTML = `
+            <h3>${question.question}</h3>
+            <div class="quiz-answers">
+                ${question.answers.map((answer, index) => `
+                    <button class="quiz-answer" data-index="${index}">${answer}</button>
+                `).join('')}
+            </div>
+        `;
+
+        // Voeg event listeners toe voor antwoorden
+        container.querySelectorAll('.quiz-answer').forEach(button => {
+            button.addEventListener('click', () => this.handleQuizAnswer(question.date, parseInt(button.dataset.index)));
+        });
+    }
+
+    async loadAchievements() {
+        // Implementeer de logica om achievements te laden
+    }
+
+    async loadLeaderboard() {
+        // Implementeer de logica om leaderboard te laden
+    }
+
+    updateLevelProgress() {
+        // Implementeer de logica om level progressie te updaten
+    }
+
+    handleQuizAnswer(date, answerIndex) {
+        // Implementeer de logica om antwoord te verwerken
     }
 }
 
