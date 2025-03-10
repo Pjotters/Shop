@@ -22,7 +22,16 @@
     </nav>
 
     <div class="game-container">
-        <canvas id="gameCanvas"></canvas>
+        <canvas id="gameCanvas" class="snake-grid"></canvas>
+        
+        <div class="power-up-indicators">
+            <div id="speedBoost" class="power-up-indicator speed-boost" style="display: none;">
+                Speed Boost!
+            </div>
+            <div id="ghostMode" class="power-up-indicator ghost-mode" style="display: none;">
+                Ghost Mode!
+            </div>
+        </div>
         
         <div class="game-controls">
             <button id="startGame">Start Game</button>

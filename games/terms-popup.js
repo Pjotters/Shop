@@ -26,6 +26,7 @@ export async function checkTermsAcceptance() {
                 <li>Misbruik van het systeem leidt tot uitsluiting</li>
                 <li>Punten zijn niet overdraagbaar</li>
                 <li>Pjotters behoudt het recht om het programma aan te passen</li>
+                <li><a href="Reward-voorwaarden.html">Alle voorwaarden</a></li>
             </ul>
             <div class="buttons">
                 <button id="declineTerms" class="auth-button">Weigeren</button>

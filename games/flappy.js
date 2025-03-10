@@ -29,6 +29,7 @@ class FlappyBird {
         this.baseSpeed = 3;
         this.gameLoop = null;
         this.isGameOver = false;
+        this.isGameStarted = false;
         
         // Event listeners
         document.addEventListener('keydown', (e) => {
@@ -174,6 +175,7 @@ class FlappyBird {
         this.score = 0;
         this.earnedPoints = 0;
         this.isGameOver = false;
+        this.isGameStarted = true;
         
         // Reset UI
         document.getElementById('currentScore').textContent = '0';
@@ -200,8 +202,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const game = new FlappyBird(canvas);
         
+        // Event listeners voor game controls
         document.getElementById('startGame').addEventListener('click', () => {
             game.start();
+            // Focus op canvas voor keyboard input
+            canvas.focus();
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                if (!game.isGameStarted) {
+                    game.start();
+                }
+                game.bird.velocity = game.bird.jump;
+            }
+        });
+
+        // Mouse/touch controls
+        canvas.addEventListener('click', () => {
+            if (!game.isGameStarted) {
+                game.start();
+            }
+            game.bird.velocity = game.bird.jump;
         });
 
         document.getElementById('backToDashboard').addEventListener('click', () => {

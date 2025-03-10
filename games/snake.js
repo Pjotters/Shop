@@ -9,11 +9,30 @@ class Snake {
         this.gridSize = 20;
         this.snake = [{x: 10, y: 10}];
         this.direction = 'right';
-        this.food = this.generateFood();
         this.score = 0;
         this.earnedPoints = 0;
-        this.gameLoop = null;
-        this.isGameOver = false;
+        this.gameSpeed = 150;
+        this.powerUps = [];
+        
+        // Sprites laden
+        this.snakeHeadSprite = new Image();
+        this.snakeHeadSprite.src = '../images/games/snake-head.png';
+        this.snakeBodySprite = new Image();
+        this.snakeBodySprite.src = '../images/games/snake-body.png';
+        this.appleSprite = new Image();
+        this.appleSprite.src = '../images/games/apple.png';
+        
+        // Power-up types
+        this.powerUpTypes = {
+            speed: { color: '#FFD700', duration: 5000, effect: () => this.activateSpeedBoost() },
+            points: { color: '#FF1493', duration: 0, effect: () => this.doublePoints() },
+            ghost: { color: '#00CED1', duration: 8000, effect: () => this.activateGhostMode() }
+        };
+        
+        this.activeEffects = {
+            speedBoost: false,
+            ghostMode: false
+        };
 
         // Canvas grootte aanpassen
         this.canvas.width = 600;
@@ -29,11 +48,37 @@ class Snake {
         document.getElementById('rightBtn').addEventListener('click', () => this.direction = 'right');
     }
 
-    generateFood() {
-        return {
-            x: Math.floor(Math.random() * (this.canvas.width / this.gridSize)),
-            y: Math.floor(Math.random() * (this.canvas.height / this.gridSize))
-        };
+    activateSpeedBoost() {
+        this.activeEffects.speedBoost = true;
+        this.gameSpeed = 80;
+        setTimeout(() => {
+            this.activeEffects.speedBoost = false;
+            this.gameSpeed = 150;
+        }, 5000);
+    }
+
+    activateGhostMode() {
+        this.activeEffects.ghostMode = true;
+        setTimeout(() => {
+            this.activeEffects.ghostMode = false;
+        }, 8000);
+    }
+
+    doublePoints() {
+        this.earnedPoints += this.score * 5;
+        document.getElementById('earnedPoints').textContent = this.earnedPoints;
+    }
+
+    generatePowerUp() {
+        if (Math.random() < 0.1 && this.powerUps.length < 2) {
+            const types = Object.keys(this.powerUpTypes);
+            const type = types[Math.floor(Math.random() * types.length)];
+            this.powerUps.push({
+                x: Math.floor(Math.random() * (this.canvas.width / this.gridSize)),
+                y: Math.floor(Math.random() * (this.canvas.height / this.gridSize)),
+                type: type
+            });
+        }
     }
 
     handleKeyPress(event) {
@@ -46,24 +91,21 @@ class Snake {
 
     update() {
         if (this.isGameOver) return;
-
+        // Check collisions
         const head = {...this.snake[0]};
-        
         switch(this.direction) {
             case 'up': head.y--; break;
             case 'down': head.y++; break;
             case 'left': head.x--; break;
             case 'right': head.x++; break;
         }
-
+        // Check food
         // Check voor botsingen
         if (this.checkCollision(head)) {
             this.endGame();
             return;
         }
-
         this.snake.unshift(head);
-
         // Check of slang eten heeft gevangen
         if (head.x === this.food.x && head.y === this.food.y) {
             this.score += 1;
@@ -74,6 +116,17 @@ class Snake {
         } else {
             this.snake.pop();
         }
+
+        // Check power-up collectie
+        this.powerUps.forEach((powerUp, index) => {
+            if (head.x === powerUp.x && head.y === powerUp.y) {
+                this.powerUps.splice(index, 1);
+                this.powerUpTypes[powerUp.type].effect();
+            }
+        });
+
+        // Genereer nieuwe power-up
+        this.generatePowerUp();
     }
 
     checkCollision(head) {
@@ -89,26 +142,47 @@ class Snake {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Teken slang
-        this.ctx.fillStyle = '#4fd1c5';
-        this.snake.forEach(segment => {
-            this.ctx.fillRect(
-                segment.x * this.gridSize,
-                segment.y * this.gridSize,
-                this.gridSize - 2,
-                this.gridSize - 2
-            );
+        
+        // Teken snake
+        this.snake.forEach((segment, index) => {
+            if (index === 0) {
+                // Teken hoofd met rotatie
+                this.ctx.save();
+                this.ctx.translate(segment.x * this.gridSize + this.gridSize/2, 
+                                 segment.y * this.gridSize + this.gridSize/2);
+                this.ctx.rotate(this.getRotation());
+                this.ctx.drawImage(this.snakeHeadSprite, 
+                                 -this.gridSize/2, -this.gridSize/2, 
+                                 this.gridSize, this.gridSize);
+                this.ctx.restore();
+            } else {
+                // Teken lichaam met ghost effect indien actief
+                if (this.activeEffects.ghostMode) {
+                    this.ctx.globalAlpha = 0.5;
+                }
+                this.ctx.drawImage(this.snakeBodySprite, 
+                                 segment.x * this.gridSize, 
+                                 segment.y * this.gridSize, 
+                                 this.gridSize, this.gridSize);
+                this.ctx.globalAlpha = 1;
+            }
         });
 
-        // Teken voedsel
-        this.ctx.fillStyle = '#fc8181';
-        this.ctx.fillRect(
-            this.food.x * this.gridSize,
-            this.food.y * this.gridSize,
-            this.gridSize - 2,
-            this.gridSize - 2
-        );
+        // Teken power-ups
+        this.powerUps.forEach(powerUp => {
+            this.ctx.fillStyle = this.powerUpTypes[powerUp.type].color;
+            this.ctx.beginPath();
+            this.ctx.arc(powerUp.x * this.gridSize + this.gridSize/2,
+                        powerUp.y * this.gridSize + this.gridSize/2,
+                        this.gridSize/3, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
+
+        // Teken appel
+        this.ctx.drawImage(this.appleSprite, 
+                          this.food.x * this.gridSize, 
+                          this.food.y * this.gridSize, 
+                          this.gridSize, this.gridSize);
     }
 
     async endGame() {
