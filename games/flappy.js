@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!termsAccepted) return;
 
         const canvas = document.getElementById('gameCanvas');
-        canvas.width = 800;
-        canvas.height = 500;
+        canvas.width = 1000;
+        canvas.height = 600;
         
         const game = new FlappyBird(canvas);
         

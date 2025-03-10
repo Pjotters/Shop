@@ -162,8 +162,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!termsAccepted) return;
 
         const canvas = document.getElementById('gameCanvas');
-        canvas.width = 600;
-        canvas.height = 400;
+        canvas.width = 1000;
+        canvas.height = 600;
         
         const game = new Snake(canvas);
         
