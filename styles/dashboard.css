@@ -25,4 +25,134 @@
     border-radius: 8px;
     padding: 1rem;
     border: 2px dashed #45B7AF;
+}
+
+/* Grid layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Quiz Styling */
+.daily-quiz {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.quiz-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.quiz-answer {
+    background: #f5f5f5;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quiz-answer:hover {
+    background: #45B7AF;
+    color: white;
+    border-color: #45B7AF;
+}
+
+/* Achievements Styling */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-locked {
+    opacity: 0.5;
+}
+
+.achievement-unlocked {
+    border: 2px solid #45B7AF;
+}
+
+/* Leaderboard Styling */
+.leaderboard-list {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.leaderboard-rank {
+    font-weight: bold;
+    color: #45B7AF;
+    width: 30px;
+}
+
+/* Level Progress Styling */
+.level-progress {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.level-info {
+    text-align: center;
+}
+
+.current-level {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #45B7AF;
+}
+
+.progress-bar {
+    height: 20px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #45B7AF;
+    transition: width 0.3s ease;
+}
+
+/* Animations */
+@keyframes unlock {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.achievement-unlocked {
+    animation: unlock 0.5s ease;
 } 
