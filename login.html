@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipZop - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database-compat.js"></script>
+</head>
+<body class="auth-page">
+    <nav class="navbar">
+        <div class="logo">Pjotters-Shop</div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>Welkom bij Pjotters-Shop</h2>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Inloggen</button>
+                <button class="tab-btn" data-tab="register">Registreren</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="password" name="password" placeholder="Wachtwoord" required>
+                <button type="submit">Inloggen</button>
+            </form>
+
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <input type="text" name="name" placeholder="Naam" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="password" name="password" placeholder="Wachtwoord" required>
+                <input type="password" name="confirmPassword" placeholder="Bevestig wachtwoord" required>
+                <button type="submit">Registreren</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth-ui.js"></script>
+</body>
+</html> 

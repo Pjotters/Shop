@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pjotters-Shop Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-page">
+    <nav class="dashboard-nav">
+        <div class="user-info">
+            <img src="default-avatar.png" alt="Profile" class="avatar">
+            <span class="username">Laden...</span>
+        </div>
+        <div class="points-display">
+            <span class="points-icon">🏆</span>
+            <span class="points-amount">0</span>
+        </div>
+    </nav>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card orders">
+            <h3>Mijn Bestellingen</h3>
+            <div class="orders-list"></div>
+        </div>
+
+        <div class="dashboard-card games">
+            <h3>Games</h3>
+            <div class="games-grid">
+                <div class="game-card" data-game="flappy">
+                    <img src="games/flappy.png" alt="Flappy Bird">
+                    <h4>Flappy Bird</h4>
+                    <span class="highscore">Highscore: 0</span>
+                </div>
+                <!-- Andere games hier -->
+            </div>
+        </div>
+
+        <div class="dashboard-card rewards">
+            <h3>Rewards Shop</h3>
+            <div class="rewards-grid">
+                <div class="reward-card">
+                    <span class="reward-icon">🎫</span>
+                    <h4>€5 Korting</h4>
+                    <span class="points-cost">500 punten</span>
+                    <button class="claim-btn" data-reward="coupon5">Claim</button>
+                </div>
+                <!-- Meer rewards hier -->
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
