@@ -1,7 +1,7 @@
 class AIVoiceCommandDemo {
     constructor(apiKey) {
         this.API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill";
-        this.API_KEY = "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"; // Je Hugging Face API key
+        const HF_API_KEY = config.API_KEY;
         this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         this.synthesis = window.speechSynthesis;
         this.setupRecognition();
