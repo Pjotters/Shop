@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="games/games.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="dashboard.css">
+
     <script type="module">
         import { requireAuth } from './auth-helper.js';
         requireAuth();
@@ -114,6 +116,26 @@
                 </div>
                 <!-- Meer rewards hier -->
             </div>
+        </section>
+
+        <section class="shop-section">
+            <h2>Shop</h2>
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <img src="images/items/premium-skin.png" alt="Premium Skin">
+                    <h3>Premium Skin</h3>
+                    <p class="item-cost">500 punten</p>
+                    <button class="buy-btn" data-item-id="premium_skin" data-cost="1000">
+                        Kopen
+                    </button>
+                </div>
+                <!-- Meer items hier -->
+            </div>
+        </section>
+
+        <section class="my-coupons">
+            <h2>Mijn Coupons</h2>
+            <div class="coupons-grid"></div>
         </section>
     </div>
 

@@ -1,6 +1,8 @@
 import { auth, db } from './firebase-config.js';
 import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
+import { ShopService } from './services/shop-service.js';
+import { CouponService } from './services/coupon-service.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -69,4 +71,53 @@ function updateRewards(points) {
             </button>
         </div>
     `).join('');
-} 
+}
+
+class Dashboard {
+    constructor() {
+        this.shopService = new ShopService();
+        this.couponService = new CouponService();
+        this.setupEventListeners();
+        this.loadUserCoupons();
+    }
+
+    setupEventListeners() {
+        document.querySelectorAll('.buy-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const itemId = e.target.dataset.itemId;
+                const cost = parseInt(e.target.dataset.cost);
+                
+                try {
+                    await this.shopService.purchaseItem(auth.currentUser.uid, {
+                        id: itemId,
+                        cost: cost
+                    });
+                    
+                    alert('Aankoop succesvol! Check je email voor je bonus coupon!');
+                    this.loadUserCoupons(); // Ververs coupon lijst
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
+    }
+
+    async loadUserCoupons() {
+        const couponsGrid = document.querySelector('.coupons-grid');
+        const coupons = await this.couponService.getUserCoupons(auth.currentUser.uid);
+        
+        couponsGrid.innerHTML = coupons.map(coupon => `
+            <div class="coupon-card">
+                <h4>Coupon: ${coupon.title}</h4>
+                <p>Code: ${coupon.code}</p>
+                <p>Waarde: ${coupon.pointsValue} punten</p>
+                <p>Geldig tot: ${new Date(coupon.expiryDate).toLocaleDateString()}</p>
+            </div>
+        `).join('');
+    }
+}
+
+// Initialiseer dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    new Dashboard();
+}); 
