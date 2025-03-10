@@ -1,0 +1,12 @@
+# Config bestanden met gevoelige informatie
+config.js
+
+# IDE bestanden
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dependencies
+node_modules/
