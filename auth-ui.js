@@ -1,9 +1,14 @@
-import { loginUser, registerUser } from './auth.js';
+import { auth } from './firebase-config.js';
+import { 
+    signInWithEmailAndPassword
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { registerUser } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const tabBtns = document.querySelectorAll('.tab-btn');
+    const errorDisplay = document.querySelector('.auth-error');
 
     // Tab switching
     tabBtns.forEach(btn => {
@@ -14,28 +19,36 @@ document.addEventListener('DOMContentLoaded', () => {
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
+            // Reset error display
+            errorDisplay.style.display = 'none';
+            
             // Show/hide forms with animation
             if (tab === 'login') {
                 registerForm.style.display = 'none';
                 loginForm.style.display = 'block';
-                loginForm.classList.add('animate__fadeInRight');
+                loginForm.classList.add('animate__animated', 'animate__fadeIn');
             } else {
                 loginForm.style.display = 'none';
                 registerForm.style.display = 'block';
-                registerForm.classList.add('animate__fadeInRight');
+                registerForm.classList.add('animate__animated', 'animate__fadeIn');
             }
         });
     });
 
+    const showError = (message) => {
+        errorDisplay.textContent = message;
+        errorDisplay.style.display = 'block';
+        errorDisplay.classList.add('animate__animated', 'animate__shakeX');
+    };
+
     // Login form handling
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-
         try {
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
             await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = '/dashboard.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
             showError('Login mislukt: ' + error.message);
         }
@@ -44,32 +57,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Register form handling
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = registerForm.name.value;
-        const email = registerForm.email.value;
-        const password = registerForm.password.value;
-        const confirmPassword = registerForm.confirmPassword.value;
-
-        if (password !== confirmPassword) {
-            showError('Wachtwoorden komen niet overeen');
-            return;
-        }
-
         try {
+            const email = registerForm.email.value;
+            const password = registerForm.password.value;
+            const name = registerForm.name.value;
+            
             await registerUser(email, password, name);
-            window.location.href = '/dashboard.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
-            showError(error.message);
+            showError('Registratie mislukt: ' + error.message);
         }
     });
-});
 
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'auth-error animate__animated animate__fadeIn';
-    errorDiv.textContent = message;
-    
-    const activeForm = document.querySelector('.auth-form[style*="block"]');
-    activeForm.insertBefore(errorDiv, activeForm.firstChild);
-    
-    setTimeout(() => errorDiv.remove(), 5000);
-} 
+    // Password reset link
+    const forgotPasswordLink = document.querySelector('.forgot-password');
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // TODO: Implementeer wachtwoord reset functionaliteit
+            showError('Wachtwoord reset functionaliteit komt binnenkort!');
+        });
+    }
+}); 

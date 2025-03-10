@@ -11,69 +11,48 @@
     <script type="module" src="auth-ui.js"></script>
 </head>
 <body class="auth-page">
-    <div class="auth-container animate__animated animate__fadeIn">
+    <div class="auth-container">
         <div class="auth-left">
-            <div class="brand-showcase">
-                <img src="images/logo.png" alt="Pjotters Logo" class="logo-large">
-                <h1>Welkom bij Pjotters</h1>
-                <p class="tagline">Ontdek de toekomst van gaming en verdien beloningen</p>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <span class="feature-icon">🎮</span>
-                        <span>Speel exclusieve games</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">🏆</span>
-                        <span>Verdien punten en rewards</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">💰</span>
-                        <span>Wissel punten in voor kortingen</span>
-                    </div>
+            <img src="images/logo.png" alt="Pjotters Logo" class="logo">
+            <h1>Welkom bij Pjotters</h1>
+            <p class="tagline">Ontdek de toekomst van gaming en verdien beloningen</p>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-icon">🎮</span>
+                    <span>Speel exclusieve games</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🏆</span>
+                    <span>Verdien punten en rewards</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">💰</span>
+                    <span>Wissel punten in voor kortingen</span>
                 </div>
             </div>
         </div>
 
         <div class="auth-right">
-            <div class="auth-box animate__animated animate__fadeInRight">
-                <div class="auth-tabs">
-                    <button class="tab-btn active" data-tab="login">Inloggen</button>
-                    <button class="tab-btn" data-tab="register">Registreren</button>
-                </div>
-
-                <form id="loginForm" class="auth-form">
-                    <div class="input-group">
-                        <label for="loginEmail">E-mailadres</label>
-                        <input type="email" id="loginEmail" name="email" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="loginPassword">Wachtwoord</label>
-                        <input type="password" id="loginPassword" name="password" required>
-                        <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
-                    </div>
-                    <button type="submit" class="auth-submit">Inloggen</button>
-                </form>
-
-                <form id="registerForm" class="auth-form" style="display: none;">
-                    <div class="input-group">
-                        <label for="registerName">Naam</label>
-                        <input type="text" id="registerName" name="name" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="registerEmail">E-mailadres</label>
-                        <input type="email" id="registerEmail" name="email" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="registerPassword">Wachtwoord</label>
-                        <input type="password" id="registerPassword" name="password" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="confirmPassword">Bevestig wachtwoord</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    </div>
-                    <button type="submit" class="auth-submit">Account aanmaken</button>
-                </form>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Inloggen</button>
+                <button class="tab-btn" data-tab="register">Registreren</button>
             </div>
+
+            <div class="auth-error" style="display: none;"></div>
+
+            <form id="loginForm" class="auth-form">
+                <input type="email" name="email" placeholder="E-mailadres" required>
+                <input type="password" name="password" placeholder="Wachtwoord" required>
+                <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
+                <button type="submit" class="auth-button">Inloggen</button>
+            </form>
+
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <input type="text" name="name" placeholder="Naam" required>
+                <input type="email" name="email" placeholder="E-mailadres" required>
+                <input type="password" name="password" placeholder="Wachtwoord" required>
+                <button type="submit" class="auth-button">Account Aanmaken</button>
+            </form>
         </div>
     </div>
 </body>
