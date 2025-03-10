@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird - Pjotters Games</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="games.css">
+    <script type="module">
+        import { checkAuthState } from '../auth-helper.js';
+        checkAuthState();
+    </script>
+</head>
+<body class="game-page">
+    <div class="game-header">
+        <div class="score-display">Score: <span id="currentScore">0</span></div>
+        <div class="points-display">Punten: <span id="earnedPoints">0</span></div>
+        <div class="highscore-display">Highscore: <span id="highScore">0</span></div>
+    </div>
+    
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="game-controls">
+        <button id="startGame">Start Game</button>
+        <button id="backToDashboard">Terug naar Dashboard</button>
+    </div>
+</body>
+</html> 

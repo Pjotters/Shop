@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Pjotters Games</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="games.css">
+    <script type="module">
+        import { checkAuthState } from '../auth-helper.js';
+        checkAuthState();
+    </script>
+</head>
+<body class="game-page">
+    <nav class="game-nav">
+        <button id="backToDashboard">← Terug naar Dashboard</button>
+        <div class="game-stats">
+            <div class="score-display">Score: <span id="currentScore">0</span></div>
+            <div class="points-display">Punten: <span id="earnedPoints">0</span></div>
+            <div class="highscore-display">Highscore: <span id="highScore">0</span></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="game-controls">
+            <button id="startGame">Start Game</button>
+            <div class="mobile-controls">
+                <button id="upBtn">↑</button>
+                <div class="horizontal-controls">
+                    <button id="leftBtn">←</button>
+                    <button id="rightBtn">→</button>
+                </div>
+                <button id="downBtn">↓</button>
+            </div>
+        </div>
+
+        <div class="game-instructions">
+            <h3>Instructies:</h3>
+            <p>Gebruik de pijltjestoetsen om de slang te besturen</p>
+            <p>Verzamel appels om punten te verdienen</p>
+            <p>Elke appel = 5 punten</p>
+            <p>Vermijd de muren en je eigen staart!</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database-compat.js"></script>
+    
+    <script type="module" src="../firebase-config.js"></script>
+    <script type="module" src="snake.js"></script>
+</body>
+</html> 

@@ -8,40 +8,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tab switching
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const targetForm = btn.dataset.tab === 'login' ? loginForm : registerForm;
-            const otherForm = btn.dataset.tab === 'login' ? registerForm : loginForm;
+            const tab = btn.dataset.tab;
             
+            // Update active states
+            tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            targetForm.style.display = 'flex';
-            otherForm.style.display = 'none';
             
-            tabBtns.forEach(otherBtn => {
-                if (otherBtn !== btn) otherBtn.classList.remove('active');
-            });
+            // Show/hide forms with animation
+            if (tab === 'login') {
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                loginForm.classList.add('animate__fadeInRight');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                registerForm.classList.add('animate__fadeInRight');
+            }
         });
     });
 
-    // Login form handler
+    // Login form handling
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = loginForm.querySelector('input[type="email"]').value;
-        const password = loginForm.querySelector('input[type="password"]').value;
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
 
         try {
-            const user = await loginUser(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
             window.location.href = '/dashboard.html';
         } catch (error) {
-            showError(error.message);
+            showError('Login mislukt: ' + error.message);
         }
     });
 
-    // Register form handler
+    // Register form handling
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = registerForm.querySelector('input[type="text"]').value;
-        const email = registerForm.querySelector('input[type="email"]').value;
-        const password = registerForm.querySelector('input[type="password"]').value;
-        const confirmPassword = registerForm.querySelectorAll('input[type="password"]')[1].value;
+        const name = registerForm.name.value;
+        const email = registerForm.email.value;
+        const password = registerForm.password.value;
+        const confirmPassword = registerForm.confirmPassword.value;
 
         if (password !== confirmPassword) {
             showError('Wachtwoorden komen niet overeen');
@@ -49,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const user = await registerUser(email, password);
+            await registerUser(email, password, name);
             window.location.href = '/dashboard.html';
         } catch (error) {
             showError(error.message);
@@ -59,11 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showError(message) {
     const errorDiv = document.createElement('div');
-    errorDiv.className = 'auth-error';
+    errorDiv.className = 'auth-error animate__animated animate__fadeIn';
     errorDiv.textContent = message;
     
-    const container = document.querySelector('.auth-box');
-    container.insertBefore(errorDiv, container.firstChild);
+    const activeForm = document.querySelector('.auth-form[style*="block"]');
+    activeForm.insertBefore(errorDiv, activeForm.firstChild);
     
     setTimeout(() => errorDiv.remove(), 5000);
 } 

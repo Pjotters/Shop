@@ -6,6 +6,10 @@
     <title>Pjotters-Shop Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dashboard.css">
+    <script type="module">
+        import { checkAuthState } from '../auth-helper.js';
+        checkAuthState();
+    </script>
 </head>
 <body class="dashboard-page">
     <nav class="dashboard-nav">

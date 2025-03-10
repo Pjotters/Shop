@@ -1,60 +1,60 @@
-import { auth, db } from './firebase-config.js';
-import { ref, onValue, update } from 'firebase/database';
+import { auth, db, dbRef } from './firebase-config.js';
+import { onValue } from 'firebase/database';
+import { requireAuth } from './auth-helper.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Check auth state
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = '/login.html';
-            return;
-        }
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const user = await requireAuth();
         
-        initializeDashboard(user);
-    });
+        // Realtime punten updates
+        const userRef = dbRef.user(user.uid);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+                document.querySelector('.points-amount').textContent = userData.points || 0;
+                document.querySelector('.username').textContent = userData.name || 'Gebruiker';
+                updateGameScores(userData.games);
+                updateRewards(userData.points);
+            }
+        });
+
+        // Games grid vullen
+        const gamesGrid = document.querySelector('.games-grid');
+        gamesGrid.innerHTML = `
+            <div class="game-card" data-game="flappy">
+                <img src="games/flappy.png" alt="Flappy Bird">
+                <h4>Flappy Bird</h4>
+                <span class="highscore">Highscore: 0</span>
+                <span class="points-info">Verdien 10 punten per pipe!</span>
+            </div>
+            <div class="game-card" data-game="snake">
+                <img src="games/snake.png" alt="Snake">
+                <h4>Snake</h4>
+                <span class="highscore">Highscore: 0</span>
+                <span class="points-info">Verdien 5 punten per appel!</span>
+            </div>
+            <div class="game-card" data-game="pacman">
+                <img src="games/pacman.png" alt="Pac-Man">
+                <h4>Pac-Man</h4>
+                <span class="highscore">Highscore: 0</span>
+                <span class="points-info">Verdien 2 punten per dot!</span>
+            </div>
+        `;
+
+        // Game cards klikbaar maken
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const game = card.dataset.game;
+                window.location.href = `games/${game}.html`;
+            });
+        });
+    } catch (error) {
+        console.error('Auth error:', error);
+    }
 });
-
-function initializeDashboard(user) {
-    const userRef = ref(db, `users/${user.uid}`);
-    
-    // Luister naar gebruikersdata updates
-    onValue(userRef, (snapshot) => {
-        const userData = snapshot.val();
-        if (!userData) return;
-
-        // Update UI elementen
-        document.querySelector('.username').textContent = userData.name || 'Gebruiker';
-        document.querySelector('.points-amount').textContent = userData.points || 0;
-        
-        // Update game scores
-        updateGameScores(userData.games);
-        
-        // Update bestellingen
-        updateOrders(userData.orders);
-        
-        // Update beschikbare rewards
-        updateRewards(userData.points);
-    });
-
-    // Event listeners voor games
-    document.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const game = card.dataset.game;
-            startGame(game, user.uid);
-        });
-    });
-
-    // Event listeners voor rewards
-    document.querySelectorAll('.claim-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const reward = btn.dataset.reward;
-            claimReward(reward, user.uid);
-        });
-    });
-}
 
 function updateGameScores(games) {
     if (!games) return;
-    
     Object.entries(games).forEach(([game, data]) => {
         const scoreElement = document.querySelector(`[data-game="${game}"] .highscore`);
         if (scoreElement) {
@@ -63,72 +63,24 @@ function updateGameScores(games) {
     });
 }
 
-function updateOrders(orders) {
-    const ordersList = document.querySelector('.orders-list');
-    if (!orders || !ordersList) return;
-    
-    ordersList.innerHTML = Object.entries(orders)
-        .map(([id, order]) => `
-            <div class="order-item">
-                <div class="order-header">
-                    <span class="order-id">#${id}</span>
-                    <span class="order-date">${new Date(order.date).toLocaleDateString()}</span>
-                </div>
-                <div class="order-products">
-                    ${order.products.map(p => `
-                        <div class="order-product">
-                            <span>${p.name}</span>
-                            <span>€${p.price}</span>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="order-total">
-                    Totaal: €${order.total}
-                </div>
-            </div>
-        `).join('');
-}
-
 function updateRewards(points) {
-    document.querySelectorAll('.reward-card').forEach(card => {
-        const costElement = card.querySelector('.points-cost');
-        const claimBtn = card.querySelector('.claim-btn');
-        const cost = parseInt(costElement.textContent);
-        
-        claimBtn.disabled = points < cost;
-        card.classList.toggle('available', points >= cost);
-    });
-}
+    const rewards = [
+        { id: 'coupon5', cost: 500, title: '€5 Korting', icon: '🎫' },
+        { id: 'coupon10', cost: 1000, title: '€10 Korting', icon: '🎫' },
+        { id: 'coupon20', cost: 2000, title: '€20 Korting', icon: '🎫' },
+        { id: 'premium_week', cost: 5000, title: '1 Week Premium', icon: '⭐' }
+    ];
 
-// Deze functie wordt aangeroepen wanneer een spel start
-function startGame(game, userId) {
-    // Open het spel in een modal of nieuwe pagina
-    window.location.href = `/games/${game}.html?uid=${userId}`;
-}
-
-// Deze functie wordt aangeroepen wanneer een reward wordt geclaimd
-async function claimReward(reward, userId) {
-    const rewardCosts = {
-        'coupon5': 500,
-        'coupon10': 1000,
-        'coupon20': 2000
-    };
-
-    try {
-        const userRef = ref(db, `users/${userId}`);
-        const snapshot = await get(userRef);
-        const userData = snapshot.val();
-        
-        if (userData.points >= rewardCosts[reward]) {
-            await update(userRef, {
-                points: userData.points - rewardCosts[reward],
-                [`rewards/${reward}`]: serverTimestamp()
-            });
-            
-            alert('Reward succesvol geclaimd!');
-        }
-    } catch (error) {
-        console.error('Error claiming reward:', error);
-        alert('Er ging iets mis bij het claimen van de reward.');
-    }
+    const rewardsGrid = document.querySelector('.rewards-grid');
+    rewardsGrid.innerHTML = rewards.map(reward => `
+        <div class="reward-card ${points >= reward.cost ? 'available' : ''}">
+            <span class="reward-icon">${reward.icon}</span>
+            <h4>${reward.title}</h4>
+            <span class="points-cost">${reward.cost} punten</span>
+            <button class="claim-btn" data-reward="${reward.id}" 
+                    ${points < reward.cost ? 'disabled' : ''}>
+                Claim
+            </button>
+        </div>
+    `).join('');
 } 

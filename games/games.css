@@ -1,0 +1,50 @@
+.game-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a1a;
+    padding: 2rem;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+#gameCanvas {
+    border: 2px solid #45B7AF;
+    border-radius: 10px;
+    background: #2a2a2a;
+}
+
+.game-controls {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.game-controls button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background: #45B7AF;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.game-controls button:hover {
+    background: #3a9e97;
+}
+
+.score-display, .points-display, .highscore-display {
+    background: rgba(69, 183, 175, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+} 
