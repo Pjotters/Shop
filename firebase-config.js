@@ -48,5 +48,6 @@ export const createNewUserData = (uid, email) => ({
   },
   rewards: [],
   accessibleCompanies: {},
+  coupons: {},
   createdAt: serverTimestamp()
 });

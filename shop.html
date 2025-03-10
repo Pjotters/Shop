@@ -33,6 +33,24 @@
                 <div class="items-grid" id="powerUps"></div>
             </div>
         </div>
+
+        <div class="cart-section">
+            <h2><i class="fas fa-shopping-cart"></i> Winkelwagen</h2>
+            <div id="cartItems" class="cart-items"></div>
+            
+            <div class="coupon-section">
+                <input type="text" id="couponInput" placeholder="Voer coupon code in">
+                <button onclick="validateCoupon()">Verzilver</button>
+            </div>
+            
+            <div class="cart-total">
+                <p>Totaal: <span id="cartTotal">0</span> punten</p>
+                <p>Korting: <span id="discountAmount">0</span> punten</p>
+                <p class="final-total">Te betalen: <span id="finalTotal">0</span> punten</p>
+            </div>
+            
+            <button id="checkoutBtn" class="checkout-btn">Afrekenen</button>
+        </div>
     </div>
 
     <script type="module" src="shop.js"></script>
