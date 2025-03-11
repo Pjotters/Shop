@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getDatabase, ref, get, set, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

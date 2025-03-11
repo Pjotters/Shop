@@ -1,15 +1,26 @@
+/* Reset en basis styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Font Awesome toevoegen */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
 :root {
     --primary-color: #2c3e50;
     --accent-color: #3498db;
     --background-color: #f8f9fa;
     --text-color: #1d1d1f;
     --secondary-text: #86868b;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 .home-page {

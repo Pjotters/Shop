@@ -95,18 +95,15 @@ class Dashboard {
         this.services = {
             shop: new ShopService(),
             quiz: new QuizService(),
-            battlePass: new BattlePassService(),
-            miniGames: new MiniGamesService(),
-            missions: new MissionsService(),
-            powerUps: new PowerUpsService()
+            achievements: new AchievementService(),
+            battlePass: new BattlePassService()
         };
     }
 
     async initializeDashboard() {
         await this.loadUserData();
         this.initializeTabs();
-        this.loadGames();
-        this.initializeNotifications();
+        await this.loadGamesContent();
     }
 
     async loadUserData() {
@@ -130,175 +127,41 @@ class Dashboard {
     }
 
     initializeTabs() {
-        const tabButtons = document.querySelectorAll('[data-tab-target]');
-        const tabContents = document.querySelectorAll('[data-tab-content]');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const target = document.querySelector(button.dataset.tabTarget);
+                const target = button.getAttribute('data-tab-target');
                 
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                tabButtons.forEach(btn => {
-                    btn.classList.remove('active');
-                });
+                // Verwijder active class van alle tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabPanes.forEach(pane => pane.classList.remove('active'));
                 
+                // Voeg active class toe aan geselecteerde tab
                 button.classList.add('active');
-                target.classList.add('active');
+                document.querySelector(target).classList.add('active');
+                
+                // Laad content voor specifieke tab
+                this.loadTabContent(target);
             });
         });
     }
 
-    loadGames() {
-        const gamesContainer = document.querySelector('.games-grid');
-        if (!gamesContainer) return;
-
-        const games = [
-            {
-                id: 'snake',
-                name: 'Snake',
-                image: '/images/games/snake.jpg',
-                url: '/games/snake.html'
-            },
-            {
-                id: 'flappy',
-                name: 'Flappy Bird',
-                image: '/images/games/flappy.jpg',
-                url: '/games/flappy.html'
-            },
-            {
-                id: 'pacman',
-                name: 'Pac-Man',
-                image: '/images/games/pacman.jpg',
-                url: '/games/pacman.html'
-            }
-        ];
-
-        gamesContainer.innerHTML = games.map(game => `
-            <div class="game-card">
-                <img src="${game.image}" alt="${game.name}" onerror="this.src='/images/placeholder.png'">
-                <h3>${game.name}</h3>
-                <a href="${game.url}" class="play-btn">Spelen</a>
-            </div>
-        `).join('');
-    }
-
-    initializeNotifications() {
-        this.notificationSystem = {
-            show: (message, type = 'info') => {
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <i class="fas ${this.getNotificationIcon(type)}"></i>
-                    <p>${message}</p>
-                `;
-                
-                const container = document.querySelector('.notification-container') 
-                    || this.createNotificationContainer();
-                
-                container.appendChild(notification);
-                
-                // Animatie sequence met CSS classes
-                requestAnimationFrame(() => {
-                    notification.classList.add('slide-in');
-                    setTimeout(() => {
-                        notification.classList.add('slide-out');
-                        setTimeout(() => notification.remove(), 300);
-                    }, 3000);
-                });
-            }
-        };
-    }
-
-    getNotificationIcon(type) {
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-exclamation-circle',
-            warning: 'fa-exclamation-triangle',
-            info: 'fa-info-circle'
-        };
-        return icons[type] || icons.info;
-    }
-
-    createNotificationContainer() {
-        const container = document.createElement('div');
-        container.className = 'notification-container';
-        document.body.appendChild(container);
-        return container;
-    }
-
-    async loadMiniGames(userId) {
-        const miniGamesData = await this.services.miniGames.getUserMiniGamesData(userId);
-        this.renderMiniGames(miniGamesData);
-    }
-
-    async loadDailyMissions(userId) {
-        const missions = await this.services.missions.getDailyMissions(userId);
-        this.renderDailyMissions(missions);
-    }
-
-    async loadActivePowerUps(userId) {
-        const powerUps = await this.services.powerUps.getActivePowerUps(userId);
-        this.renderPowerUps(powerUps);
-    }
-
-    setupEventListeners() {
-        // Event listeners voor alle nieuwe UI elementen
-        document.querySelectorAll('.mini-game-card').forEach(card => {
-            card.addEventListener('click', async (e) => {
-                const gameType = e.currentTarget.dataset.game;
-                try {
-                    const gameSession = await this.services.miniGames.startMiniGame(
-                        this.user.uid,
-                        gameType
-                    );
-                    this.startMiniGame(gameType, gameSession);
-                } catch (error) {
-                    alert(error.message);
-                }
-            });
-        });
-
-        this.initializeRewardListeners();
-    }
-
-    // Verbeterde tutorial met animaties
-    showTutorialStep(step) {
-        const overlay = document.querySelector('.tutorial-overlay');
-        const content = document.querySelector('.tutorial-content');
-        
-        content.style.opacity = '0';
-        content.style.transform = 'scale(0.9)';
-        
-        setTimeout(() => {
-            content.innerHTML = this.getTutorialStepContent(step);
-            content.style.opacity = '1';
-            content.style.transform = 'scale(1)';
-        }, 300);
-
-        this.highlightElement(this.tutorialSteps[step].element);
-    }
-
-    highlightElement(selector) {
-        const element = document.querySelector(selector);
-        if (!element) return;
-
-        element.style.position = 'relative';
-        element.style.zIndex = '1001';
-        element.style.animation = 'pulse 2s infinite';
-    }
-
-    async loadTabContent(tabId) {
-        const contentMap = {
-            'games': this.loadGamesContent,
-            'battle-pass': this.loadBattlePassContent,
-            'shop': this.loadShopContent,
-            'achievements': this.loadAchievementsContent
-        };
-
-        if (contentMap[tabId]) {
-            await contentMap[tabId].call(this);
+    async loadTabContent(target) {
+        switch(target) {
+            case '#games':
+                await this.loadGamesContent();
+                break;
+            case '#shop':
+                await this.services.shop.loadShopItems();
+                break;
+            case '#achievements':
+                await this.services.achievements.loadAchievements();
+                break;
+            case '#battlepass':
+                await this.services.battlePass.loadBattlePass();
+                break;
         }
     }
 
@@ -326,67 +189,6 @@ class Dashboard {
         }
     }
 
-    async loadBattlePassContent() {
-        const battlePassGrid = document.querySelector('.rewards-grid');
-        
-        try {
-            const battlePassSnap = await get(dbRef.battlePass(this.user.uid));
-            const battlePassData = battlePassSnap.val();
-            
-            const rewards = this.services.battlePass.rewards;
-            let rewardsHTML = '';
-
-            Object.entries(rewards).forEach(([id, reward]) => {
-                const isClaimed = battlePassData.claimedRewards[id];
-                const canClaim = battlePassData.coins >= reward.cost;
-                
-                rewardsHTML += `
-                    <div class="reward-item ${isClaimed ? 'claimed' : ''} ${!canClaim ? 'locked' : ''}"
-                         data-reward-id="${id}">
-                        <div class="reward-icon">
-                            <i class="fas ${this.getRewardIcon(reward.type)}"></i>
-                        </div>
-                        <div class="reward-info">
-                            ${reward.rarity ? `<span class="rarity-badge">${reward.rarity}</span>` : ''}
-                            <h4>${reward.name || `${reward.amount} Coins`}</h4>
-                        </div>
-                        <div class="coin-cost">
-                            <i class="fas fa-coins"></i> ${reward.cost}
-                        </div>
-                    </div>
-                `;
-            });
-
-            battlePassGrid.innerHTML = rewardsHTML;
-            this.initializeRewardListeners();
-            
-        } catch (error) {
-            console.error('Battle Pass laden mislukt:', error);
-            this.showError('Kon Battle Pass niet laden');
-        }
-    }
-
-    async loadShopContent() {
-        const shopGrid = document.querySelector('.shop-grid');
-        const items = await this.fetchShopItems();
-        
-        shopGrid.innerHTML = items.map(item => `
-            <div class="shop-item">
-                <div class="item-image">
-                    <img src="${item.image}" alt="${item.name}">
-                </div>
-                <h3>${item.name}</h3>
-                <p>${item.description}</p>
-                <div class="item-price">
-                    <i class="fas fa-coins"></i> ${item.price}
-                </div>
-                <button class="buy-button" data-item-id="${item.id}">
-                    Kopen
-                </button>
-            </div>
-        `).join('');
-    }
-
     showError(message) {
         const notification = document.createElement('div');
         notification.className = 'notification error';
@@ -396,53 +198,6 @@ class Dashboard {
         `;
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 3000);
-    }
-
-    initializeRewardListeners() {
-        // Reward claim knoppen
-        document.querySelectorAll('.reward-item').forEach(item => {
-            item.addEventListener('click', async (e) => {
-                if (item.classList.contains('locked')) return;
-                
-                const rewardId = item.dataset.rewardId;
-                try {
-                    const reward = await this.services.battlePass.claimReward(
-                        this.user.uid,
-                        rewardId
-                    );
-                    
-                    // Animatie en feedback
-                    item.classList.add('claimed');
-                    this.showNotification(`Je hebt ${reward.name || reward.amount + ' Coins'} geclaimd!`);
-                    
-                    // Update coins display
-                    this.updateCoinsDisplay();
-                } catch (error) {
-                    this.showError(error.message);
-                }
-            });
-        });
-
-        // Navigatie knoppen
-        const prevBtn = document.querySelector('.nav-btn.prev');
-        const nextBtn = document.querySelector('.nav-btn.next');
-        const pageIndicator = document.querySelector('.page-indicator');
-
-        prevBtn.addEventListener('click', () => {
-            if (this.services.battlePass.currentPage > 1) {
-                this.services.battlePass.currentPage--;
-                this.loadBattlePassContent();
-                pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (this.services.battlePass.currentPage < this.services.battlePass.totalPages) {
-                this.services.battlePass.currentPage++;
-                this.loadBattlePassContent();
-                pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
-            }
-        });
     }
 }
 
