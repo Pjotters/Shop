@@ -24,31 +24,40 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (email, password, name) => {
   try {
-    // Maak de gebruiker aan met Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Update het gebruikersprofiel met de naam
     await updateProfile(user, {
       displayName: name
     });
 
-    // Maak gebruikersdata aan in de Realtime Database
+    // Uitgebreide gebruikersdata structuur
     await set(ref(db, `users/${user.uid}`), {
       uid: user.uid,
       email: email,
       name: name,
       points: 0,
       subscription: {
-        type: 'basic'
+        type: 'basic',
+        battlePass: {
+          premium: false,
+          tier: 1,
+          points: 0
+        }
       },
       games: {
         flappyBird: { highscore: 0 },
         snake: { highscore: 0 },
         pacman: { highscore: 0 }
       },
-      rewards: [],
-      accessibleCompanies: {},
+      miniGames: {
+        memoryCard: { highscore: 0, gamesPlayed: 0 },
+        wordScramble: { highscore: 0, gamesPlayed: 0 },
+        quickMath: { highscore: 0, gamesPlayed: 0 }
+      },
+      dailyMissions: {},
+      powerUps: {},
+      inventory: {},
       createdAt: serverTimestamp()
     });
 

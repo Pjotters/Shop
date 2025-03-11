@@ -30,7 +30,12 @@ export const dbRef = {
   points: (uid) => ref(db, `users/${uid}/points`),
   rewards: (uid) => ref(db, `users/${uid}/rewards`),
   proContent: () => ref(db, 'pro_content'),
-  premiumContent: () => ref(db, 'premium_content')
+  premiumContent: () => ref(db, 'premium_content'),
+  battlePass: (uid) => ref(db, `users/${uid}/battlePass`),
+  miniGames: (uid) => ref(db, `users/${uid}/miniGames`),
+  missions: (uid) => ref(db, `users/${uid}/dailyMissions`),
+  powerUps: (uid) => ref(db, `users/${uid}/powerUps`),
+  inventory: (uid) => ref(db, `users/${uid}/inventory`)
 };
 
 // Gebruikersdata structuur

@@ -3,9 +3,13 @@ import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { CouponService } from './services/coupon-service.js';
-import { QuizService } from './services/quiz-service.js';
+import { QuizService } from './services/quiz-service.js';   
 import { AchievementService } from './services/achievement-service.js';
 import { LeaderboardService } from './services/leaderboard-service.js';
+import { BattlePassService } from './services/battle-pass-service.js';
+import { MiniGamesService } from './services/mini-games-service.js';
+import { MissionsService } from './services/missions-service.js';
+import { PowerUpsService } from './services/power-ups-service.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -78,166 +82,59 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
-        this.shopService = new ShopService();
-        this.couponService = new CouponService();
-        this.quizService = new QuizService();
-        this.achievementService = new AchievementService();
-        this.leaderboardService = new LeaderboardService();
-        
-        this.setupEventListeners();
-        this.loadUserCoupons();
+        this.services = {
+            battlePass: new BattlePassService(),
+            miniGames: new MiniGamesService(),
+            missions: new MissionsService(),
+            powerUps: new PowerUpsService()
+        };
         this.initializeDashboard();
-        this.showTutorial();
+    }
+
+    async initializeDashboard() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        await Promise.all([
+            this.services.battlePass.initializeBattlePass(user.uid),
+            this.loadMiniGames(user.uid),
+            this.loadDailyMissions(user.uid),
+            this.loadActivePowerUps(user.uid)
+        ]);
+
+        this.setupEventListeners();
+    }
+
+    async loadMiniGames(userId) {
+        const miniGamesData = await this.services.miniGames.getUserMiniGamesData(userId);
+        this.renderMiniGames(miniGamesData);
+    }
+
+    async loadDailyMissions(userId) {
+        const missions = await this.services.missions.getDailyMissions(userId);
+        this.renderDailyMissions(missions);
+    }
+
+    async loadActivePowerUps(userId) {
+        const powerUps = await this.services.powerUps.getActivePowerUps(userId);
+        this.renderPowerUps(powerUps);
     }
 
     setupEventListeners() {
-        document.querySelectorAll('.buy-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const itemId = e.target.dataset.itemId;
-                const cost = parseInt(e.target.dataset.cost);
-                
+        // Event listeners voor alle nieuwe UI elementen
+        document.querySelectorAll('.mini-game-card').forEach(card => {
+            card.addEventListener('click', async (e) => {
+                const gameType = e.currentTarget.dataset.game;
                 try {
-                    await this.shopService.purchaseItem(auth.currentUser.uid, {
-                        id: itemId,
-                        cost: cost
-                    });
-                    
-                    alert('Aankoop succesvol! Check je email voor je bonus coupon!');
-                    this.loadUserCoupons(); // Ververs coupon lijst
+                    const gameSession = await this.services.miniGames.startMiniGame(
+                        auth.currentUser.uid,
+                        gameType
+                    );
+                    this.startMiniGame(gameType, gameSession);
                 } catch (error) {
                     alert(error.message);
                 }
             });
-        });
-    }
-
-    async loadUserCoupons() {
-        const couponsGrid = document.querySelector('.coupons-grid');
-        const coupons = await this.couponService.getUserCoupons(auth.currentUser.uid);
-        
-        couponsGrid.innerHTML = coupons.map(coupon => `
-            <div class="coupon-card">
-                <h4>Coupon: ${coupon.title}</h4>
-                <p>Code: ${coupon.code}</p>
-                <p>Waarde: ${coupon.pointsValue} punten</p>
-                <p>Geldig tot: ${new Date(coupon.expiryDate).toLocaleDateString()}</p>
-            </div>
-        `).join('');
-    }
-
-    async initializeDashboard() {
-        await this.loadDailyQuiz();
-        await this.loadAchievements();
-        await this.loadLeaderboard();
-        this.updateLevelProgress();
-    }
-
-    calculateLevel(points) {
-        const level = Math.floor(points / 1000) + 1;
-        const progress = (points % 1000) / 10; // percentage tot volgend level
-        return { level, progress };
-    }
-
-    async loadDailyQuiz() {
-        const question = await this.quizService.getDailyQuestion(auth.currentUser.uid);
-        const container = document.getElementById('quizContainer');
-        
-        if (!question) {
-            container.innerHTML = `
-                <div class="quiz-completed">
-                    <h3>🎯 Quiz Voltooid!</h3>
-                    <p>Je hebt de dagelijkse quiz al gespeeld. Kom morgen terug voor een nieuwe uitdaging!</p>
-                    <div class="countdown">Volgende quiz over: <span id="quizCountdown">24:00:00</span></div>
-                </div>
-            `;
-            return;
-        }
-
-        container.innerHTML = `
-            <div class="quiz-question">
-                <h3>🤔 ${question.question}</h3>
-                <div class="quiz-answers">
-                    ${question.answers.map((answer, index) => `
-                        <button class="quiz-answer" data-index="${index}">
-                            <span class="answer-letter">${['A', 'B', 'C', 'D'][index]}</span>
-                            ${answer}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-
-        // Voeg event listeners toe voor antwoorden
-        container.querySelectorAll('.quiz-answer').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const result = await this.handleQuizAnswer(question.date, parseInt(e.target.dataset.index));
-                this.showQuizResult(result);
-            });
-        });
-    }
-
-    showQuizResult(correct) {
-        const container = document.getElementById('quizContainer');
-        container.innerHTML = `
-            <div class="quiz-result ${correct ? 'correct' : 'incorrect'}">
-                <h3>${correct ? '🎉 Goed gedaan!' : '😅 Helaas!'}</h3>
-                <p>${correct ? '+100 punten!' : 'Volgende keer beter!'}</p>
-                <div class="points-animation">+100</div>
-            </div>
-        `;
-    }
-
-    async loadAchievements() {
-        // Implementeer de logica om achievements te laden
-    }
-
-    async loadLeaderboard() {
-        // Implementeer de logica om leaderboard te laden
-    }
-
-    updateLevelProgress() {
-        // Implementeer de logica om level progressie te updaten
-    }
-
-    handleQuizAnswer(date, answerIndex) {
-        // Implementeer de logica om antwoord te verwerken
-    }
-
-    showTutorial() {
-        const tutorialHTML = `
-            <div class="tutorial-overlay">
-                <div class="tutorial-modal">
-                    <h2>👋 Welkom bij Pjotters Games!</h2>
-                    <div class="tutorial-steps">
-                        <div class="tutorial-step">
-                            <i class="fas fa-gamepad"></i>
-                            <h3>Speel Games voor Korting</h3>
-                            <p>Kies uit verschillende games en verdien punten!</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <i class="fas fa-question-circle"></i>
-                            <h3>Dagelijkse Quiz</h3>
-                            <p>Beantwoord dagelijks een vraag voor 100 bonus punten!</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <i class="fas fa-trophy"></i>
-                            <h3>Verdien Achievements</h3>
-                            <p>Ontgrendel speciale prestaties en krijg extra beloningen!</p>
-                        </div>
-                    </div>
-                    <button class="tutorial-close">Start je avontuur!</button>
-                </div>
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', tutorialHTML);
-        
-        const tutorial = document.querySelector('.tutorial-overlay');
-        const closeButton = document.querySelector('.tutorial-close');
-        
-        closeButton.addEventListener('click', () => {
-            tutorial.classList.add('tutorial-fade-out');
-            setTimeout(() => tutorial.remove(), 500);
         });
     }
 }
