@@ -661,4 +661,80 @@
     border-radius: 10px;
     animation: pulse 2s infinite;
     pointer-events: none;
+}
+
+.dashboard-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+}
+
+.user-profile-bar {
+    background: rgba(69, 183, 175, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(69, 183, 175, 0.3);
+    animation: slideDown 0.5s ease;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #45B7AF;
+    animation: pulse 2s infinite;
+}
+
+.user-details {
+    color: white;
+}
+
+.subscription-badge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    animation: shimmer 2s infinite;
+}
+
+.user-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.stat-item i {
+    color: #45B7AF;
+}
+
+/* Nieuwe animaties */
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
 } 

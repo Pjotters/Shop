@@ -1,5 +1,5 @@
 import { auth, db } from './firebase-config.js';
-import { ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { ref, onValue, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { CouponService } from './services/coupon-service.js';
@@ -82,6 +82,7 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.loadUserProfile();
         this.initializeAnimations();
         this.setupEventListeners();
         this.currentTutorialStep = 0;
@@ -112,6 +113,37 @@ class Dashboard {
             powerUps: new PowerUpsService()
         };
         this.initializeDashboard();
+    }
+
+    async loadUserProfile() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const userRef = ref(db, `users/${user.uid}`);
+        const snapshot = await get(userRef);
+        const userData = snapshot.val();
+
+        // Update UI elementen
+        document.getElementById('userName').textContent = userData.name;
+        document.getElementById('userPoints').textContent = userData.points.toLocaleString();
+        document.getElementById('userLevel').textContent = this.calculateLevel(userData.points);
+        document.getElementById('achievementCount').textContent = 
+            Object.keys(userData.achievements || {}).length;
+
+        // Update subscription badge
+        const subType = userData.subscription?.type || 'basic';
+        const subBadge = document.getElementById('subscriptionType');
+        subBadge.textContent = subType.charAt(0).toUpperCase() + subType.slice(1);
+        subBadge.className = `subscription-badge ${subType}`;
+
+        // Laad avatar als aanwezig
+        if (userData.avatar) {
+            document.getElementById('userAvatar').src = userData.avatar;
+        }
+    }
+
+    calculateLevel(points) {
+        return Math.floor(Math.sqrt(points / 100)) + 1;
     }
 
     initializeAnimations() {
