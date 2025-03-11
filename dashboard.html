@@ -72,14 +72,65 @@
                 <!-- Games Tab -->
                 <div id="games" class="tab-pane active">
                     <div class="section-header">
-                        <h2>Populaire Games</h2>
-                        <div class="view-options">
-                            <button class="grid-view active"><i class="fas fa-th"></i></button>
-                            <button class="list-view"><i class="fas fa-list"></i></button>
+                        <h2><i class="fas fa-gamepad"></i> Populaire Games</h2>
+                        <div class="games-grid">
+                            <div class="game-card">
+                                <img src="images/games/snake.jpg" alt="Snake">
+                                <h3>Snake</h3>
+                                <div class="game-stats">
+                                    <span><i class="fas fa-trophy"></i> Highscore: 2450</span>
+                                    <span><i class="fas fa-clock"></i> Gespeeld: 15x</span>
+                                </div>
+                                <button class="play-button">Spelen</button>
+                            </div>
+                            <!-- Meer game cards hier -->
                         </div>
                     </div>
-                    <div class="games-grid">
-                        <!-- Games worden dynamisch toegevoegd -->
+                </div>
+                
+                <!-- Battle Pass Tab -->
+                <div id="battle-pass" class="tab-pane">
+                    <div class="section-header">
+                        <h2><i class="fas fa-trophy"></i> Battle Pass - Seizoen 1</h2>
+                    </div>
+                    <div class="battle-pass-progress">
+                        <div class="level-progress">
+                            <span>Level 5</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%"></div>
+                            </div>
+                            <span>Level 6</span>
+                        </div>
+                    </div>
+                    <div class="battle-pass-rewards">
+                        <!-- Rewards grid hier -->
+                    </div>
+                </div>
+                
+                <!-- Shop Tab -->
+                <div id="shop" class="tab-pane">
+                    <div class="section-header">
+                        <h2><i class="fas fa-store"></i> Shop</h2>
+                        <div class="shop-balance">
+                            <i class="fas fa-coins"></i>
+                            <span>1250 munten</span>
+                        </div>
+                    </div>
+                    <div class="shop-grid">
+                        <!-- Shop items hier -->
+                    </div>
+                </div>
+                
+                <!-- Achievements Tab -->
+                <div id="achievements" class="tab-pane">
+                    <div class="section-header">
+                        <h2><i class="fas fa-medal"></i> Prestaties</h2>
+                        <div class="achievement-stats">
+                            <span>15/50 Behaald</span>
+                        </div>
+                    </div>
+                    <div class="achievements-grid">
+                        <!-- Achievement cards hier -->
                     </div>
                 </div>
             </div>
