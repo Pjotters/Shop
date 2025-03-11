@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pjotters Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dashboard - Pjotters Dashboard</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles/dashboard.css">
@@ -15,222 +15,64 @@
         requireAuth();
     </script>
 </head>
-<body class="dashboard-page">
+<body>
     <div class="dashboard-container">
-        <header class="dashboard-header">
-            <div class="header-left">
-                <img src="images/logo.png" alt="Pjotters Logo" class="dashboard-logo">
-                <div class="header-info">
-                    <h1 class="welcome-message">Welkom terug!</h1>
-                    <div class="user-level">Level <span id="userLevel">1</span></div>
-                </div>
+        <!-- Tutorial Overlay -->
+        <div class="tutorial-overlay" id="tutorial">
+            <div class="tutorial-step active" data-step="1">
+                <h3>👋 Welkom bij Pjotters Games!</h3>
+                <p>Laten we je rondleiden door alle nieuwe features!</p>
+                <button class="next-step">Volgende</button>
             </div>
-            <div class="user-stats">
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <span id="totalPoints">0</span> punten
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-trophy"></i>
-                    <span id="totalAchievements">0</span> achievements
-                </div>
-            </div>
-        </header>
-
-        <div class="dashboard-grid">
-            <!-- Games Sectie -->
-            <section class="games-section">
-                <h2><i class="fas fa-gamepad"></i> Games</h2>
-                <div class="games-grid">
-                    <div class="game-card">
-                        <div class="game-banner">
-                            <img src="images/games/flappy-bird.png" alt="Flappy Bird">
-                            <div class="game-overlay">
-                                <button class="play-button" onclick="location.href='games/flappy.html'">
-                                    <i class="fas fa-play"></i> Spelen
-                                </button>
-                            </div>
-                        </div>
-                        <h3 class="game-title">Happy Flappy</h3>
-                        <div class="game-stats">
-                            <div class="stat">
-                                <i class="fas fa-trophy"></i>
-                                <div class="stat-value" id="flappyHighscore">0</div>
-                                <div class="stat-label">Highscore</div>
-                            </div>
-                            <div class="stat">
-                                <i class="fas fa-coins"></i>
-                                <div class="stat-value" id="flappyPoints">0</div>
-                                <div class="stat-label">Punten</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="game-card">
-                        <div class="game-banner">
-                            <img src="images/games/snake.png" alt="Snake">
-                            <div class="game-overlay">
-                                <button class="play-button" onclick="location.href='games/snake.html'">
-                                    <i class="fas fa-play"></i> Spelen
-                                </button>
-                            </div>
-                        </div>
-                        <h3 class="game-title">Snake</h3>
-                        <div class="game-stats">
-                            <div class="stat">
-                                <i class="fas fa-trophy"></i>
-                                <div class="stat-value" id="snakeHighscore">0</div>
-                                <div class="stat-label">Highscore</div>
-                            </div>
-                            <div class="stat">
-                                <i class="fas fa-coins"></i>
-                                <div class="stat-value" id="snakePoints">0</div>
-                                <div class="stat-label">Punten</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="game-card">
-                        <div class="game-banner">
-                            <img src="images/games/pacman.png" alt="Pac-Man">
-                            <div class="game-overlay">
-                                <button class="play-button" onclick="location.href='games/pacman.html'">
-                                    <i class="fas fa-play"></i> Spelen
-                                </button>
-                            </div>
-                        </div>
-                        <h3 class="game-title">Pac-Man</h3>
-                        <div class="game-stats">
-                            <div class="stat">
-                                <i class="fas fa-trophy"></i>
-                                <div class="stat-value" id="pacmanHighscore">0</div>
-                                <div class="stat-label">Highscore</div>
-                            </div>
-                            <div class="stat">
-                                <i class="fas fa-coins"></i>
-                                <div class="stat-value" id="pacmanPoints">0</div>
-                                <div class="stat-label">Punten</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Quiz Sectie -->
-            <section class="daily-quiz">
-                <div class="section-header">
-                    <h2><i class="fas fa-question-circle"></i> Dagelijkse Quiz</h2>
-                    <div class="quiz-reward">
-                        <i class="fas fa-gift"></i> 100 punten
-                    </div>
-                </div>
-                <div id="quizContainer" class="quiz-content">
-                    <!-- Quiz content wordt dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Achievements Sectie -->
-            <section class="achievements">
-                <div class="section-header">
-                    <h2><i class="fas fa-medal"></i> Achievements</h2>
-                    <div class="progress-indicator">
-                        <span id="achievementProgress">0/10</span>
-                    </div>
-                </div>
-                <div class="achievements-grid">
-                    <!-- Achievement cards worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Leaderboard Sectie -->
-            <section class="leaderboard">
-                <div class="section-header">
-                    <h2><i class="fas fa-crown"></i> Top Spelers</h2>
-                    <div class="your-rank">
-                        Jouw rank: <span id="userRank">#0</span>
-                    </div>
-                </div>
-                <div class="leaderboard-list">
-                    <!-- Leaderboard items worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Dagelijkse Beloningen -->
-            <section class="daily-rewards">
-                <div class="section-header">
-                    <h2><i class="fas fa-gift"></i> Dagelijkse Beloningen</h2>
-                    <div class="streak-counter">Dag <span id="streakCount">0</span></div>
-                </div>
-                <div class="rewards-grid">
-                    <!-- Rewards worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Seizoens Evenementen -->
-            <section class="seasonal-events">
-                <div class="section-header">
-                    <h2><i class="fas fa-calendar"></i> Zomer Festival</h2>
-                    <div class="event-timer">Nog 30 dagen</div>
-                </div>
-                <div class="event-challenges">
-                    <!-- Event uitdagingen worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Battle Pass -->
-            <section class="battle-pass">
-                <div class="section-header">
-                    <h2><i class="fas fa-star"></i> Battle Pass</h2>
-                    <button class="premium-unlock">Unlock Premium</button>
-                </div>
-                <div class="battle-pass-tiers">
-                    <!-- Tiers worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Mini-Games -->
-            <section class="mini-games">
-                <div class="section-header">
-                    <h2><i class="fas fa-puzzle-piece"></i> Mini-Games</h2>
-                </div>
-                <div class="mini-games-grid">
-                    <!-- Mini-games worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Dagelijkse Missies -->
-            <section class="daily-missions">
-                <div class="section-header">
-                    <h2><i class="fas fa-tasks"></i> Dagelijkse Missies</h2>
-                    <div class="missions-progress">0/3 Voltooid</div>
-                </div>
-                <div class="missions-list">
-                    <!-- Missies worden dynamisch geladen -->
-                </div>
-            </section>
-
-            <!-- Power-ups Shop -->
-            <section class="power-ups-shop">
-                <div class="section-header">
-                    <h2><i class="fas fa-bolt"></i> Power-ups</h2>
-                </div>
-                <div class="power-ups-grid">
-                    <!-- Power-ups worden dynamisch geladen -->
-                </div>
-            </section>
+            <!-- Meer tutorial stappen -->
         </div>
 
-        <!-- Progress Bar onderaan -->
-        <section class="level-progress">
-            <div class="progress-details">
-                <span class="current-level">Level <span id="currentLevel">1</span></span>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%"></div>
-                    <span class="progress-text">450/1000 XP</span>
+        <!-- Tab Navigation -->
+        <nav class="tab-navigation">
+            <button class="tab-button active" data-tab="games">
+                <i class="fas fa-gamepad"></i> Games
+            </button>
+            <button class="tab-button" data-tab="events">
+                <i class="fas fa-calendar-star"></i> Events
+            </button>
+            <button class="tab-button" data-tab="daily">
+                <i class="fas fa-sun"></i> Dagelijks
+            </button>
+            <button class="tab-button" data-tab="shop">
+                <i class="fas fa-store"></i> Shop
+            </button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="games">
+                <div class="games-grid">
+                    <!-- Games content -->
                 </div>
-                <span class="next-level">Level <span id="nextLevel">2</span></span>
             </div>
-        </section>
+
+            <div class="tab-pane" id="events">
+                <div class="battle-pass-section">
+                    <!-- Battle Pass content -->
+                </div>
+                <div class="seasonal-events">
+                    <!-- Seasonal events -->
+                </div>
+            </div>
+
+            <div class="tab-pane" id="daily">
+                <div class="daily-missions">
+                    <!-- Daily missions -->
+                </div>
+                <div class="daily-rewards">
+                    <!-- Daily rewards -->
+                </div>
+            </div>
+
+            <div class="tab-pane" id="shop">
+                <!-- Shop content -->
+            </div>
+        </div>
     </div>
 
     <script type="module" src="dashboard.js"></script>

@@ -82,6 +82,10 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.currentTab = 'games';
+        this.tutorialStep = 1;
+        this.initializeTabs();
+        this.initializeTutorial();
         this.services = {
             battlePass: new BattlePassService(),
             miniGames: new MiniGamesService(),
@@ -89,6 +93,51 @@ class Dashboard {
             powerUps: new PowerUpsService()
         };
         this.initializeDashboard();
+    }
+
+    initializeTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                this.switchTab(button.dataset.tab);
+            });
+        });
+    }
+
+    switchTab(tabId) {
+        // Verwijder active class van alle tabs
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+
+        // Activeer nieuwe tab
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+        
+        // Laad tab-specifieke content
+        this.loadTabContent(tabId);
+    }
+
+    initializeTutorial() {
+        if (!localStorage.getItem('tutorialCompleted')) {
+            this.showTutorial();
+        }
+    }
+
+    showTutorial() {
+        const tutorial = document.getElementById('tutorial');
+        tutorial.classList.add('active');
+        this.showTutorialStep(1);
+    }
+
+    showTutorialStep(step) {
+        document.querySelectorAll('.tutorial-step').forEach(s => {
+            s.classList.remove('active');
+        });
+        document.querySelector(`[data-step="${step}"]`).classList.add('active');
     }
 
     async initializeDashboard() {
