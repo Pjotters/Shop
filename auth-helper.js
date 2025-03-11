@@ -1,8 +1,10 @@
-import { auth } from './firebase-config.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-export const requireAuth = () => {
+export function requireAuth() {
     return new Promise((resolve, reject) => {
-        auth.onAuthStateChanged(user => {
+        const auth = getAuth();
+        
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 resolve(user);
             } else {
@@ -11,7 +13,7 @@ export const requireAuth = () => {
             }
         });
     });
-};
+}
 
 export const checkAuthState = () => {
     auth.onAuthStateChanged(user => {

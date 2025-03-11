@@ -1,5 +1,4 @@
-import { auth } from './firebase-config.js';
-import { ref, onValue, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { auth, db, ref, get, onAuthStateChanged } from './firebase-config.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { CouponService } from './services/coupon-service.js';
@@ -10,23 +9,15 @@ import { BattlePassService } from './services/battle-pass-service.js';
 import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const auth = getAuth();
-    
-    // Luister naar auth state veranderingen
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            // Geen ingelogde gebruiker, redirect naar login
-            window.location.href = '/login.html';
-            return;
-        }
-        
-        // Gebruiker is ingelogd, initialiseer dashboard
-        const dashboard = new Dashboard();
-        dashboard.initializeDashboard();
-    });
+    try {
+        const user = await requireAuth();
+        const dashboard = new Dashboard(user);
+    } catch (error) {
+        console.error('Auth error:', error);
+        window.location.href = '/login.html';
+    }
 });
 
 function loadUserData(user) {
@@ -89,44 +80,22 @@ function updateRewards(points) {
 }
 
 class Dashboard {
-    constructor() {
-        const auth = getAuth();
-        if (!auth.currentUser) {
+    constructor(user) {
+        if (!user) {
             window.location.href = '/login.html';
             return;
         }
         
+        this.user = user;
+        this.initializeDashboard();
+    }
+
+    async initializeDashboard() {
         this.initializeTabs();
         this.initializeAnimations();
         this.showTutorial();
         this.initializeNotifications();
-        this.loadUserProfile();
-        this.currentTutorialStep = 0;
-        this.tutorialSteps = [
-            {
-                element: '.tab-navigation',
-                message: 'Gebruik de tabs om te navigeren tussen verschillende secties!',
-                position: 'bottom'
-            },
-            {
-                element: '.games-grid',
-                message: 'Speel je favoriete games en verdien punten voor korting!',
-                position: 'right'
-            },
-            {
-                element: '.battle-pass-section',
-                message: 'Unlock beloningen in de Battle Pass!',
-                position: 'left'
-            }
-        ];
-        this.currentTab = 'games';
-        this.services = {
-            battlePass: new BattlePassService(),
-            miniGames: new MiniGamesService(),
-            missions: new MissionsService(),
-            powerUps: new PowerUpsService()
-        };
-        this.initializeDashboard();
+        await this.loadUserProfile(this.user.uid);
     }
 
     initializeTabs() {
@@ -252,11 +221,8 @@ class Dashboard {
         return container;
     }
 
-    async loadUserProfile() {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        const userRef = ref(db, `users/${user.uid}`);
+    async loadUserProfile(userId) {
+        const userRef = ref(db, `users/${userId}`);
         const snapshot = await get(userRef);
         const userData = snapshot.val();
 
@@ -362,20 +328,6 @@ class Dashboard {
         }, 3000);
     }
 
-    async initializeDashboard() {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        await Promise.all([
-            this.services.battlePass.initializeBattlePass(user.uid),
-            this.loadMiniGames(user.uid),
-            this.loadDailyMissions(user.uid),
-            this.loadActivePowerUps(user.uid)
-        ]);
-
-        this.setupEventListeners();
-    }
-
     async loadMiniGames(userId) {
         const miniGamesData = await this.services.miniGames.getUserMiniGamesData(userId);
         this.renderMiniGames(miniGamesData);
@@ -398,7 +350,7 @@ class Dashboard {
                 const gameType = e.currentTarget.dataset.game;
                 try {
                     const gameSession = await this.services.miniGames.startMiniGame(
-                        auth.currentUser.uid,
+                        this.user.uid,
                         gameType
                     );
                     this.startMiniGame(gameType, gameSession);
@@ -476,12 +428,9 @@ class Dashboard {
 
     async loadBattlePassContent() {
         const battlePassGrid = document.querySelector('.rewards-grid');
-        const user = auth.currentUser;
         
-        if (!user) return;
-
         try {
-            const battlePassSnap = await get(dbRef.battlePass(user.uid));
+            const battlePassSnap = await get(dbRef.battlePass(this.user.uid));
             const battlePassData = battlePassSnap.val();
             
             const rewards = this.services.battlePass.rewards;
@@ -558,7 +507,7 @@ class Dashboard {
                 const rewardId = item.dataset.rewardId;
                 try {
                     const reward = await this.services.battlePass.claimReward(
-                        auth.currentUser.uid,
+                        this.user.uid,
                         rewardId
                     );
                     
