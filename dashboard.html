@@ -90,20 +90,45 @@
                 
                 <!-- Battle Pass Tab -->
                 <div id="battle-pass" class="tab-pane">
-                    <div class="section-header">
-                        <h2><i class="fas fa-trophy"></i> Battle Pass - Seizoen 1</h2>
-                    </div>
-                    <div class="battle-pass-progress">
-                        <div class="level-progress">
-                            <span>Level 5</span>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 60%"></div>
+                    <div class="battle-pass-header">
+                        <div class="pass-info">
+                            <h2>Pjotters-PASS</h2>
+                            <div class="season-tag">SEIZOEN 1</div>
+                        </div>
+                        <div class="pass-progress">
+                            <div class="coin-display">
+                                <i class="fas fa-coins"></i>
+                                <span id="currentCoins">loding...</span>
                             </div>
-                            <span>Level 6</span>
+                            <button class="claim-reward-btn">
+                                <i class="fas fa-gift"></i>
+                                CLAIM REWARD
+                            </button>
                         </div>
                     </div>
-                    <div class="battle-pass-rewards">
-                        <!-- Rewards grid hier -->
+
+                    <div class="battle-pass-content">
+                        <div class="rewards-showcase">
+                            <div class="featured-reward">
+                                <div class="rarity-badge">ZELDZAAM</div>
+                                <h3>SPACE EXPLORER</h3>
+                                <p>Ontgrendel dit epische karakter outfit!</p>
+                                <img src="images/rewards/space-explorer.png" alt="Space Explorer Skin">
+                            </div>
+                        </div>
+
+                        <div class="rewards-track">
+                            <div class="rewards-grid">
+                                <!-- Rewards worden dynamisch toegevoegd via JavaScript -->
+                            </div>
+                            <div class="track-navigation">
+                                <span class="page-indicator">PAGINA 1 / 4</span>
+                                <div class="nav-buttons">
+                                    <button class="nav-btn prev"><i class="fas fa-chevron-left"></i></button>
+                                    <button class="nav-btn next"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 

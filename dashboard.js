@@ -401,6 +401,93 @@ class Dashboard {
         element.style.zIndex = '1001';
         element.style.animation = 'pulse 2s infinite';
     }
+
+    async loadTabContent(tabId) {
+        const contentMap = {
+            'games': this.loadGamesContent,
+            'battle-pass': this.loadBattlePassContent,
+            'shop': this.loadShopContent,
+            'achievements': this.loadAchievementsContent
+        };
+
+        if (contentMap[tabId]) {
+            await contentMap[tabId].call(this);
+        }
+    }
+
+    async loadGamesContent() {
+        const gamesGrid = document.querySelector('.games-grid');
+        gamesGrid.innerHTML = '<div class="loading-spinner"></div>';
+
+        try {
+            const games = await this.fetchGames();
+            gamesGrid.innerHTML = games.map((game, index) => `
+                <div class="game-card" style="animation-delay: ${index * 0.1}s">
+                    <img src="${game.image}" alt="${game.title}">
+                    <h3>${game.title}</h3>
+                    <div class="game-stats">
+                        <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore}</span>
+                        <span><i class="fas fa-clock"></i> Gespeeld: ${game.timesPlayed}x</span>
+                    </div>
+                    <button class="play-button" onclick="window.location.href='/games/${game.id}'">
+                        Spelen
+                    </button>
+                </div>
+            `).join('');
+        } catch (error) {
+            this.showError('Kon games niet laden');
+        }
+    }
+
+    async loadBattlePassContent() {
+        const battlePass = document.getElementById('battle-pass');
+        const userLevel = await this.getUserBattlePassLevel();
+        
+        const rewards = await this.fetchBattlePassRewards();
+        const rewardsHTML = rewards.map((reward, index) => `
+            <div class="battle-pass-reward ${index <= userLevel ? 'unlocked' : 'locked'}">
+                <div class="reward-icon">
+                    <i class="fas ${reward.icon}"></i>
+                </div>
+                <span class="reward-level">Level ${reward.level}</span>
+                <span class="reward-name">${reward.name}</span>
+            </div>
+        `).join('');
+
+        battlePass.querySelector('.battle-pass-rewards').innerHTML = rewardsHTML;
+    }
+
+    async loadShopContent() {
+        const shopGrid = document.querySelector('.shop-grid');
+        const items = await this.fetchShopItems();
+        
+        shopGrid.innerHTML = items.map(item => `
+            <div class="shop-item">
+                <div class="item-image">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <div class="item-price">
+                    <i class="fas fa-coins"></i> ${item.price}
+                </div>
+                <button class="buy-button" data-item-id="${item.id}">
+                    Kopen
+                </button>
+            </div>
+        `).join('');
+    }
+
+    showError(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification error';
+        notification.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <p>${message}</p>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
 }
 
 // Start de dashboard met alle animaties
