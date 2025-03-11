@@ -84,7 +84,7 @@ class Dashboard {
     constructor() {
         this.initializeTabs();
         this.initializeAnimations();
-        this.initializeTutorial();
+        this.showTutorial(); // Direct tutorial tonen
         this.initializeNotifications();
         this.loadUserProfile();
         this.currentTutorialStep = 0;
@@ -269,34 +269,36 @@ class Dashboard {
         return Math.floor(Math.sqrt(points / 100)) + 1;
     }
 
-    initializeTutorial() {
-        if (localStorage.getItem('tutorialCompleted')) return;
-        
+    showTutorial() {
         const tutorialSteps = [
             {
-                title: 'Welkom bij Pjotters Games!',
-                message: 'Laten we je rondleiden door alle features.',
-                highlight: '.user-profile-bar'
+                title: 'Welkom bij de Battle Pass!',
+                message: 'Verdien Pjotters-Munten door games te spelen en unlock gave beloningen!',
+                position: 'center'
             },
             {
-                title: 'Je Profiel',
-                message: 'Hier zie je je niveau, punten en prestaties!',
-                highlight: '.user-stats'
+                element: '.rewards-grid',
+                title: 'Rewards Track',
+                message: 'Hier zie je alle beschikbare beloningen. Klik op een reward om deze te claimen!',
+                position: 'bottom'
             },
             {
-                title: 'Games Spelen',
-                message: 'Klik op een game om te beginnen met spelen!',
-                highlight: '.games-grid'
+                element: '.coin-display',
+                title: 'Jouw Munten',
+                message: 'Hier zie je hoeveel Pjotters-Munten je hebt verzameld.',
+                position: 'left'
             }
         ];
 
         let currentStep = 0;
-        
+
         const showStep = (step) => {
-            const overlay = document.querySelector('.tutorial-overlay');
-            const content = document.querySelector('.tutorial-step');
+            const overlay = document.createElement('div');
+            overlay.className = 'tutorial-overlay active';
             
-            content.innerHTML = `
+            const popup = document.createElement('div');
+            popup.className = 'tutorial-step';
+            popup.innerHTML = `
                 <h3>${tutorialSteps[step].title}</h3>
                 <p>${tutorialSteps[step].message}</p>
                 <button class="tutorial-next">
@@ -304,29 +306,46 @@ class Dashboard {
                 </button>
             `;
 
-            overlay.classList.add('active');
-            
-            // Highlight het relevante element
-            document.querySelector(tutorialSteps[step].highlight)
-                .classList.add('tutorial-highlight');
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+
+            popup.querySelector('.tutorial-next').addEventListener('click', () => {
+                overlay.remove();
+                if (step < tutorialSteps.length - 1) {
+                    showStep(step + 1);
+                }
+            });
         };
 
         showStep(0);
+    }
 
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('tutorial-next')) {
-                document.querySelectorAll('.tutorial-highlight')
-                    .forEach(el => el.classList.remove('tutorial-highlight'));
-                
-                currentStep++;
-                if (currentStep < tutorialSteps.length) {
-                    showStep(currentStep);
-                } else {
-                    document.querySelector('.tutorial-overlay').classList.remove('active');
-                    localStorage.setItem('tutorialCompleted', 'true');
-                }
-            }
-        });
+    showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <p>${message}</p>
+        `;
+
+        const container = document.querySelector('.notification-container') || 
+            (() => {
+                const cont = document.createElement('div');
+                cont.className = 'notification-container';
+                document.body.appendChild(cont);
+                return cont;
+            })();
+
+        container.appendChild(notification);
+        
+        // Animatie toevoegen
+        setTimeout(() => notification.classList.add('slide-in'), 100);
+        
+        // Automatisch verwijderen na 3 seconden
+        setTimeout(() => {
+            notification.classList.add('slide-out');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
     }
 
     async initializeDashboard() {
