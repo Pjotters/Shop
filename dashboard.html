@@ -3,174 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pjotters Games Dashboard</title>
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <link rel="stylesheet" href="dashboard.css">
+    <title>Dashboard - Pjotters Games</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Zijbalk Navigatie -->
-        <nav class="sidebar">
-            <div class="logo">
-                <img src="images/logo.png" alt="Pjotters Logo">
+    <div class="dashboard-container">
+        <header>
+            <h1 class="welcome-message">Laden...</h1>
+            <div class="points-display">
+                <i class="fas fa-coins"></i>
+                <span id="totalPoints">0</span> punten
             </div>
-            <div class="nav-links">
-                <a href="#" class="nav-link active" data-tab="games">
-                    <i class="fas fa-gamepad"></i>
-                    <span>Games</span>
-                </a>
-                <a href="battle-pass" class="nav-link" data-tab="battle-pass">
-                    <i class="fas fa-trophy"></i>
-                    <span>Battle Pass</span>
-                </a>
-                <a href="#" class="nav-link" data-tab="shop">
-                    <i class="fas fa-store"></i>
-                    <span>Shop</span>
-                </a>
-                <a href="#" class="nav-link" data-tab="achievements">
-                    <i class="fas fa-medal"></i>
-                    <span>Prestaties</span>
-                </a>
-            </div>
+        </header>
+
+        <nav class="tab-navigation">
+            <button data-tab-target="#games" class="tab-btn active">Games</button>
+            <button data-tab-target="#shop" class="tab-btn">Shop</button>
+            <button data-tab-target="#achievements" class="tab-btn">Prestaties</button>
+            <button data-tab-target="#battlepass" class="tab-btn">Battle Pass</button>
         </nav>
 
-        <!-- Hoofdcontent -->
-        <main class="main-content">
-            <!-- Topbalk met gebruikersinfo -->
-            <header class="top-bar">
-                <div class="user-info">
-                    <img id="userAvatar" src="images/default-avatar.png" alt="Avatar">
-                    <div class="user-details">
-                        <h2 id="userName">Laden...</h2>
-                        <div class="user-stats">
-                            <span class="level">
-                                <i class="fas fa-star"></i>
-                                Level <span id="userLevel">1</span>
-                            </span>
-                            <span class="points">
-                                <i class="fas fa-coins"></i>
-                                <span id="userPoints">0</span>
-                            </span>
-                        </div>
-                    </div>
+        <main class="tab-content">
+            <div id="games" class="tab-pane active">
+                <div class="games-grid">
+                    <!-- Games worden hier dynamisch geladen -->
                 </div>
-                <div class="subscription-info">
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 60%"></div>
-                    </div>
-                    <span class="subscription-badge premium">
-                        <i class="fas fa-crown"></i>
-                        Premium Pass
-                    </span>
-                </div>
-            </header>
+            </div>
 
-            <!-- Tab Content -->
-            <div class="tab-content">
-                <!-- Games Tab -->
-                <div id="games" class="tab-pane active">
-                    <div class="section-header">
-                        <h2><i class="fas fa-gamepad"></i> Populaire Games</h2>
-                        <div class="games-grid">
-                            <div class="game-card">
-                                <img src="images/games/snake.jpg" alt="Snake">
-                                <h3>Snake</h3>
-                                <div class="game-stats">
-                                    <span><i class="fas fa-trophy"></i> Highscore: 2450</span>
-                                    <span><i class="fas fa-clock"></i> Gespeeld: 15x</span>
-                                </div>
-                                <button class="play-button">Spelen</button>
-                            </div>
-                            <!-- Meer game cards hier -->
-                        </div>
-                    </div>
+            <div id="shop" class="tab-pane">
+                <div class="shop-items">
+                    <!-- Shop items worden hier geladen -->
                 </div>
-                
-                <!-- Battle Pass Tab -->
-                <div id="battle-pass" class="tab-pane">
-                    <div class="battle-pass-header">
-                        <div class="pass-info">
-                            <h2>Pjotters-PASS</h2>
-                            <div class="season-tag">SEIZOEN 1</div>
-                        </div>
-                        <div class="pass-progress">
-                            <div class="coin-display">
-                                <i class="fas fa-coins"></i>
-                                <span id="currentCoins">loding...</span>
-                            </div>
-                            <button class="claim-reward-btn">
-                                <i class="fas fa-gift"></i>
-                                CLAIM REWARD
-                            </button>
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="battle-pass-content">
-                        <div class="rewards-showcase">
-                            <div class="featured-reward">
-                                <div class="rarity-badge">ZELDZAAM</div>
-                                <h3>SPACE EXPLORER</h3>
-                                <p>Ontgrendel dit epische karakter outfit!</p>
-                                <img src="images/rewards/space-explorer.png" alt="Space Explorer Skin">
-                            </div>
-                        </div>
+            <div id="achievements" class="tab-pane">
+                <div class="achievements-list">
+                    <!-- Prestaties worden hier geladen -->
+                </div>
+            </div>
 
-                        <div class="rewards-track">
-                            <div class="rewards-grid">
-                                <!-- Rewards worden dynamisch toegevoegd via JavaScript -->
-                            </div>
-                            <div class="track-navigation">
-                                <span class="page-indicator">PAGINA 1 / 4</span>
-                                <div class="nav-buttons">
-                                    <button class="nav-btn prev"><i class="fas fa-chevron-left"></i></button>
-                                    <button class="nav-btn next"><i class="fas fa-chevron-right"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Shop Tab -->
-                <div id="shop" class="tab-pane">
-                    <div class="section-header">
-                        <h2><i class="fas fa-store"></i> Shop</h2>
-                        <div class="shop-balance">
-                            <i class="fas fa-coins"></i>
-                            <span>1250 munten</span>
-                        </div>
-                    </div>
-                    <div class="shop-grid">
-                        <!-- Shop items hier -->
-                    </div>
-                </div>
-                
-                <!-- Achievements Tab -->
-                <div id="achievements" class="tab-pane">
-                    <div class="section-header">
-                        <h2><i class="fas fa-medal"></i> Prestaties</h2>
-                        <div class="achievement-stats">
-                            <span>15/50 Behaald</span>
-                        </div>
-                    </div>
-                    <div class="achievements-grid">
-                        <!-- Achievement cards hier -->
-                    </div>
+            <div id="battlepass" class="tab-pane">
+                <div class="battlepass-content">
+                    <!-- Battle Pass content wordt hier geladen -->
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Tutorial Overlay -->
-    <div class="tutorial-overlay">
-        <div class="tutorial-content">
-            <h3>Welkom bij Pjotters Games!</h3>
-            <p>Laten we je rondleiden...</p>
-            <button class="tutorial-next">Start Tour</button>
-        </div>
-    </div>
-
+    <script type="module" src="firebase-config.js"></script>
     <script type="module" src="dashboard.js"></script>
 </body>
 </html> 

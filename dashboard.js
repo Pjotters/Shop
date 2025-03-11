@@ -11,34 +11,23 @@ import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 import { getAuth } from 'firebase/auth';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const auth = getAuth();
-    
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            window.location.replace('/login.html');
-            return;
-        }
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const auth = getAuth();
         
-        // Alleen dashboard initialiseren als er een user is
-        const dashboard = new Dashboard(user);
-        
-        // Voeg onValue import toe bovenaan
-        const userRef = ref(db, `users/${user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val() || {};
-            
-            // Update welkomstboodschap
-            const username = userData.username || user.email.split('@')[0];
-            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
-            
-            // Update punten
-            const pointsElement = document.getElementById('totalPoints');
-            if (pointsElement) {
-                pointsElement.textContent = userData.points || 0;
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace('/login.html');
+                return;
             }
+            
+            const dashboard = new Dashboard(user);
+            await dashboard.initializeDashboard();
         });
-    });
+    } catch (error) {
+        console.error('Auth error:', error);
+        window.location.replace('/login.html');
+    }
 });
 
 function loadUserData(user) {
@@ -102,103 +91,97 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor(user) {
-        if (!user) {
-            window.location.replace('/login.html');
-            return;
-        }
-        
         this.user = user;
         this.services = {
             shop: new ShopService(),
             quiz: new QuizService(),
             battlePass: new BattlePassService(),
-            // ... andere services
+            miniGames: new MiniGamesService(),
+            missions: new MissionsService(),
+            powerUps: new PowerUpsService()
         };
-        this.initializeDashboard();
     }
 
     async initializeDashboard() {
+        await this.loadUserData();
         this.initializeTabs();
-        this.initializeAnimations();
-        this.showTutorial();
+        this.loadGames();
         this.initializeNotifications();
-        await this.loadUserProfile(this.user.uid);
+    }
+
+    async loadUserData() {
+        const userRef = ref(db, `users/${this.user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val() || {};
+            
+            // Update welkomstboodschap
+            const username = userData.username || this.user.email.split('@')[0];
+            const welcomeMessage = document.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.textContent = `Welkom terug, ${username}!`;
+            }
+            
+            // Update punten
+            const pointsElement = document.getElementById('totalPoints');
+            if (pointsElement) {
+                pointsElement.textContent = userData.points || 0;
+            }
+        });
     }
 
     initializeTabs() {
-        const tabLinks = document.querySelectorAll('.nav-link');
-        const tabContents = document.querySelectorAll('.tab-pane');
-        
-        tabLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
+        const tabButtons = document.querySelectorAll('[data-tab-target]');
+        const tabContents = document.querySelectorAll('[data-tab-content]');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.querySelector(button.dataset.tabTarget);
                 
-                // Verwijder active class van alle tabs
-                tabLinks.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
                 
-                // Voeg active class toe aan geselecteerde tab
-                link.classList.add('active');
-                const targetId = link.getAttribute('href').substring(1);
-                document.getElementById(targetId)?.classList.add('active');
+                button.classList.add('active');
+                target.classList.add('active');
             });
         });
     }
 
-    animateTabContent(tabId) {
-        const content = document.getElementById(tabId);
-        if (!content) return;
+    loadGames() {
+        const gamesContainer = document.querySelector('.games-grid');
+        if (!gamesContainer) return;
 
-        content.style.animation = 'none';
-        content.offsetHeight; // Force reflow
-        content.style.animation = 'fadeIn 0.5s ease forwards';
-    }
-
-    initializeAnimations() {
-        // Animeer getallen (punten, levels, etc.)
-        this.numberAnimator = {
-            animate: (element, start, end, duration = 1000) => {
-                const startTime = performance.now();
-                const updateNumber = (currentTime) => {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    // Easing functie voor soepele animatie
-                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                    const current = Math.floor(start + (end - start) * easeOutQuart);
-                    
-                    element.textContent = current.toLocaleString();
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(updateNumber);
-                    }
-                };
-                requestAnimationFrame(updateNumber);
+        const games = [
+            {
+                id: 'snake',
+                name: 'Snake',
+                image: '/images/games/snake.jpg',
+                url: '/games/snake.html'
+            },
+            {
+                id: 'flappy',
+                name: 'Flappy Bird',
+                image: '/images/games/flappy.jpg',
+                url: '/games/flappy.html'
+            },
+            {
+                id: 'pacman',
+                name: 'Pac-Man',
+                image: '/images/games/pacman.jpg',
+                url: '/games/pacman.html'
             }
-        };
+        ];
 
-        // Animeer nieuwe achievements
-        this.achievementAnimator = {
-            show: (achievement) => {
-                const notification = document.createElement('div');
-                notification.className = 'achievement-notification';
-                notification.innerHTML = `
-                    <i class="fas fa-trophy"></i>
-                    <div class="achievement-details">
-                        <h4>Nieuwe Prestatie!</h4>
-                        <p>${achievement.title}</p>
-                    </div>
-                `;
-                document.body.appendChild(notification);
-                
-                // Animatie sequence
-                setTimeout(() => notification.classList.add('show'), 100);
-                setTimeout(() => {
-                    notification.classList.add('hide');
-                    setTimeout(() => notification.remove(), 500);
-                }, 3000);
-            }
-        };
+        gamesContainer.innerHTML = games.map(game => `
+            <div class="game-card">
+                <img src="${game.image}" alt="${game.name}" onerror="this.src='/images/placeholder.png'">
+                <h3>${game.name}</h3>
+                <a href="${game.url}" class="play-btn">Spelen</a>
+            </div>
+        `).join('');
     }
 
     initializeNotifications() {
@@ -243,113 +226,6 @@ class Dashboard {
         container.className = 'notification-container';
         document.body.appendChild(container);
         return container;
-    }
-
-    async loadUserProfile(userId) {
-        const userRef = ref(db, `users/${userId}`);
-        const snapshot = await get(userRef);
-        const userData = snapshot.val();
-
-        // Update UI elementen
-        document.getElementById('userName').textContent = userData.name;
-        document.getElementById('userPoints').textContent = userData.points.toLocaleString();
-        document.getElementById('userLevel').textContent = this.calculateLevel(userData.points);
-        document.getElementById('achievementCount').textContent = 
-            Object.keys(userData.achievements || {}).length;
-
-        // Update subscription badge
-        const subType = userData.subscription?.type || 'basic';
-        const subBadge = document.getElementById('subscriptionType');
-        subBadge.textContent = subType.charAt(0).toUpperCase() + subType.slice(1);
-        subBadge.className = `subscription-badge ${subType}`;
-
-        // Laad avatar als aanwezig
-        if (userData.avatar) {
-            document.getElementById('userAvatar').src = userData.avatar;
-        }
-    }
-
-    calculateLevel(points) {
-        return Math.floor(Math.sqrt(points / 100)) + 1;
-    }
-
-    showTutorial() {
-        const tutorialSteps = [
-            {
-                title: 'Welkom bij de Battle Pass!',
-                message: 'Verdien Pjotters-Munten door games te spelen en unlock gave beloningen!',
-                position: 'center'
-            },
-            {
-                element: '.rewards-grid',
-                title: 'Rewards Track',
-                message: 'Hier zie je alle beschikbare beloningen. Klik op een reward om deze te claimen!',
-                position: 'bottom'
-            },
-            {
-                element: '.coin-display',
-                title: 'Jouw Munten',
-                message: 'Hier zie je hoeveel Pjotters-Munten je hebt verzameld.',
-                position: 'left'
-            }
-        ];
-
-        let currentStep = 0;
-
-        const showStep = (step) => {
-            const overlay = document.createElement('div');
-            overlay.className = 'tutorial-overlay active';
-            
-            const popup = document.createElement('div');
-            popup.className = 'tutorial-step';
-            popup.innerHTML = `
-                <h3>${tutorialSteps[step].title}</h3>
-                <p>${tutorialSteps[step].message}</p>
-                <button class="tutorial-next">
-                    ${step === tutorialSteps.length - 1 ? 'Afronden' : 'Volgende'}
-                </button>
-            `;
-
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-
-            popup.querySelector('.tutorial-next').addEventListener('click', () => {
-                overlay.remove();
-                if (step < tutorialSteps.length - 1) {
-                    showStep(step + 1);
-                }
-            });
-        };
-
-        showStep(0);
-    }
-
-    showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-            <p>${message}</p>
-        `;
-
-        const container = document.querySelector('.notification-container') || 
-            (() => {
-                const cont = document.createElement('div');
-                cont.className = 'notification-container';
-                document.body.appendChild(cont);
-                return cont;
-            })();
-
-        container.appendChild(notification);
-        
-        // Animatie toevoegen
-        setTimeout(() => notification.classList.add('slide-in'), 100);
-        
-        // Automatisch verwijderen na 3 seconden
-        setTimeout(() => {
-            notification.classList.add('slide-out');
-            setTimeout(() => notification.remove(), 3000);
-        }, 3000);
     }
 
     async loadMiniGames(userId) {
@@ -567,40 +443,6 @@ class Dashboard {
                 pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
             }
         });
-    }
-
-    async loadGames() {
-        const gamesContainer = document.querySelector('.games-grid');
-        if (!gamesContainer) return;
-        
-        const games = [
-            {
-                id: 'snake',
-                name: 'Snake',
-                image: '/images/games/snake.jpg',
-                url: '/games/snake.html'
-            },
-            {
-                id: 'flappy',
-                name: 'Flappy Bird',
-                image: '/images/games/flappy.jpg',
-                url: '/games/flappy.html'
-            },
-            {
-                id: 'pacman',
-                name: 'Pac-Man',
-                image: '/images/games/pacman.jpg',
-                url: '/games/pacman.html'
-            }
-        ];
-        
-        gamesContainer.innerHTML = games.map(game => `
-            <div class="game-card">
-                <img src="${game.image}" alt="${game.name}">
-                <h3>${game.name}</h3>
-                <a href="${game.url}" class="play-btn">Spelen</a>
-            </div>
-        `).join('');
     }
 }
 
