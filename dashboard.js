@@ -82,9 +82,9 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.initializeTutorial();
+        this.initializeTabs();
         this.loadUserProfile();
-        this.initializeAnimations();
-        this.setupEventListeners();
         this.currentTutorialStep = 0;
         this.tutorialSteps = [
             {
@@ -104,8 +104,6 @@ class Dashboard {
             }
         ];
         this.currentTab = 'games';
-        this.initializeTabs();
-        this.initializeTutorial();
         this.services = {
             battlePass: new BattlePassService(),
             miniGames: new MiniGamesService(),
@@ -146,27 +144,71 @@ class Dashboard {
         return Math.floor(Math.sqrt(points / 100)) + 1;
     }
 
-    initializeAnimations() {
-        // Voeg entry animaties toe met delays
-        document.querySelectorAll('.game-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+    initializeTutorial() {
+        if (localStorage.getItem('tutorialCompleted')) return;
+        
+        const tutorialSteps = [
+            {
+                title: 'Welkom bij Pjotters Games!',
+                message: 'Laten we je rondleiden door alle features.',
+                highlight: '.user-profile-bar'
+            },
+            {
+                title: 'Je Profiel',
+                message: 'Hier zie je je niveau, punten en prestaties!',
+                highlight: '.user-stats'
+            },
+            {
+                title: 'Games Spelen',
+                message: 'Klik op een game om te beginnen met spelen!',
+                highlight: '.games-grid'
+            }
+        ];
 
-        document.querySelectorAll('.mini-game-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+        let currentStep = 0;
+        
+        const showStep = (step) => {
+            const overlay = document.querySelector('.tutorial-overlay');
+            const content = document.querySelector('.tutorial-step');
+            
+            content.innerHTML = `
+                <h3>${tutorialSteps[step].title}</h3>
+                <p>${tutorialSteps[step].message}</p>
+                <button class="tutorial-next">
+                    ${step === tutorialSteps.length - 1 ? 'Afronden' : 'Volgende'}
+                </button>
+            `;
 
-        // Tab wissel animaties
-        this.setupTabTransitions();
+            overlay.classList.add('active');
+            
+            // Highlight het relevante element
+            document.querySelector(tutorialSteps[step].highlight)
+                .classList.add('tutorial-highlight');
+        };
+
+        showStep(0);
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tutorial-next')) {
+                document.querySelectorAll('.tutorial-highlight')
+                    .forEach(el => el.classList.remove('tutorial-highlight'));
+                
+                currentStep++;
+                if (currentStep < tutorialSteps.length) {
+                    showStep(currentStep);
+                } else {
+                    document.querySelector('.tutorial-overlay').classList.remove('active');
+                    localStorage.setItem('tutorialCompleted', 'true');
+                }
+            }
+        });
     }
 
-    setupTabTransitions() {
-        const tabs = document.querySelectorAll('.tab-pane');
-        tabs.forEach(tab => {
-            tab.addEventListener('transitionend', () => {
-                if (!tab.classList.contains('active')) {
-                    tab.style.display = 'none';
-                }
+    initializeTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                this.switchTab(button.dataset.tab);
             });
         });
     }
@@ -186,43 +228,6 @@ class Dashboard {
             // Reset animaties voor nieuwe tab inhoud
             this.initializeAnimations();
         }, 300);
-    }
-
-    initializeTabs() {
-        const tabButtons = document.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                this.switchTab(button.dataset.tab);
-            });
-        });
-    }
-
-    initializeTutorial() {
-        if (!localStorage.getItem('tutorialCompleted')) {
-            this.showTutorial();
-        }
-    }
-
-    showTutorial() {
-        const tutorial = document.getElementById('tutorial');
-        tutorial.classList.add('active');
-        this.showTutorialStep(0);
-    }
-
-    showTutorialStep(stepIndex) {
-        const step = this.tutorialSteps[stepIndex];
-        const element = document.querySelector(step.element);
-        
-        // Verwijder vorige highlights
-        document.querySelectorAll('.tutorial-highlight').forEach(el => {
-            el.classList.remove('tutorial-highlight');
-        });
-
-        // Voeg nieuwe highlight toe
-        element.classList.add('tutorial-highlight');
-        
-        // Toon tutorial bericht
-        this.showTutorialMessage(step.message, element, step.position);
     }
 
     async initializeDashboard() {

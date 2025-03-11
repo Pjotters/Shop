@@ -3,179 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Pjotters Games</title>
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <title>Pjotters Games Dashboard</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="dashboard.css">
-
-    <script type="module">
-        import { requireAuth } from './auth-helper.js';
-        requireAuth();
-    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-wrapper">
-        <!-- Gebruikers Profiel Bar -->
-        <div class="user-profile-bar">
-            <div class="user-info">
-                <img id="userAvatar" src="images/default-avatar.png" alt="Avatar" class="user-avatar">
-                <div class="user-details">
-                    <h2 id="userName">Laden...</h2>
-                    <div class="subscription-badge" id="subscriptionType">
-                        <i class="fas fa-crown"></i> Basic
+    <div class="app-container">
+        <!-- Zijbalk Navigatie -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="Pjotters Logo">
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-tab="games">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Games</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="battle-pass">
+                    <i class="fas fa-trophy"></i>
+                    <span>Battle Pass</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="shop">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="achievements">
+                    <i class="fas fa-medal"></i>
+                    <span>Prestaties</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Hoofdcontent -->
+        <main class="main-content">
+            <!-- Topbalk met gebruikersinfo -->
+            <header class="top-bar">
+                <div class="user-info">
+                    <img id="userAvatar" src="images/default-avatar.png" alt="Avatar">
+                    <div class="user-details">
+                        <h2 id="userName">Laden...</h2>
+                        <div class="user-stats">
+                            <span class="level">
+                                <i class="fas fa-star"></i>
+                                Level <span id="userLevel">1</span>
+                            </span>
+                            <span class="points">
+                                <i class="fas fa-coins"></i>
+                                <span id="userPoints">0</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="user-stats">
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <span id="userPoints">0</span> punten
+                <div class="subscription-info">
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%"></div>
+                    </div>
+                    <span class="subscription-badge premium">
+                        <i class="fas fa-crown"></i>
+                        Premium Pass
+                    </span>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-star"></i>
-                    <span id="userLevel">1</span> level
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-trophy"></i>
-                    <span id="achievementCount">0</span> prestaties
-                </div>
-            </div>
-        </div>
-
-        <!-- Rest van de dashboard content -->
-        <div class="dashboard-content">
-            <!-- Tutorial Overlay -->
-            <div class="tutorial-overlay" id="tutorial">
-                <div class="tutorial-step active" data-step="1">
-                    <h3>👋 Welkom bij Pjotters Games!</h3>
-                    <p>Laten we je rondleiden door alle nieuwe features!</p>
-                    <button class="next-step">Volgende</button>
-                </div>
-                <!-- Meer tutorial stappen -->
-            </div>
-
-            <!-- Tab Navigation -->
-            <nav class="tab-navigation">
-                <button class="tab-button active" data-tab="games">
-                    <i class="fas fa-gamepad"></i> Games
-                </button>
-                <button class="tab-button" data-tab="events">
-                    <i class="fas fa-calendar-star"></i> Events
-                </button>
-                <button class="tab-button" data-tab="daily">
-                    <i class="fas fa-sun"></i> Dagelijks
-                </button>
-                <button class="tab-button" data-tab="shop">
-                    <i class="fas fa-store"></i> Shop
-                </button>
-            </nav>
+            </header>
 
             <!-- Tab Content -->
             <div class="tab-content">
-                <div class="tab-pane active" id="games">
-                    <!-- Hoofdgames Sectie -->
-                    <div class="main-games">
-                        <h2><i class="fas fa-star"></i> Populaire Games</h2>
-                        <div class="games-grid">
-                            <!-- Flappy Bird -->
-                            <div class="game-card main-game">
-                                <img src="images/games/flappy.png" alt="Flappy Bird">
-                                <div class="game-info">
-                                    <h3>Flappy Bird</h3>
-                                    <div class="stats">
-                                        <span><i class="fas fa-trophy"></i> Highscore: <span id="flappyHighscore">0</span></span>
-                                        <span><i class="fas fa-gamepad"></i> Gespeeld: <span id="flappyPlayed">0</span></span>
-                                    </div>
-                                    <button class="play-btn" onclick="location.href='games/flappy.html'">
-                                        <i class="fas fa-play"></i> Spelen
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Andere hoofdgames hier -->
+                <!-- Games Tab -->
+                <div id="games" class="tab-pane active">
+                    <div class="section-header">
+                        <h2>Populaire Games</h2>
+                        <div class="view-options">
+                            <button class="grid-view active"><i class="fas fa-th"></i></button>
+                            <button class="list-view"><i class="fas fa-list"></i></button>
                         </div>
                     </div>
-
-                    <!-- Mini-Games Sectie -->
-                    <div class="mini-games">
-                        <h2><i class="fas fa-puzzle-piece"></i> Mini-Games</h2>
-                        <div class="mini-games-grid">
-                            <!-- Memory Card -->
-                            <div class="mini-game-card" data-game="memoryCard">
-                                <div class="game-preview">🎮</div>
-                                <h4>Memory</h4>
-                                <p>Match de kaarten en verdien punten!</p>
-                                <div class="cooldown-timer" id="memoryCardCooldown"></div>
-                                <button class="play-mini-btn">Spelen</button>
-                            </div>
-                            <!-- Andere mini-games hier -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="events">
-                    <div class="battle-pass-section">
-                        <div class="battle-pass-header">
-                            <h2><i class="fas fa-crown"></i> Battle Pass - Seizoen 1</h2>
-                            <div class="season-timer">
-                                <i class="fas fa-hourglass-half"></i>
-                                Nog <span id="seasonDays">0</span> dagen
-                            </div>
-                        </div>
-                        <div class="battle-pass-tiers">
-                            <!-- Tiers worden dynamisch geladen -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="daily">
-                    <div class="daily-missions">
-                        <h2><i class="fas fa-tasks"></i> Dagelijkse Missies</h2>
-                        <div class="missions-list">
-                            <!-- Missies worden dynamisch geladen -->
-                        </div>
-                    </div>
-                    
-                    <div class="daily-rewards">
-                        <h2><i class="fas fa-gift"></i> Dagelijkse Beloningen</h2>
-                        <div class="rewards-calendar">
-                            <!-- Beloningen kalender wordt dynamisch geladen -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="shop">
-                    <div class="shop-categories">
-                        <button class="category-btn active" data-category="skins">
-                            <i class="fas fa-paint-brush"></i> Skins
-                        </button>
-                        <button class="category-btn" data-category="powerups">
-                            <i class="fas fa-bolt"></i> Power-ups
-                        </button>
-                    </div>
-                    <div class="shop-items">
-                        <!-- Shop items worden dynamisch geladen -->
+                    <div class="games-grid">
+                        <!-- Games worden dynamisch toegevoegd -->
                     </div>
                 </div>
             </div>
+        </main>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay">
+        <div class="tutorial-content">
+            <h3>Welkom bij Pjotters Games!</h3>
+            <p>Laten we je rondleiden...</p>
+            <button class="tutorial-next">Start Tour</button>
         </div>
     </div>
 
     <script type="module" src="dashboard.js"></script>
-    <script type="module" src="services/battle-pass-service.js"></script>
-    <script type="module" src="services/mini-games-service.js"></script>
-    <script type="module" src="services/missions-service.js"></script>
-    <script type="module" src="services/power-ups-service.js"></script>
-    <script type="module" src="services/rewards-service.js"></script>
-    <script type="module" src="services/events-service.js"></script>
-    <script type="module" src="services/friends-service.js"></script>
-    <script type="module" src="services/leaderboard-service.js"></script>
-    <script type="module" src="services/missions-service.js"></script>
-    <script type="module" src="services/power-ups-service.js"></script>
-    <script type="module" src="services/rewards-service.js"></script>
-    <script type="module" src="services/shop-service.js"></script>
-    <script type="module" src="services/user-service.js"></script>
-    <script type="module" src="services/quiz-service.js"></script>
 </body>
 </html> 
