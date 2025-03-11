@@ -742,4 +742,113 @@ body {
 @keyframes progressShine {
     from { transform: translateX(-100%); }
     to { transform: translateX(100%); }
+}
+
+/* Notificatie systeem */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background: var(--surface);
+    border-left: 4px solid var(--primary);
+    padding: 1rem;
+    border-radius: 8px;
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.notification.success { border-color: #4CAF50; }
+.notification.error { border-color: #F44336; }
+.notification.warning { border-color: #FFC107; }
+
+.notification.slide-in {
+    transform: translateX(0);
+}
+
+.notification.slide-out {
+    transform: translateX(120%);
+}
+
+/* Achievement popup */
+.achievement-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 20px rgba(108, 99, 255, 0.3);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.achievement-notification.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.achievement-notification.hide {
+    transform: translateX(-50%) translateY(100%);
+}
+
+/* Hover effecten voor cards */
+.game-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x) var(--mouse-y),
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 80%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.game-card:hover::after {
+    opacity: 1;
+}
+
+/* Loading animaties */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(69, 183, 175, 0.3);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Particle effects voor achievements */
+.particle {
+    position: absolute;
+    pointer-events: none;
+    animation: particle 1s ease-out forwards;
+}
+
+@keyframes particle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
 } 

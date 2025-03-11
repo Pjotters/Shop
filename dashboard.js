@@ -82,8 +82,9 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.initializeAnimations();
         this.initializeTutorial();
-        this.initializeTabs();
+        this.initializeNotifications();
         this.loadUserProfile();
         this.currentTutorialStep = 0;
         this.tutorialSteps = [
@@ -94,7 +95,7 @@ class Dashboard {
             },
             {
                 element: '.games-grid',
-                message: 'Speel je favoriete games en verdien punten!',
+                message: 'Speel je favoriete games en verdien punten voor korting!',
                 position: 'right'
             },
             {
@@ -111,6 +112,97 @@ class Dashboard {
             powerUps: new PowerUpsService()
         };
         this.initializeDashboard();
+    }
+
+    initializeAnimations() {
+        // Animeer getallen (punten, levels, etc.)
+        this.numberAnimator = {
+            animate: (element, start, end, duration = 1000) => {
+                const startTime = performance.now();
+                const updateNumber = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing functie voor soepele animatie
+                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    const current = Math.floor(start + (end - start) * easeOutQuart);
+                    
+                    element.textContent = current.toLocaleString();
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateNumber);
+                    }
+                };
+                requestAnimationFrame(updateNumber);
+            }
+        };
+
+        // Animeer nieuwe achievements
+        this.achievementAnimator = {
+            show: (achievement) => {
+                const notification = document.createElement('div');
+                notification.className = 'achievement-notification';
+                notification.innerHTML = `
+                    <i class="fas fa-trophy"></i>
+                    <div class="achievement-details">
+                        <h4>Nieuwe Prestatie!</h4>
+                        <p>${achievement.title}</p>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Animatie sequence
+                setTimeout(() => notification.classList.add('show'), 100);
+                setTimeout(() => {
+                    notification.classList.add('hide');
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
+            }
+        };
+    }
+
+    initializeNotifications() {
+        this.notificationSystem = {
+            show: (message, type = 'info') => {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${this.getNotificationIcon(type)}"></i>
+                    <p>${message}</p>
+                `;
+                
+                const container = document.querySelector('.notification-container') 
+                    || this.createNotificationContainer();
+                
+                container.appendChild(notification);
+                
+                // Animatie sequence met CSS classes
+                requestAnimationFrame(() => {
+                    notification.classList.add('slide-in');
+                    setTimeout(() => {
+                        notification.classList.add('slide-out');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 3000);
+                });
+            }
+        };
+    }
+
+    getNotificationIcon(type) {
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            warning: 'fa-exclamation-triangle',
+            info: 'fa-info-circle'
+        };
+        return icons[type] || icons.info;
+    }
+
+    createNotificationContainer() {
+        const container = document.createElement('div');
+        container.className = 'notification-container';
+        document.body.appendChild(container);
+        return container;
     }
 
     async loadUserProfile() {
@@ -276,9 +368,35 @@ class Dashboard {
             });
         });
     }
+
+    // Verbeterde tutorial met animaties
+    showTutorialStep(step) {
+        const overlay = document.querySelector('.tutorial-overlay');
+        const content = document.querySelector('.tutorial-content');
+        
+        content.style.opacity = '0';
+        content.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            content.innerHTML = this.getTutorialStepContent(step);
+            content.style.opacity = '1';
+            content.style.transform = 'scale(1)';
+        }, 300);
+
+        this.highlightElement(this.tutorialSteps[step].element);
+    }
+
+    highlightElement(selector) {
+        const element = document.querySelector(selector);
+        if (!element) return;
+
+        element.style.position = 'relative';
+        element.style.zIndex = '1001';
+        element.style.animation = 'pulse 2s infinite';
+    }
 }
 
-// Initialiseer dashboard
+// Start de dashboard met alle animaties
 document.addEventListener('DOMContentLoaded', () => {
-    new Dashboard();
+    const dashboard = new Dashboard();
 }); 
