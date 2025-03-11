@@ -142,23 +142,48 @@ class Dashboard {
         const container = document.getElementById('quizContainer');
         
         if (!question) {
-            container.innerHTML = '<p>Je hebt de dagelijkse quiz al gespeeld. Kom morgen terug!</p>';
+            container.innerHTML = `
+                <div class="quiz-completed">
+                    <h3>🎯 Quiz Voltooid!</h3>
+                    <p>Je hebt de dagelijkse quiz al gespeeld. Kom morgen terug voor een nieuwe uitdaging!</p>
+                    <div class="countdown">Volgende quiz over: <span id="quizCountdown">24:00:00</span></div>
+                </div>
+            `;
             return;
         }
 
         container.innerHTML = `
-            <h3>${question.question}</h3>
-            <div class="quiz-answers">
-                ${question.answers.map((answer, index) => `
-                    <button class="quiz-answer" data-index="${index}">${answer}</button>
-                `).join('')}
+            <div class="quiz-question">
+                <h3>🤔 ${question.question}</h3>
+                <div class="quiz-answers">
+                    ${question.answers.map((answer, index) => `
+                        <button class="quiz-answer" data-index="${index}">
+                            <span class="answer-letter">${['A', 'B', 'C', 'D'][index]}</span>
+                            ${answer}
+                        </button>
+                    `).join('')}
+                </div>
             </div>
         `;
 
         // Voeg event listeners toe voor antwoorden
         container.querySelectorAll('.quiz-answer').forEach(button => {
-            button.addEventListener('click', () => this.handleQuizAnswer(question.date, parseInt(button.dataset.index)));
+            button.addEventListener('click', async (e) => {
+                const result = await this.handleQuizAnswer(question.date, parseInt(e.target.dataset.index));
+                this.showQuizResult(result);
+            });
         });
+    }
+
+    showQuizResult(correct) {
+        const container = document.getElementById('quizContainer');
+        container.innerHTML = `
+            <div class="quiz-result ${correct ? 'correct' : 'incorrect'}">
+                <h3>${correct ? '🎉 Goed gedaan!' : '😅 Helaas!'}</h3>
+                <p>${correct ? '+100 punten!' : 'Volgende keer beter!'}</p>
+                <div class="points-animation">+100</div>
+            </div>
+        `;
     }
 
     async loadAchievements() {

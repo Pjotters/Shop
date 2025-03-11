@@ -35,115 +35,156 @@
     padding: 2rem;
 }
 
-/* Quiz Styling */
+/* Modern Dashboard Layout */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    min-height: 100vh;
+    color: white;
+}
+
+.dashboard-header {
+    background: linear-gradient(135deg, #45B7AF, #3a9c94);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(69, 183, 175, 0.2);
+}
+
+/* Games Grid */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.game-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(69, 183, 175, 0.2);
+}
+
+/* Daily Quiz Section */
 .daily-quiz {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
 }
 
 .quiz-answers {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .quiz-answer {
-    background: #f5f5f5;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 12px;
     padding: 1rem;
+    font-size: 1.1rem;
+    color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .quiz-answer:hover {
-    background: #45B7AF;
-    color: white;
-    border-color: #45B7AF;
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Achievements Styling */
+/* Achievements Section */
+.achievements {
+    background: linear-gradient(135deg, #4ECDC4, #45B7AF);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
 .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
 }
 
 .achievement-card {
-    background: white;
-    border-radius: 10px;
-    padding: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 1.5rem;
     text-align: center;
-    position: relative;
-    overflow: hidden;
+    color: #333;
+    transition: all 0.3s ease;
 }
 
-.achievement-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+.achievement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.achievement-locked {
-    opacity: 0.5;
-}
-
-.achievement-unlocked {
-    border: 2px solid #45B7AF;
-}
-
-/* Leaderboard Styling */
-.leaderboard-list {
-    background: white;
-    border-radius: 10px;
-    padding: 1rem;
+/* Leaderboard Section */
+.leaderboard {
+    background: linear-gradient(135deg, #FFD93D, #FFC107);
+    border-radius: 20px;
+    padding: 2rem;
+    color: #333;
 }
 
 .leaderboard-item {
+    background: rgba(255, 255, 255, 0.95);
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 10px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.75rem;
-    border-bottom: 1px solid #eee;
+    gap: 1rem;
 }
 
 .leaderboard-rank {
-    font-weight: bold;
-    color: #45B7AF;
-    width: 30px;
-}
-
-/* Level Progress Styling */
-.level-progress {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-}
-
-.level-info {
-    text-align: center;
-}
-
-.current-level {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #45B7AF;
+    color: #FFD93D;
+    min-width: 40px;
+}
+
+/* Level Progress */
+.level-progress {
+    background: linear-gradient(135deg, #6C63FF, #5A54D4);
+    border-radius: 20px;
+    padding: 2rem;
+    color: white;
+    margin-top: 2rem;
 }
 
 .progress-bar {
-    height: 20px;
-    background: #f5f5f5;
-    border-radius: 10px;
-    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.2);
+    height: 25px;
+    border-radius: 12px;
     overflow: hidden;
+    margin: 1rem 0;
 }
 
 .progress-fill {
+    background: linear-gradient(90deg, #45B7AF, #4ECDC4);
     height: 100%;
-    background: #45B7AF;
-    transition: width 0.3s ease;
+    border-radius: 12px;
+    transition: width 0.5s ease;
 }
 
 /* Animations */
@@ -155,4 +196,84 @@
 
 .achievement-unlocked {
     animation: unlock 0.5s ease;
+}
+
+/* Moderne animaties */
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Glassmorphism effecten */
+.section-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Moderne cards met hover effecten */
+.achievement-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.6s;
+}
+
+.achievement-card:hover::before {
+    transform: rotate(45deg) translate(50%, 50%);
+}
+
+/* Verbeterde quiz styling */
+.quiz-content {
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-answer {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.quiz-answer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #45B7AF, #4ECDC4);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.quiz-answer:hover::after {
+    opacity: 1;
 } 

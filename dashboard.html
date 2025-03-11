@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pjotters Dashboard</title>
-    <link rel="stylesheet" href="games/games.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles/dashboard.css">
@@ -20,149 +20,151 @@
         <header class="dashboard-header">
             <div class="header-left">
                 <img src="images/logo.png" alt="Pjotters Logo" class="dashboard-logo">
-                <h1 class="welcome-message">Welkom terug!</h1>
+                <div class="header-info">
+                    <h1 class="welcome-message">Welkom terug!</h1>
+                    <div class="user-level">Level <span id="userLevel">1</span></div>
+                </div>
             </div>
-            <div class="user-points">
-                <i class="fas fa-coins"></i>
-                <span id="totalPoints">0</span> punten
+            <div class="user-stats">
+                <div class="stat-item">
+                    <i class="fas fa-coins"></i>
+                    <span id="totalPoints">0</span> punten
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span id="totalAchievements">0</span> achievements
+                </div>
             </div>
         </header>
 
-        <section class="games-section">
-            <h2><i class="fas fa-gamepad"></i> Beschikbare Games</h2>
-            <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-banner">
-                        <img src="images/games/flappy-bird.png" alt="Flappy Bird">
-                        <div class="game-overlay">
-                            <button class="play-button" onclick="location.href='games/flappy.html'">
-                                <i class="fas fa-play"></i> Spelen
-                            </button>
+        <div class="dashboard-grid">
+            <!-- Games Sectie -->
+            <section class="games-section">
+                <h2><i class="fas fa-gamepad"></i> Games</h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-banner">
+                            <img src="images/games/flappy-bird.png" alt="Flappy Bird">
+                            <div class="game-overlay">
+                                <button class="play-button" onclick="location.href='games/flappy.html'">
+                                    <i class="fas fa-play"></i> Spelen
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="game-title">Happy Flappy</h3>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-trophy"></i>
+                                <div class="stat-value" id="flappyHighscore">0</div>
+                                <div class="stat-label">Highscore</div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-coins"></i>
+                                <div class="stat-value" id="flappyPoints">0</div>
+                                <div class="stat-label">Punten</div>
+                            </div>
                         </div>
                     </div>
-                    <h3 class="game-title">Happy Flappy</h3>
-                    <div class="game-stats">
-                        <div class="stat">
-                            <i class="fas fa-trophy"></i>
-                            <div class="stat-value" id="flappyHighscore">0</div>
-                            <div class="stat-label">Highscore</div>
+
+                    <div class="game-card">
+                        <div class="game-banner">
+                            <img src="images/games/snake.png" alt="Snake">
+                            <div class="game-overlay">
+                                <button class="play-button" onclick="location.href='games/snake.html'">
+                                    <i class="fas fa-play"></i> Spelen
+                                </button>
+                            </div>
                         </div>
-                        <div class="stat">
-                            <i class="fas fa-coins"></i>
-                            <div class="stat-value" id="flappyPoints">0</div>
-                            <div class="stat-label">Punten</div>
+                        <h3 class="game-title">Snake</h3>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-trophy"></i>
+                                <div class="stat-value" id="snakeHighscore">0</div>
+                                <div class="stat-label">Highscore</div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-coins"></i>
+                                <div class="stat-value" id="snakePoints">0</div>
+                                <div class="stat-label">Punten</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-banner">
+                            <img src="images/games/pacman.png" alt="Pac-Man">
+                            <div class="game-overlay">
+                                <button class="play-button" onclick="location.href='games/pacman.html'">
+                                    <i class="fas fa-play"></i> Spelen
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="game-title">Pac-Man</h3>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-trophy"></i>
+                                <div class="stat-value" id="pacmanHighscore">0</div>
+                                <div class="stat-label">Highscore</div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-coins"></i>
+                                <div class="stat-value" id="pacmanPoints">0</div>
+                                <div class="stat-label">Punten</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="game-card">
-                    <div class="game-banner">
-                        <img src="images/games/snake.png" alt="Snake">
-                        <div class="game-overlay">
-                            <button class="play-button" onclick="location.href='games/snake.html'">
-                                <i class="fas fa-play"></i> Spelen
-                            </button>
-                        </div>
-                    </div>
-                    <h3 class="game-title">Snake</h3>
-                    <div class="game-stats">
-                        <div class="stat">
-                            <i class="fas fa-trophy"></i>
-                            <div class="stat-value" id="snakeHighscore">0</div>
-                            <div class="stat-label">Highscore</div>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-coins"></i>
-                            <div class="stat-value" id="snakePoints">0</div>
-                            <div class="stat-label">Punten</div>
-                        </div>
+            <!-- Quiz Sectie -->
+            <section class="daily-quiz">
+                <div class="section-header">
+                    <h2><i class="fas fa-question-circle"></i> Dagelijkse Quiz</h2>
+                    <div class="quiz-reward">
+                        <i class="fas fa-gift"></i> 100 punten
                     </div>
                 </div>
+                <div id="quizContainer" class="quiz-content">
+                    <!-- Quiz content wordt dynamisch geladen -->
+                </div>
+            </section>
 
-                <div class="game-card">
-                    <div class="game-banner">
-                        <img src="images/games/pacman.png" alt="Pac-Man">
-                        <div class="game-overlay">
-                            <button class="play-button" onclick="location.href='games/pacman.html'">
-                                <i class="fas fa-play"></i> Spelen
-                            </button>
-                        </div>
-                    </div>
-                    <h3 class="game-title">Pac-Man</h3>
-                    <div class="game-stats">
-                        <div class="stat">
-                            <i class="fas fa-trophy"></i>
-                            <div class="stat-value" id="pacmanHighscore">0</div>
-                            <div class="stat-label">Highscore</div>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-coins"></i>
-                            <div class="stat-value" id="pacmanPoints">0</div>
-                            <div class="stat-label">Punten</div>
-                        </div>
+            <!-- Achievements Sectie -->
+            <section class="achievements">
+                <div class="section-header">
+                    <h2><i class="fas fa-medal"></i> Achievements</h2>
+                    <div class="progress-indicator">
+                        <span id="achievementProgress">0/10</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="rewards-section">
-            <h2>Rewards Shop</h2>
-            <div class="rewards-grid">
-                <div class="reward-card">
-                    <span class="reward-icon">🎫</span>
-                    <h4>€5 Korting</h4>
-                    <span class="points-cost">500 punten</span>
-                    <button class="claim-btn" data-reward="coupon5">Claim</button>
+                <div class="achievements-grid">
+                    <!-- Achievement cards worden dynamisch geladen -->
                 </div>
-                <!-- Meer rewards hier -->
-            </div>
-        </section>
+            </section>
 
-        <section class="shop-section">
-            <h2>Shop</h2>
-            <div class="shop-grid">
-                <div class="shop-item">
-                    <img src="images/items/premium-skin.png" alt="Premium Skin">
-                    <h3>Premium Skin</h3>
-                    <p class="item-cost">500 punten</p>
-                    <button class="buy-btn" data-item-id="premium_skin" data-cost="1000">
-                        Kopen
-                    </button>
+            <!-- Leaderboard Sectie -->
+            <section class="leaderboard">
+                <div class="section-header">
+                    <h2><i class="fas fa-crown"></i> Top Spelers</h2>
+                    <div class="your-rank">
+                        Jouw rank: <span id="userRank">#0</span>
+                    </div>
                 </div>
-                <!-- Meer items hier -->
-            </div>
-        </section>
+                <div class="leaderboard-list">
+                    <!-- Leaderboard items worden dynamisch geladen -->
+                </div>
+            </section>
+        </div>
 
-        <section class="my-coupons">
-            <h2>Mijn Coupons</h2>
-            <div class="coupons-grid"></div>
-        </section>
-
-        <section class="daily-quiz">
-            <h2>Dagelijkse Quiz</h2>
-            <div id="quizContainer">
-                <!-- Quiz wordt hier dynamisch ingeladen -->
-            </div>
-        </section>
-
-        <section class="achievements">
-            <h2>Achievements</h2>
-            <div class="achievements-grid"></div>
-        </section>
-
-        <section class="leaderboard">
-            <h2>Top 15 Spelers</h2>
-            <div class="leaderboard-list"></div>
-        </section>
-
+        <!-- Progress Bar onderaan -->
         <section class="level-progress">
-            <h2>Jouw Progressie</h2>
-            <div class="level-info">
-                <span class="current-level">Level 1</span>
+            <div class="progress-details">
+                <span class="current-level">Level <span id="currentLevel">1</span></span>
                 <div class="progress-bar">
-                    <div class="progress-fill"></div>
+                    <div class="progress-fill" style="width: 45%"></div>
+                    <span class="progress-text">450/1000 XP</span>
                 </div>
-                <span class="next-level">Level 2</span>
+                <span class="next-level">Level <span id="nextLevel">2</span></span>
             </div>
         </section>
     </div>
