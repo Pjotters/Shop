@@ -1,5 +1,4 @@
-import { db, dbRef } from '../firebase-config.js';
-import { ref, get, update, set } from 'firebase/database';
+import { db, ref, get, update, set } from '../firebase-config.js';
 
 export class BattlePassService {
     constructor() {
@@ -34,7 +33,7 @@ export class BattlePassService {
     }
 
     async initializeBattlePass(userId) {
-        const battlePassRef = dbRef.battlePass(userId);
+        const battlePassRef = ref(db, `users/${userId}/battlePass`);
         const snapshot = await get(battlePassRef);
 
         if (!snapshot.exists()) {
@@ -48,8 +47,8 @@ export class BattlePassService {
     }
 
     async claimReward(userId, rewardId) {
-        const userRef = dbRef.user(userId);
-        const battlePassRef = dbRef.battlePass(userId);
+        const userRef = ref(db, `users/${userId}`);
+        const battlePassRef = ref(db, `users/${userId}/battlePass`);
         
         const [userSnap, battlePassSnap] = await Promise.all([
             get(userRef),
