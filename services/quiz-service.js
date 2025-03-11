@@ -1,5 +1,5 @@
 import { db } from '../firebase-config.js';
-import { ref, get, set, query, orderByChild, limitToLast } from 'firebase/database';
+import { ref, get, set, query, orderByChild, limitToLast } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 export class QuizService {
     constructor() {
