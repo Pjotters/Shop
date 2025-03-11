@@ -82,6 +82,7 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.initializeTabs();
         this.initializeAnimations();
         this.initializeTutorial();
         this.initializeNotifications();
@@ -112,6 +113,38 @@ class Dashboard {
             powerUps: new PowerUpsService()
         };
         this.initializeDashboard();
+    }
+
+    initializeTabs() {
+        const tabLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = link.getAttribute('data-tab');
+
+                // Verwijder active class van alle tabs
+                tabLinks.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Voeg active class toe aan geselecteerde tab
+                link.classList.add('active');
+                document.getElementById(tabId)?.classList.add('active');
+
+                // Animeer de nieuwe content
+                this.animateTabContent(tabId);
+            });
+        });
+    }
+
+    animateTabContent(tabId) {
+        const content = document.getElementById(tabId);
+        if (!content) return;
+
+        content.style.animation = 'none';
+        content.offsetHeight; // Force reflow
+        content.style.animation = 'fadeIn 0.5s ease forwards';
     }
 
     initializeAnimations() {
@@ -294,32 +327,6 @@ class Dashboard {
                 }
             }
         });
-    }
-
-    initializeTabs() {
-        const tabButtons = document.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                this.switchTab(button.dataset.tab);
-            });
-        });
-    }
-
-    switchTab(tabId) {
-        const oldTab = document.querySelector('.tab-pane.active');
-        const newTab = document.getElementById(tabId);
-
-        oldTab.style.animation = 'fadeOut 0.3s ease forwards';
-        
-        setTimeout(() => {
-            oldTab.classList.remove('active');
-            newTab.style.display = 'block';
-            newTab.style.animation = 'fadeIn 0.3s ease forwards';
-            newTab.classList.add('active');
-            
-            // Reset animaties voor nieuwe tab inhoud
-            this.initializeAnimations();
-        }, 300);
     }
 
     async initializeDashboard() {

@@ -851,4 +851,26 @@ body {
         transform: translate(var(--tx), var(--ty)) scale(0);
         opacity: 0;
     }
+}
+
+.tab-pane {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 } 
