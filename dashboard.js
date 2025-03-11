@@ -87,6 +87,7 @@ class Dashboard {
         this.setupEventListeners();
         this.loadUserCoupons();
         this.initializeDashboard();
+        this.showTutorial();
     }
 
     setupEventListeners() {
@@ -200,6 +201,44 @@ class Dashboard {
 
     handleQuizAnswer(date, answerIndex) {
         // Implementeer de logica om antwoord te verwerken
+    }
+
+    showTutorial() {
+        const tutorialHTML = `
+            <div class="tutorial-overlay">
+                <div class="tutorial-modal">
+                    <h2>👋 Welkom bij Pjotters Games!</h2>
+                    <div class="tutorial-steps">
+                        <div class="tutorial-step">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>Speel Games voor Korting</h3>
+                            <p>Kies uit verschillende games en verdien punten!</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>Dagelijkse Quiz</h3>
+                            <p>Beantwoord dagelijks een vraag voor 100 bonus punten!</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <i class="fas fa-trophy"></i>
+                            <h3>Verdien Achievements</h3>
+                            <p>Ontgrendel speciale prestaties en krijg extra beloningen!</p>
+                        </div>
+                    </div>
+                    <button class="tutorial-close">Start je avontuur!</button>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', tutorialHTML);
+        
+        const tutorial = document.querySelector('.tutorial-overlay');
+        const closeButton = document.querySelector('.tutorial-close');
+        
+        closeButton.addEventListener('click', () => {
+            tutorial.classList.add('tutorial-fade-out');
+            setTimeout(() => tutorial.remove(), 500);
+        });
     }
 }
 
