@@ -374,6 +374,8 @@ class Dashboard {
                 }
             });
         });
+
+        this.initializeRewardListeners();
     }
 
     // Verbeterde tutorial met animaties
@@ -512,6 +514,53 @@ class Dashboard {
         `;
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 3000);
+    }
+
+    initializeRewardListeners() {
+        // Reward claim knoppen
+        document.querySelectorAll('.reward-item').forEach(item => {
+            item.addEventListener('click', async (e) => {
+                if (item.classList.contains('locked')) return;
+                
+                const rewardId = item.dataset.rewardId;
+                try {
+                    const reward = await this.services.battlePass.claimReward(
+                        auth.currentUser.uid,
+                        rewardId
+                    );
+                    
+                    // Animatie en feedback
+                    item.classList.add('claimed');
+                    this.showNotification(`Je hebt ${reward.name || reward.amount + ' Coins'} geclaimd!`);
+                    
+                    // Update coins display
+                    this.updateCoinsDisplay();
+                } catch (error) {
+                    this.showError(error.message);
+                }
+            });
+        });
+
+        // Navigatie knoppen
+        const prevBtn = document.querySelector('.nav-btn.prev');
+        const nextBtn = document.querySelector('.nav-btn.next');
+        const pageIndicator = document.querySelector('.page-indicator');
+
+        prevBtn.addEventListener('click', () => {
+            if (this.services.battlePass.currentPage > 1) {
+                this.services.battlePass.currentPage--;
+                this.loadBattlePassContent();
+                pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (this.services.battlePass.currentPage < this.services.battlePass.totalPages) {
+                this.services.battlePass.currentPage++;
+                this.loadBattlePassContent();
+                pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
+            }
+        });
     }
 }
 
