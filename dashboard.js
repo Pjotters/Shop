@@ -82,8 +82,27 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        this.initializeAnimations();
+        this.setupEventListeners();
+        this.currentTutorialStep = 0;
+        this.tutorialSteps = [
+            {
+                element: '.tab-navigation',
+                message: 'Gebruik de tabs om te navigeren tussen verschillende secties!',
+                position: 'bottom'
+            },
+            {
+                element: '.games-grid',
+                message: 'Speel je favoriete games en verdien punten!',
+                position: 'right'
+            },
+            {
+                element: '.battle-pass-section',
+                message: 'Unlock beloningen in de Battle Pass!',
+                position: 'left'
+            }
+        ];
         this.currentTab = 'games';
-        this.tutorialStep = 1;
         this.initializeTabs();
         this.initializeTutorial();
         this.services = {
@@ -95,6 +114,48 @@ class Dashboard {
         this.initializeDashboard();
     }
 
+    initializeAnimations() {
+        // Voeg entry animaties toe met delays
+        document.querySelectorAll('.game-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        document.querySelectorAll('.mini-game-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Tab wissel animaties
+        this.setupTabTransitions();
+    }
+
+    setupTabTransitions() {
+        const tabs = document.querySelectorAll('.tab-pane');
+        tabs.forEach(tab => {
+            tab.addEventListener('transitionend', () => {
+                if (!tab.classList.contains('active')) {
+                    tab.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    switchTab(tabId) {
+        const oldTab = document.querySelector('.tab-pane.active');
+        const newTab = document.getElementById(tabId);
+
+        oldTab.style.animation = 'fadeOut 0.3s ease forwards';
+        
+        setTimeout(() => {
+            oldTab.classList.remove('active');
+            newTab.style.display = 'block';
+            newTab.style.animation = 'fadeIn 0.3s ease forwards';
+            newTab.classList.add('active');
+            
+            // Reset animaties voor nieuwe tab inhoud
+            this.initializeAnimations();
+        }, 300);
+    }
+
     initializeTabs() {
         const tabButtons = document.querySelectorAll('.tab-button');
         tabButtons.forEach(button => {
@@ -102,23 +163,6 @@ class Dashboard {
                 this.switchTab(button.dataset.tab);
             });
         });
-    }
-
-    switchTab(tabId) {
-        // Verwijder active class van alle tabs
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-        });
-
-        // Activeer nieuwe tab
-        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-        document.getElementById(tabId).classList.add('active');
-        
-        // Laad tab-specifieke content
-        this.loadTabContent(tabId);
     }
 
     initializeTutorial() {
@@ -130,14 +174,23 @@ class Dashboard {
     showTutorial() {
         const tutorial = document.getElementById('tutorial');
         tutorial.classList.add('active');
-        this.showTutorialStep(1);
+        this.showTutorialStep(0);
     }
 
-    showTutorialStep(step) {
-        document.querySelectorAll('.tutorial-step').forEach(s => {
-            s.classList.remove('active');
+    showTutorialStep(stepIndex) {
+        const step = this.tutorialSteps[stepIndex];
+        const element = document.querySelector(step.element);
+        
+        // Verwijder vorige highlights
+        document.querySelectorAll('.tutorial-highlight').forEach(el => {
+            el.classList.remove('tutorial-highlight');
         });
-        document.querySelector(`[data-step="${step}"]`).classList.add('active');
+
+        // Voeg nieuwe highlight toe
+        element.classList.add('tutorial-highlight');
+        
+        // Toon tutorial bericht
+        this.showTutorialMessage(step.message, element, step.position);
     }
 
     async initializeDashboard() {
