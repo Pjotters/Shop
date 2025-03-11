@@ -9,15 +9,21 @@ import { BattlePassService } from './services/battle-pass-service.js';
 import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
+import { getAuth } from 'firebase/auth';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const user = await requireAuth();
+    const auth = getAuth();
+    
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.replace('/login.html');
+            return;
+        }
+        
+        // Alleen dashboard initialiseren als er een user is
         const dashboard = new Dashboard(user);
-    } catch (error) {
-        console.error('Auth error:', error);
-        window.location.href = '/login.html';
-    }
+        dashboard.initializeDashboard();
+    });
 });
 
 function loadUserData(user) {
@@ -82,11 +88,17 @@ function updateRewards(points) {
 class Dashboard {
     constructor(user) {
         if (!user) {
-            window.location.href = '/login.html';
+            window.location.replace('/login.html');
             return;
         }
         
         this.user = user;
+        this.services = {
+            shop: new ShopService(),
+            quiz: new QuizService(),
+            battlePass: new BattlePassService(),
+            // ... andere services
+        };
         this.initializeDashboard();
     }
 
@@ -102,21 +114,24 @@ class Dashboard {
         const tabLinks = document.querySelectorAll('.nav-link');
         const tabContents = document.querySelectorAll('.tab-pane');
 
+        // Fix voor tab navigatie
         tabLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const tabId = link.getAttribute('data-tab');
-
-                // Verwijder active class van alle tabs
+                
+                // Verberg alle tabs
+                tabContents.forEach(content => content.style.display = 'none');
+                
+                // Toon geselecteerde tab
+                const selectedTab = document.getElementById(tabId);
+                if (selectedTab) {
+                    selectedTab.style.display = 'block';
+                }
+                
+                // Update active states
                 tabLinks.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
-
-                // Voeg active class toe aan geselecteerde tab
                 link.classList.add('active');
-                document.getElementById(tabId)?.classList.add('active');
-
-                // Animeer de nieuwe content
-                this.animateTabContent(tabId);
             });
         });
     }
