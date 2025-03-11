@@ -1,7 +1,7 @@
-import { auth, db, ref, get, onAuthStateChanged, onValue } from './firebase-config.js';
+import { auth, db, ref, get, onValue } from './firebase-config.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
-import { CouponService } from './services/coupon-service.js';
 import { QuizService } from './services/quiz-service.js';   
 import { AchievementService } from './services/achievement-service.js';
 import { LeaderboardService } from './services/leaderboard-service.js';
@@ -9,7 +9,6 @@ import { BattlePassService } from './services/battle-pass-service.js';
 import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
-import { getAuth } from 'firebase/auth';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {

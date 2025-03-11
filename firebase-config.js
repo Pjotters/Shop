@@ -1,8 +1,7 @@
-// Import the functions you need from the SDKs you need
+// Gebruik alleen HTTPS imports voor Firebase
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
-import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get, set, update, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,22 +19,22 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
 // Helper functies voor database operaties
 export const dbRef = {
-  user: (uid) => ref(db, `users/${uid}`),
-  games: (uid) => ref(db, `users/${uid}/games`),
-  points: (uid) => ref(db, `users/${uid}/points`),
-  rewards: (uid) => ref(db, `users/${uid}/rewards`),
-  proContent: () => ref(db, 'pro_content'),
-  premiumContent: () => ref(db, 'premium_content'),
-  battlePass: (uid) => ref(db, `users/${uid}/battlePass`),
-  miniGames: (uid) => ref(db, `users/${uid}/miniGames`),
-  missions: (uid) => ref(db, `users/${uid}/dailyMissions`),
-  powerUps: (uid) => ref(db, `users/${uid}/powerUps`),
-  inventory: (uid) => ref(db, `users/${uid}/inventory`)
+    user: (uid) => ref(db, `users/${uid}`),
+    games: (uid) => ref(db, `users/${uid}/games`),
+    points: (uid) => ref(db, `users/${uid}/points`),
+    rewards: (uid) => ref(db, `users/${uid}/rewards`),
+    proContent: () => ref(db, 'pro_content'),
+    premiumContent: () => ref(db, 'premium_content'),
+    battlePass: (uid) => ref(db, `users/${uid}/battlePass`),
+    miniGames: (uid) => ref(db, `users/${uid}/miniGames`),
+    missions: (uid) => ref(db, `users/${uid}/dailyMissions`),
+    powerUps: (uid) => ref(db, `users/${uid}/powerUps`),
+    inventory: (uid) => ref(db, `users/${uid}/inventory`)
 };
 
 // Gebruikersdata structuur
@@ -57,4 +56,4 @@ export const createNewUserData = (uid, email) => ({
   createdAt: serverTimestamp()
 });
 
-export { db, auth, ref, get, set, update, onAuthStateChanged };
+export { auth, db, ref, get, set, update, onValue };
