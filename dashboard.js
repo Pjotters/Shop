@@ -440,21 +440,46 @@ class Dashboard {
     }
 
     async loadBattlePassContent() {
-        const battlePass = document.getElementById('battle-pass');
-        const userLevel = await this.getUserBattlePassLevel();
+        const battlePassGrid = document.querySelector('.rewards-grid');
+        const user = auth.currentUser;
         
-        const rewards = await this.fetchBattlePassRewards();
-        const rewardsHTML = rewards.map((reward, index) => `
-            <div class="battle-pass-reward ${index <= userLevel ? 'unlocked' : 'locked'}">
-                <div class="reward-icon">
-                    <i class="fas ${reward.icon}"></i>
-                </div>
-                <span class="reward-level">Level ${reward.level}</span>
-                <span class="reward-name">${reward.name}</span>
-            </div>
-        `).join('');
+        if (!user) return;
 
-        battlePass.querySelector('.battle-pass-rewards').innerHTML = rewardsHTML;
+        try {
+            const battlePassSnap = await get(dbRef.battlePass(user.uid));
+            const battlePassData = battlePassSnap.val();
+            
+            const rewards = this.services.battlePass.rewards;
+            let rewardsHTML = '';
+
+            Object.entries(rewards).forEach(([id, reward]) => {
+                const isClaimed = battlePassData.claimedRewards[id];
+                const canClaim = battlePassData.coins >= reward.cost;
+                
+                rewardsHTML += `
+                    <div class="reward-item ${isClaimed ? 'claimed' : ''} ${!canClaim ? 'locked' : ''}"
+                         data-reward-id="${id}">
+                        <div class="reward-icon">
+                            <i class="fas ${this.getRewardIcon(reward.type)}"></i>
+                        </div>
+                        <div class="reward-info">
+                            ${reward.rarity ? `<span class="rarity-badge">${reward.rarity}</span>` : ''}
+                            <h4>${reward.name || `${reward.amount} Coins`}</h4>
+                        </div>
+                        <div class="coin-cost">
+                            <i class="fas fa-coins"></i> ${reward.cost}
+                        </div>
+                    </div>
+                `;
+            });
+
+            battlePassGrid.innerHTML = rewardsHTML;
+            this.initializeRewardListeners();
+            
+        } catch (error) {
+            console.error('Battle Pass laden mislukt:', error);
+            this.showError('Kon Battle Pass niet laden');
+        }
     }
 
     async loadShopContent() {
