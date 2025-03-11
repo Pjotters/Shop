@@ -1,5 +1,4 @@
-import { auth, db } from '../firebase-config.js';
-import { ref, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { db, auth, ref, get, update } from '../firebase-config.js';
 
 class CouponInterface {
     constructor() {

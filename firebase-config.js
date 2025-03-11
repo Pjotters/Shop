@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, get, set, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -56,4 +56,4 @@ export const createNewUserData = (uid, email) => ({
   createdAt: serverTimestamp()
 });
 
-export { db, auth, ref, get, set, update };
+export { db, auth, ref, get, set, update, onAuthStateChanged };

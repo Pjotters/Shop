@@ -1,4 +1,4 @@
-import { auth, db } from './firebase-config.js';
+import { auth } from './firebase-config.js';
 import { ref, onValue, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
@@ -10,15 +10,23 @@ import { BattlePassService } from './services/battle-pass-service.js';
 import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const user = await requireAuth();
-        loadUserData(user);
-    } catch (error) {
-        console.error('Auth error:', error);
-        window.location.href = 'login.html';
-    }
+    const auth = getAuth();
+    
+    // Luister naar auth state veranderingen
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            // Geen ingelogde gebruiker, redirect naar login
+            window.location.href = '/login.html';
+            return;
+        }
+        
+        // Gebruiker is ingelogd, initialiseer dashboard
+        const dashboard = new Dashboard();
+        dashboard.initializeDashboard();
+    });
 });
 
 function loadUserData(user) {
@@ -82,9 +90,15 @@ function updateRewards(points) {
 
 class Dashboard {
     constructor() {
+        const auth = getAuth();
+        if (!auth.currentUser) {
+            window.location.href = '/login.html';
+            return;
+        }
+        
         this.initializeTabs();
         this.initializeAnimations();
-        this.showTutorial(); // Direct tutorial tonen
+        this.showTutorial();
         this.initializeNotifications();
         this.loadUserProfile();
         this.currentTutorialStep = 0;
@@ -344,7 +358,7 @@ class Dashboard {
         // Automatisch verwijderen na 3 seconden
         setTimeout(() => {
             notification.classList.add('slide-out');
-            setTimeout(() => notification.remove(), 300);
+            setTimeout(() => notification.remove(), 3000);
         }, 3000);
     }
 

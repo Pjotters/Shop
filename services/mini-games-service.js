@@ -1,5 +1,5 @@
 import { db } from '../firebase-config.js';
-import { ref, get, set, update } from 'firebase/database';
+import { ref, get, set, update } from '/firebase/database';
 
 export class MiniGamesService {
     constructor() {

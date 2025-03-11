@@ -1,5 +1,5 @@
 import { db } from '../firebase-config.js';
-import { ref, query, orderByChild, limitToLast, get } from 'firebase/database';
+import { ref, query, orderByChild, limitToLast, get } from '/firebase/database';
 
 export class LeaderboardService {
     async getTop15() {

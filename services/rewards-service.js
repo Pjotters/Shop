@@ -1,3 +1,5 @@
+import { db, ref, get, update } from '../firebase-config.js';
+
 export class RewardsService {
     constructor() {
         this.dailyRewards = {

@@ -1,5 +1,4 @@
-import { auth, db } from '../firebase-config.js';
-import { ref, get, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { auth, db, ref, get, set } from '../firebase-config.js';
 
 export async function checkTermsAcceptance() {
     const user = auth.currentUser;

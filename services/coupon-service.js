@@ -1,5 +1,5 @@
 import { db } from '../firebase-config.js';
-import { ref, set, get, query, orderByChild, startAt } from 'firebase/database';
+import { ref, set, get, query, orderByChild, startAt } from '/firebase/database';
 import { EmailService } from '../email-service.js';
 
 export class CouponService {
