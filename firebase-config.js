@@ -2,19 +2,20 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, get, set, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDGqK8BXeqaGUoYz4Jh6HHxTxJtGtHU_Tk",
-    authDomain: "pjotters-games.firebaseapp.com",
-    databaseURL: "https://pjotters-games-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "pjotters-games",
-    storageBucket: "pjotters-games.appspot.com",
-    messagingSenderId: "1015353201761",
-    appId: "1:1015353201761:web:e4973e4df9a48ca36e5c09"
+    apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
+    authDomain: "company.firebaseapp.com",
+    databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "pjotters-company",
+    storageBucket: "pjotters-company.firebasestorage.app",
+    messagingSenderId: "64413422793",
+    appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
 };
 
 // Initialize Firebase
