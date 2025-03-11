@@ -1,4 +1,4 @@
-import { auth, db, ref, get, onAuthStateChanged } from './firebase-config.js';
+import { auth, db, ref, get, onAuthStateChanged, onValue } from './firebase-config.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { CouponService } from './services/coupon-service.js';
@@ -11,7 +11,7 @@ import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 import { getAuth } from 'firebase/auth';
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const auth = getAuth();
     
     onAuthStateChanged(auth, (user) => {
@@ -22,7 +22,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Alleen dashboard initialiseren als er een user is
         const dashboard = new Dashboard(user);
-        dashboard.initializeDashboard();
+        
+        // Voeg onValue import toe bovenaan
+        const userRef = ref(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val() || {};
+            
+            // Update welkomstboodschap
+            const username = userData.username || user.email.split('@')[0];
+            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+            
+            // Update punten
+            const pointsElement = document.getElementById('totalPoints');
+            if (pointsElement) {
+                pointsElement.textContent = userData.points || 0;
+            }
+        });
     });
 });
 
@@ -113,25 +128,19 @@ class Dashboard {
     initializeTabs() {
         const tabLinks = document.querySelectorAll('.nav-link');
         const tabContents = document.querySelectorAll('.tab-pane');
-
-        // Fix voor tab navigatie
+        
         tabLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const tabId = link.getAttribute('data-tab');
                 
-                // Verberg alle tabs
-                tabContents.forEach(content => content.style.display = 'none');
-                
-                // Toon geselecteerde tab
-                const selectedTab = document.getElementById(tabId);
-                if (selectedTab) {
-                    selectedTab.style.display = 'block';
-                }
-                
-                // Update active states
+                // Verwijder active class van alle tabs
                 tabLinks.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(t => t.classList.remove('active'));
+                
+                // Voeg active class toe aan geselecteerde tab
                 link.classList.add('active');
+                const targetId = link.getAttribute('href').substring(1);
+                document.getElementById(targetId)?.classList.add('active');
             });
         });
     }
@@ -558,6 +567,40 @@ class Dashboard {
                 pageIndicator.textContent = `PAGINA ${this.services.battlePass.currentPage} / ${this.services.battlePass.totalPages}`;
             }
         });
+    }
+
+    async loadGames() {
+        const gamesContainer = document.querySelector('.games-grid');
+        if (!gamesContainer) return;
+        
+        const games = [
+            {
+                id: 'snake',
+                name: 'Snake',
+                image: '/images/games/snake.jpg',
+                url: '/games/snake.html'
+            },
+            {
+                id: 'flappy',
+                name: 'Flappy Bird',
+                image: '/images/games/flappy.jpg',
+                url: '/games/flappy.html'
+            },
+            {
+                id: 'pacman',
+                name: 'Pac-Man',
+                image: '/images/games/pacman.jpg',
+                url: '/games/pacman.html'
+            }
+        ];
+        
+        gamesContainer.innerHTML = games.map(game => `
+            <div class="game-card">
+                <img src="${game.image}" alt="${game.name}">
+                <h3>${game.name}</h3>
+                <a href="${game.url}" class="play-btn">Spelen</a>
+            </div>
+        `).join('');
     }
 }
 
