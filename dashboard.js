@@ -1,5 +1,6 @@
-import { auth, db, ref, onValue } from './firebase-config.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { QuizService } from './services/quiz-service.js';   
@@ -9,6 +10,21 @@ import { BattlePassService } from './services/battle-pass-service.js';
 import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
+    authDomain: "pjotters-company.firebaseapp.com",
+    databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "pjotters-company",
+    storageBucket: "pjotters-company.appspot.com",
+    messagingSenderId: "64413422793",
+    appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
 class Dashboard {
     constructor(user) {
@@ -130,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingScreen = document.getElementById('loading');
     const content = document.getElementById('content');
 
-    auth.onAuthStateChanged(async (user) => {
+    onAuthStateChanged(auth, (user) => {
         if (!user) {
             window.location.replace('/login.html');
             return;
