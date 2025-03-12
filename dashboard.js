@@ -10,6 +10,93 @@ import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 
+class Dashboard {
+    constructor(user) {
+        this.user = user;
+        this.initializeServices();
+        this.loadUserData();
+        this.initializeTabs();
+    }
+
+    initializeServices() {
+        this.shopService = new ShopService();
+        this.quizService = new QuizService();
+        this.achievementService = new AchievementService();
+        this.leaderboardService = new LeaderboardService();
+        this.battlePassService = new BattlePassService();
+        this.miniGamesService = new MiniGamesService();
+        this.missionsService = new MissionsService();
+        this.powerUpsService = new PowerUpsService();
+    }
+
+    loadUserData() {
+        const userRef = ref(db, `users/${this.user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val() || {};
+            this.updateUI(userData);
+        });
+    }
+
+    updateUI(userData) {
+        // Update welkomstboodschap
+        const username = userData.username || this.user.email.split('@')[0];
+        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+        
+        // Update punten
+        const pointsElement = document.getElementById('totalPoints');
+        if (pointsElement) {
+            pointsElement.textContent = userData.points || 0;
+        }
+        
+        // Update games
+        this.updateGameStats(userData.games || {});
+    }
+
+    updateGameStats(games) {
+        const gamesGrid = document.querySelector('.games-grid');
+        if (!gamesGrid) return;
+
+        gamesGrid.innerHTML = Object.entries(games).map(([id, game]) => `
+            <div class="game-card">
+                <img src="images/games/${id}.png" alt="${id}" onerror="this.src='images/placeholder.png'">
+                <h3>${id}</h3>
+                <div class="game-stats">
+                    <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore || 0}</span>
+                </div>
+                <a href="/games/${id}.html" class="play-button">
+                    <i class="fas fa-play"></i> Spelen
+                </a>
+            </div>
+        `).join('');
+    }
+
+    initializeTabs() {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.querySelector(button.dataset.tabTarget);
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                target.classList.add('active');
+                button.classList.add('active');
+            });
+        });
+    }
+
+    showError(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification error';
+        notification.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <p>${message}</p>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const loadingScreen = document.getElementById('loading');
     const content = document.getElementById('content');
@@ -90,90 +177,4 @@ function updateRewards(points) {
             </button>
         </div>
     `).join('');
-}
-
-class Dashboard {
-    constructor(user) {
-        this.user = user;
-        this.initializeServices();
-        this.loadUserData();
-        this.initializeTabs();
-    }
-
-    initializeServices() {
-        this.shopService = new ShopService();
-        this.quizService = new QuizService();
-        this.achievementService = new AchievementService();
-        this.leaderboardService = new LeaderboardService();
-        this.battlePassService = new BattlePassService();
-        this.miniGamesService = new MiniGamesService();
-        this.missionsService = new MissionsService();
-        this.powerUpsService = new PowerUpsService();
-    }
-
-    loadUserData() {
-        const userRef = ref(db, `users/${this.user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val() || {};
-            
-            // Update welkomstboodschap
-            const username = userData.username || this.user.email.split('@')[0];
-            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
-            
-            // Update totale punten
-            const pointsElement = document.getElementById('totalPoints');
-            if (pointsElement) {
-                pointsElement.textContent = userData.points || 0;
-            }
-            
-            // Update game statistieken
-            this.updateGameStats(userData.games || {});
-        });
-    }
-
-    updateGameStats(games) {
-        const gamesGrid = document.querySelector('.games-grid');
-        if (!gamesGrid) return;
-
-        gamesGrid.innerHTML = Object.entries(games).map(([id, game]) => `
-            <div class="game-card">
-                <img src="images/games/${id}.png" alt="${id}" onerror="this.src='images/placeholder.png'">
-                <h3>${id}</h3>
-                <div class="game-stats">
-                    <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore || 0}</span>
-                </div>
-                <a href="/games/${id}.html" class="play-button">
-                    <i class="fas fa-play"></i> Spelen
-                </a>
-            </div>
-        `).join('');
-    }
-
-    initializeTabs() {
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabPanes = document.querySelectorAll('.tab-pane');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const target = document.querySelector(button.dataset.tabTarget);
-                
-                tabPanes.forEach(pane => pane.classList.remove('active'));
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                
-                target.classList.add('active');
-                button.classList.add('active');
-            });
-        });
-    }
-
-    showError(message) {
-        const notification = document.createElement('div');
-        notification.className = 'notification error';
-        notification.innerHTML = `
-            <i class="fas fa-exclamation-circle"></i>
-            <p>${message}</p>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
 } 
