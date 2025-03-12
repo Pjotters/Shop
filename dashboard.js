@@ -142,45 +142,44 @@ class Dashboard {
     }
 }
 
+// Wacht tot de pagina geladen is
 document.addEventListener('DOMContentLoaded', () => {
-    const loadingScreen = document.getElementById('loading');
-    const content = document.getElementById('content');
-
+    console.log('DOM Content Loaded'); // Debug log
+    
+    // Check authenticatie status
     onAuthStateChanged(auth, (user) => {
+        console.log('Auth state changed:', user ? 'logged in' : 'not logged in'); // Debug log
+        
         if (!user) {
             window.location.href = '/login.html';
             return;
         }
 
-        // Load user data
+        // Laad gebruikersdata
         const userRef = ref(db, `users/${user.uid}`);
         onValue(userRef, (snapshot) => {
+            console.log('User data received'); // Debug log
             const userData = snapshot.val() || {};
             
-            // Update welcome message
-            const username = userData.name || user.email.split('@')[0];
-            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
-            
-            // Update points
+            // Update UI
+            document.querySelector('.welcome-message').textContent = 
+                `Welkom terug, ${userData.name || user.email.split('@')[0]}!`;
             document.getElementById('totalPoints').textContent = userData.points || 0;
             
-            // Hide loading screen and show content
-            loadingScreen.style.display = 'none';
-            content.style.display = 'block';
-        }, (error) => {
-            console.error('Error loading user data:', error);
-            loadingScreen.innerHTML = '<p>Er ging iets mis bij het laden. Vernieuw de pagina.</p>';
+            // Verberg loading screen
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
         });
     });
 
-    // Initialize tabs
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanes = document.querySelectorAll('.tab-pane');
-
-    tabButtons.forEach(button => {
+    // Tab navigatie
+    document.querySelectorAll('.tab-btn').forEach(button => {
         button.addEventListener('click', () => {
-            tabPanes.forEach(pane => pane.classList.remove('active'));
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => 
+                pane.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => 
+                btn.classList.remove('active'));
+            
             document.querySelector(button.dataset.tabTarget).classList.add('active');
             button.classList.add('active');
         });
