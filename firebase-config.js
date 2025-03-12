@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getDatabase, ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, get, update, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -9,20 +9,27 @@ const firebaseConfig = {
   authDomain: "pjotters-company.firebaseapp.com",
   databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "pjotters-company",
-  storageBucket: "pjotters-company.firebasestorage.app",
+  storageBucket: "pjotters-company.appspot.com",
   messagingSenderId: "64413422793",
-  appId: "1:64413422793:web:37debb74f7c7d3ead6e918",
-  measurementId: "G-BHQ2S1TWTH"
+  appId: "1:64413422793:web:b85d4d5f3a5f2c5c6c1f0e"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getDatabase(app);
-export const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const analytics = getAnalytics(app);
 
 // Re-export database functies
-export { ref, get, set, update, onValue };
+export { 
+    auth, 
+    db, 
+    ref, 
+    get, 
+    update, 
+    set,
+    serverTimestamp 
+};
 
 // Helper functies voor database operaties
 export const dbRef = {
