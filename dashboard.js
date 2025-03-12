@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            await new Dashboard(user);
+            new Dashboard(user);
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
         } catch (error) {
@@ -95,47 +95,58 @@ function updateRewards(points) {
 class Dashboard {
     constructor(user) {
         this.user = user;
-        this.services = {
-            shop: new ShopService(),
-            quiz: new QuizService(),
-            achievements: new AchievementService(),
-            battlePass: new BattlePassService()
-        };
-        this.initializeDashboard();
+        this.initializeServices();
+        this.loadUserData();
+        this.initializeTabs();
     }
 
-    async initializeDashboard() {
-        try {
-            await this.loadUserData();
-            this.initializeTabs();
-            await this.loadGamesContent();
-        } catch (error) {
-            console.error('Dashboard initialisatie fout:', error);
-            this.showError('Er ging iets mis bij het laden van het dashboard');
-        }
+    initializeServices() {
+        this.shopService = new ShopService();
+        this.quizService = new QuizService();
+        this.achievementService = new AchievementService();
+        this.leaderboardService = new LeaderboardService();
+        this.battlePassService = new BattlePassService();
+        this.miniGamesService = new MiniGamesService();
+        this.missionsService = new MissionsService();
+        this.powerUpsService = new PowerUpsService();
     }
 
-    async loadUserData() {
-        try {
-            const userRef = ref(db, `users/${this.user.uid}`);
-            onValue(userRef, (snapshot) => {
-                const userData = snapshot.val() || {};
-                this.updateUI(userData);
-            });
-        } catch (error) {
-            console.error('Dashboard error:', error);
-            throw error;
-        }
+    loadUserData() {
+        const userRef = ref(db, `users/${this.user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val() || {};
+            
+            // Update welkomstboodschap
+            const username = userData.username || this.user.email.split('@')[0];
+            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+            
+            // Update totale punten
+            const pointsElement = document.getElementById('totalPoints');
+            if (pointsElement) {
+                pointsElement.textContent = userData.points || 0;
+            }
+            
+            // Update game statistieken
+            this.updateGameStats(userData.games || {});
+        });
     }
 
-    updateUI(userData) {
-        const username = userData.username || this.user.email.split('@')[0];
-        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
-        
-        const pointsElement = document.getElementById('totalPoints');
-        if (pointsElement) {
-            pointsElement.textContent = userData.points || 0;
-        }
+    updateGameStats(games) {
+        const gamesGrid = document.querySelector('.games-grid');
+        if (!gamesGrid) return;
+
+        gamesGrid.innerHTML = Object.entries(games).map(([id, game]) => `
+            <div class="game-card">
+                <img src="images/games/${id}.png" alt="${id}" onerror="this.src='images/placeholder.png'">
+                <h3>${id}</h3>
+                <div class="game-stats">
+                    <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore || 0}</span>
+                </div>
+                <a href="/games/${id}.html" class="play-button">
+                    <i class="fas fa-play"></i> Spelen
+                </a>
+            </div>
+        `).join('');
     }
 
     initializeTabs() {
@@ -144,55 +155,15 @@ class Dashboard {
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const target = button.getAttribute('data-tab-target');
+                const target = document.querySelector(button.dataset.tabTarget);
                 
-                tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
+                tabButtons.forEach(btn => btn.classList.remove('active'));
                 
+                target.classList.add('active');
                 button.classList.add('active');
-                document.querySelector(target).classList.add('active');
-                
-                this.loadTabContent(target);
             });
         });
-    }
-
-    async loadTabContent(target) {
-        switch(target) {
-            case '#games':
-                await this.loadGamesContent();
-                break;
-            case '#shop':
-                await this.services.shop.loadShopItems();
-                break;
-            case '#achievements':
-                await this.services.achievements.loadAchievements();
-                break;
-            case '#battlepass':
-                await this.services.battlePass.loadBattlePass();
-                break;
-        }
-    }
-
-    async loadGamesContent() {
-        const gamesRef = ref(db, 'games');
-        const snapshot = await get(gamesRef);
-        const games = snapshot.val() || {};
-
-        const gamesGrid = document.querySelector('.games-grid');
-        gamesGrid.innerHTML = Object.entries(games).map(([id, game]) => `
-            <div class="game-card">
-                <img src="${game.image}" alt="${game.title}" onerror="this.src='images/placeholder.png'">
-                <h3>${game.title}</h3>
-                <div class="game-stats">
-                    <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore || 0}</span>
-                    <span><i class="fas fa-clock"></i> Gespeeld: ${game.timesPlayed || 0}x</span>
-                </div>
-                <a href="/games/${id}.html" class="play-button">
-                    <i class="fas fa-play"></i> Spelen
-                </a>
-            </div>
-        `).join('');
     }
 
     showError(message) {
