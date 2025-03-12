@@ -120,25 +120,21 @@ class Dashboard {
             const userRef = ref(db, `users/${this.user.uid}`);
             onValue(userRef, (snapshot) => {
                 const userData = snapshot.val() || {};
-                
-                // Update welkomstboodschap
-                const username = userData.username || this.user.email.split('@')[0];
-                const welcomeMessage = document.querySelector('.welcome-message');
-                if (welcomeMessage) {
-                    welcomeMessage.textContent = `Welkom terug, ${username}!`;
-                }
-                
-                // Update punten
-                const pointsElement = document.getElementById('totalPoints');
-                if (pointsElement) {
-                    const currentPoints = parseInt(pointsElement.textContent) || 0;
-                    const newPoints = userData.points || 0;
-                    this.animateNumber(currentPoints, newPoints, pointsElement);
-                }
+                this.updateUI(userData);
             });
         } catch (error) {
-            console.error('Gebruikersdata laden fout:', error);
+            console.error('Dashboard error:', error);
             throw error;
+        }
+    }
+
+    updateUI(userData) {
+        const username = userData.username || this.user.email.split('@')[0];
+        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+        
+        const pointsElement = document.getElementById('totalPoints');
+        if (pointsElement) {
+            pointsElement.textContent = userData.points || 0;
         }
     }
 
