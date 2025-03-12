@@ -13,6 +13,7 @@ import { PowerUpsService } from './services/power-ups-service.js';
 class Dashboard {
     constructor(user) {
         this.user = user;
+        console.log('Dashboard initializing for user:', user.uid); // Debug log
         this.initializeServices();
         this.loadUserData();
         this.initializeTabs();
@@ -30,22 +31,34 @@ class Dashboard {
     }
 
     loadUserData() {
+        console.log('Loading user data...'); // Debug log
         const userRef = ref(db, `users/${this.user.uid}`);
         onValue(userRef, (snapshot) => {
+            console.log('User data received:', snapshot.val()); // Debug log
             const userData = snapshot.val() || {};
             
             // Update welkomstboodschap
-            const username = userData.username || this.user.email.split('@')[0];
-            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+            const username = userData.name || this.user.email.split('@')[0];
+            const welcomeMessage = document.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.textContent = `Welkom terug, ${username}!`;
+            }
             
-            // Update totale punten met animatie
+            // Update punten
             const pointsElement = document.getElementById('totalPoints');
-            const currentPoints = parseInt(pointsElement.textContent);
-            const newPoints = userData.points || 0;
-            this.animateNumber(currentPoints, newPoints, pointsElement);
+            if (pointsElement) {
+                pointsElement.textContent = userData.points || 0;
+            }
             
-            // Update game statistieken
+            // Update games
             this.updateGameStats(userData.games || {});
+            
+            // Verberg loading screen
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }, (error) => {
+            console.error('Error loading user data:', error);
+            this.showError('Er ging iets mis bij het laden van je gegevens.');
         });
     }
 
