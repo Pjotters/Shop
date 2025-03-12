@@ -3,6 +3,8 @@ import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/
 import { getDatabase, ref, onValue, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { BattlePassService } from './services/battlepass-service.js';
 import { GamesService } from './services/games-service.js';
+import { DailyChallengesService } from './services/daily-challenges-service.js';
+import { AchievementService } from './services/achievement-service.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
@@ -24,6 +26,8 @@ class DashboardServices {
     constructor(user) {
         this.user = user;
         this.db = getDatabase();
+        this.dailyChallenges = new DailyChallengesService(user.uid);
+        this.achievements = new AchievementService(user.uid);
         this.setupTabNavigation();
     }
 

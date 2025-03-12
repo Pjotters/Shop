@@ -1,0 +1,197 @@
+/* Achievement Notifications */
+.achievement-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.achievement-notification.show {
+    transform: translateX(0);
+}
+
+.achievement-notification.hide {
+    transform: translateX(120%);
+}
+
+.achievement-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid;
+}
+
+/* Rarity colors */
+.achievement-content.common { border-color: #ffffff; }
+.achievement-content.rare { border-color: #4287f5; }
+.achievement-content.epic { border-color: #9b4dff; }
+.achievement-content.legendary { border-color: #ffd700; }
+
+.achievement-icon {
+    font-size: 2.5em;
+    animation: bounce 0.5s ease infinite alternate;
+}
+
+.achievement-info {
+    color: white;
+}
+
+.achievement-info h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.achievement-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.achievement-rewards {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.achievement-rewards span {
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Daily Challenges */
+.challenges-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.challenges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.challenges-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.challenge-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.challenge-card:hover {
+    transform: translateY(-2px);
+}
+
+.challenge-card.completed {
+    opacity: 0.7;
+}
+
+.challenge-icon {
+    font-size: 2em;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.challenge-info {
+    flex: 1;
+}
+
+.challenge-progress {
+    position: relative;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #4287f5, #42f5e3);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Particle Effects */
+.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: particleFloat 1s ease-out forwards;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .achievement-notification {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        transform: translateY(120%);
+    }
+
+    .achievement-notification.show {
+        transform: translateY(0);
+    }
+
+    .achievement-notification.hide {
+        transform: translateY(120%);
+    }
+
+    .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+} 

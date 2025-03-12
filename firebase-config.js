@@ -1,6 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getDatabase, ref, get, update, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+    getDatabase, 
+    ref, 
+    get, 
+    set,
+    update, 
+    onValue,
+    push,
+    remove,
+    query,
+    orderByChild,
+    limitToLast,
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -26,9 +39,16 @@ export {
     db, 
     ref, 
     get, 
-    update, 
     set,
-    serverTimestamp 
+    update, 
+    onValue,
+    push,
+    remove,
+    query,
+    orderByChild,
+    limitToLast,
+    serverTimestamp,
+    onAuthStateChanged
 };
 
 // Helper functies voor database operaties
