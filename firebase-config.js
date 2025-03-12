@@ -8,7 +8,7 @@ const firebaseConfig = {
   authDomain: "pjotters-company.firebaseapp.com",
   databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "pjotters-company",
-  storageBucket: "pjotters-company.firebasestorage.app",
+  storageBucket: "pjotters-company.appspot.com",
   messagingSenderId: "64413422793",
   appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
 };

@@ -11,12 +11,23 @@ import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const loadingScreen = document.getElementById('loading');
+    const content = document.getElementById('content');
+
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
             window.location.replace('/login.html');
             return;
         }
-        new Dashboard(user);
+        
+        try {
+            await new Dashboard(user);
+            loadingScreen.style.display = 'none';
+            content.style.display = 'block';
+        } catch (error) {
+            console.error('Dashboard error:', error);
+            loadingScreen.innerHTML = 'Er ging iets mis bij het laden. Vernieuw de pagina.';
+        }
     });
 });
 
