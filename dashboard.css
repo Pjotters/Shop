@@ -1,3 +1,18 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --background-color: #1a1a1a;
+    --card-background: #2d2d2d;
+    --text-color: #ecf0f1;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+}
+
 .dashboard-page {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
     min-height: 100vh;
@@ -288,4 +303,100 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Shop styling */
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.shop-content {
+    display: grid;
+    gap: 30px;
+}
+
+.shop-category h3 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.shop-item {
+    background: var(--card-background);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.shop-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.shop-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.shop-item h4 {
+    color: var(--secondary-color);
+    margin: 10px 0;
+}
+
+.shop-item .price {
+    font-size: 18px;
+    color: gold;
+    margin: 15px 0;
+}
+
+.buy-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-btn:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.tab-navigation {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: var(--card-background);
+    color: var(--text-color);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.tab-btn:hover {
+    background: var(--secondary-color);
+}
+
+.tab-btn.active {
+    background: var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 } 
