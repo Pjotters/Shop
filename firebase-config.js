@@ -1,20 +1,16 @@
-// Gebruik alleen HTTPS imports voor Firebase
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getDatabase, ref, get, set, update, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
+    // Je bestaande Firebase configuratie
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
-    authDomain: "company.firebaseapp.com",
+    authDomain: "pjotters-company.firebaseapp.com",
     databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "pjotters-company",
-    storageBucket: "pjotters-company.firebasestorage.app",
+    storageBucket: "pjotters-company.appspot.com",
     messagingSenderId: "64413422793",
-    appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
+    appId: "1:64413422793:web:4025770645944818d6e918"
 };
 
 // Initialize Firebase

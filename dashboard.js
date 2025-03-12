@@ -10,15 +10,19 @@ import { MiniGamesService } from './services/mini-games-service.js';
 import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const auth = getAuth();
-    
+document.addEventListener('DOMContentLoaded', () => {
+    onValue(ref(db, '.info/connected'), (snapshot) => {
+        const connected = snapshot.val();
+        if (!connected) {
+            console.error('Geen verbinding met Firebase');
+        }
+    });
+
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
             window.location.replace('/login.html');
             return;
         }
-        
         new Dashboard(user);
     });
 });
@@ -97,31 +101,41 @@ class Dashboard {
     }
 
     async initializeDashboard() {
-        await this.loadUserData();
-        this.initializeTabs();
-        await this.loadGamesContent();
+        try {
+            await this.loadUserData();
+            this.initializeTabs();
+            await this.loadGamesContent();
+        } catch (error) {
+            console.error('Dashboard initialisatie fout:', error);
+            this.showError('Er ging iets mis bij het laden van het dashboard');
+        }
     }
 
     async loadUserData() {
-        const userRef = ref(db, `users/${this.user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val() || {};
-            
-            // Update welkomstboodschap
-            const username = userData.username || this.user.email.split('@')[0];
-            const welcomeMessage = document.querySelector('.welcome-message');
-            if (welcomeMessage) {
-                welcomeMessage.textContent = `Welkom terug, ${username}!`;
-            }
-            
-            // Update punten met animatie
-            const pointsElement = document.getElementById('totalPoints');
-            if (pointsElement) {
-                const currentPoints = parseInt(pointsElement.textContent) || 0;
-                const newPoints = userData.points || 0;
-                this.animateNumber(currentPoints, newPoints, pointsElement);
-            }
-        });
+        try {
+            const userRef = ref(db, `users/${this.user.uid}`);
+            onValue(userRef, (snapshot) => {
+                const userData = snapshot.val() || {};
+                
+                // Update welkomstboodschap
+                const username = userData.username || this.user.email.split('@')[0];
+                const welcomeMessage = document.querySelector('.welcome-message');
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = `Welkom terug, ${username}!`;
+                }
+                
+                // Update punten
+                const pointsElement = document.getElementById('totalPoints');
+                if (pointsElement) {
+                    const currentPoints = parseInt(pointsElement.textContent) || 0;
+                    const newPoints = userData.points || 0;
+                    this.animateNumber(currentPoints, newPoints, pointsElement);
+                }
+            });
+        } catch (error) {
+            console.error('Gebruikersdata laden fout:', error);
+            throw error;
+        }
     }
 
     initializeTabs() {
