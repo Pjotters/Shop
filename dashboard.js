@@ -33,23 +33,39 @@ class Dashboard {
         const userRef = ref(db, `users/${this.user.uid}`);
         onValue(userRef, (snapshot) => {
             const userData = snapshot.val() || {};
-            this.updateUI(userData);
+            
+            // Update welkomstboodschap
+            const username = userData.username || this.user.email.split('@')[0];
+            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+            
+            // Update totale punten met animatie
+            const pointsElement = document.getElementById('totalPoints');
+            const currentPoints = parseInt(pointsElement.textContent);
+            const newPoints = userData.points || 0;
+            this.animateNumber(currentPoints, newPoints, pointsElement);
+            
+            // Update game statistieken
+            this.updateGameStats(userData.games || {});
         });
     }
 
-    updateUI(userData) {
-        // Update welkomstboodschap
-        const username = userData.username || this.user.email.split('@')[0];
-        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+    animateNumber(start, end, element) {
+        const duration = 1000;
+        const startTime = performance.now();
         
-        // Update punten
-        const pointsElement = document.getElementById('totalPoints');
-        if (pointsElement) {
-            pointsElement.textContent = userData.points || 0;
-        }
+        const updateNumber = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            const current = Math.floor(start + (end - start) * progress);
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateNumber);
+            }
+        };
         
-        // Update games
-        this.updateGameStats(userData.games || {});
+        requestAnimationFrame(updateNumber);
     }
 
     updateGameStats(games) {
@@ -117,45 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function loadUserData(user) {
-    const userRef = ref(db, `users/${user.uid}`);
-    onValue(userRef, (snapshot) => {
-        const userData = snapshot.val() || {};
-        
-        // Update welkomstboodschap
-        const username = userData.username || user.email.split('@')[0];
-        document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
-        
-        // Update totale punten met animatie
-        const pointsElement = document.getElementById('totalPoints');
-        const currentPoints = parseInt(pointsElement.textContent);
-        const newPoints = userData.points || 0;
-        animateNumber(currentPoints, newPoints, pointsElement);
-        
-        // Update game statistieken
-        updateGameStats(userData.games || {});
-    });
-}
-
-function animateNumber(start, end, element) {
-    const duration = 1000;
-    const steps = 60;
-    const increment = (end - start) / steps;
-    let current = start;
-    
-    const animate = () => {
-        current += increment;
-        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            element.textContent = end;
-            return;
-        }
-        element.textContent = Math.round(current);
-        requestAnimationFrame(animate);
-    };
-    
-    animate();
-}
 
 function updateRewards(points) {
     const rewards = [
