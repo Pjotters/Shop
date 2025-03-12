@@ -1,6 +1,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, onValue, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { BattlePassService } from './services/battlepass-service.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
@@ -9,7 +10,7 @@ const firebaseConfig = {
     projectId: "pjotters-company",
     storageBucket: "pjotters-company.appspot.com",
     messagingSenderId: "64413422793",
-    appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
+    appId: "1:64413422793:web:b85d4d5f3a5f2c5c6c1f0e"
 };
 
 // Initialize Firebase
@@ -51,6 +52,8 @@ class DashboardServices {
                 await this.loadShopItems();
             } else if (targetId === '#games') {
                 await this.loadGames();
+            } else if (targetId === '#battlepass') {
+                await this.loadBattlePass();
             }
         }
     }
@@ -153,6 +156,30 @@ class DashboardServices {
             }
         };
     }
+
+    async loadBattlePass() {
+        const battlepassContainer = document.querySelector('.battlepass-content');
+        if (!battlepassContainer) return;
+
+        const battlePassService = new BattlePassService(this.user.uid);
+        const currentTier = await battlePassService.getCurrentTier();
+        
+        // Update rewards grid
+        const rewardsGrid = battlepassContainer.querySelector('.rewards-grid');
+        if (rewardsGrid) {
+            rewardsGrid.innerHTML = battlePassService.rewards.map(reward => `
+                <div class="reward-item ${reward.rarity}" data-reward-id="${reward.id}">
+                    <img src="images/rewards/${reward.type}.png" alt="${reward.name}">
+                    <div class="reward-cost">${reward.cost}★</div>
+                    ${!reward.claimed ? `
+                        <button class="claim-button" onclick="claimReward(${reward.id})">
+                            CLAIM
+                        </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+    }
 }
 
 // Debug functie
@@ -214,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Load games
             await services.loadGames();
             await services.loadShopItems();
+            await services.loadBattlePass();
 
             // Show content
             loadingScreen.style.display = 'none';

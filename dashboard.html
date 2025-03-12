@@ -16,46 +16,72 @@
     </div>
 
     <div id="content" class="dashboard-container" style="display: none;">
-        <header>
-            <h1 class="welcome-message">Laden...</h1>
-            <div class="points-display">
-                <i class="fas fa-coins"></i>
-                <span id="totalPoints">0</span> punten
-            </div>
-        </header>
-
         <nav class="tab-navigation">
-            <button data-tab-target="#games" class="tab-btn active">Games</button>
-            <button data-tab-target="#shop" class="tab-btn">Shop</button>
-            <button data-tab-target="#achievements" class="tab-btn">Prestaties</button>
-            <button data-tab-target="#battlepass" class="tab-btn">Battle Pass</button>
+            <button data-tab-target="#games" class="tab-btn active">
+                <i class="fas fa-gamepad"></i> Games
+            </button>
+            <button data-tab-target="#shop" class="tab-btn">
+                <i class="fas fa-store"></i> Shop
+            </button>
+            <button data-tab-target="#achievements" class="tab-btn">
+                <i class="fas fa-trophy"></i> Prestaties
+            </button>
+            <button data-tab-target="#battlepass" class="tab-btn">
+                <i class="fas fa-star"></i> Battle Pass
+            </button>
         </nav>
 
-        <main class="tab-content">
-            <div id="games" class="tab-pane active">
-                <div class="games-grid">
-                    <!-- Games worden hier dynamisch geladen -->
+        <div class="main-content">
+            <header>
+                <h1 class="welcome-message">Laden...</h1>
+                <div class="points-display">
+                    <i class="fas fa-coins"></i>
+                    <span id="totalPoints">0</span> punten
                 </div>
-            </div>
+            </header>
 
-            <div id="shop" class="tab-pane">
-                <div class="shop-items">
-                    <!-- Shop items worden hier geladen -->
+            <main class="tab-content">
+                <div id="games" class="tab-pane active">
+                    <div class="games-grid">
+                        <!-- Games worden hier dynamisch geladen -->
+                    </div>
                 </div>
-            </div>
 
-            <div id="achievements" class="tab-pane">
-                <div class="achievements-list">
-                    <!-- Prestaties worden hier geladen -->
+                <div id="shop" class="tab-pane">
+                    <div class="shop-items">
+                        <!-- Shop items worden hier geladen -->
+                    </div>
                 </div>
-            </div>
 
-            <div id="battlepass" class="tab-pane">
-                <div class="battlepass-content">
-                    <!-- Battle Pass content wordt hier geladen -->
+                <div id="achievements" class="tab-pane">
+                    <div class="achievements-list">
+                        <!-- Prestaties worden hier geladen -->
+                    </div>
                 </div>
-            </div>
-        </main>
+
+                <div id="battlepass" class="tab-pane">
+                    <div class="battlepass-content">
+                        <div class="battlepass-header">
+                            <h2>BATTLE PASS</h2>
+                            <div class="battlepass-progress">
+                                <span class="tier-number">TIER 1/14</span>
+                                <div class="stars-display">
+                                    <i class="fas fa-star"></i>
+                                    <span>30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rewards-track">
+                            <div class="rewards-grid">
+                                <!-- Rewards worden dynamisch geladen -->
+                            </div>
+                            <div class="page-indicator">PAGINA 1/14</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 
 
