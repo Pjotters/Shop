@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
 import { QuizService } from './services/quiz-service.js';   
@@ -148,18 +148,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     onAuthStateChanged(auth, (user) => {
         if (!user) {
-            window.location.replace('/login.html');
+            window.location.href = '/login.html';
             return;
         }
-        
-        try {
-            const dashboard = new Dashboard(user);
+
+        // Load user data
+        const userRef = ref(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val() || {};
+            
+            // Update welcome message
+            const username = userData.name || user.email.split('@')[0];
+            document.querySelector('.welcome-message').textContent = `Welkom terug, ${username}!`;
+            
+            // Update points
+            document.getElementById('totalPoints').textContent = userData.points || 0;
+            
+            // Hide loading screen and show content
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
-        } catch (error) {
-            console.error('Dashboard error:', error);
-            loadingScreen.innerHTML = 'Er ging iets mis bij het laden. Vernieuw de pagina.';
-        }
+        }, (error) => {
+            console.error('Error loading user data:', error);
+            loadingScreen.innerHTML = '<p>Er ging iets mis bij het laden. Vernieuw de pagina.</p>';
+        });
+    });
+
+    // Initialize tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(button.dataset.tabTarget).classList.add('active');
+            button.classList.add('active');
+        });
     });
 });
 
