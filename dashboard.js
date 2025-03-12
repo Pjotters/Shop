@@ -30,7 +30,9 @@ class DashboardServices {
         this.dailyChallenges = new DailyChallengesService(user.uid);
         this.achievements = new AchievementService(user.uid);
         this.quizService = new QuizService(user.uid);
+        this.gamesService = new GamesService(user.uid);
         this.setupTabNavigation();
+        this.initializeGameButtons();
     }
 
     setupTabNavigation() {
@@ -71,8 +73,7 @@ class DashboardServices {
         const gamesGrid = document.querySelector('.games-grid');
         if (!gamesGrid) return;
 
-        const gameService = new GamesService(this.user.uid);
-        const games = Object.values(gameService.games);
+        const games = Object.values(this.gamesService.games);
 
         // Filter functionaliteit
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -91,7 +92,7 @@ class DashboardServices {
 
         const renderGames = async (gamesToRender) => {
             const gamesHTML = await Promise.all(gamesToRender.map(async game => {
-                const stats = await gameService.getGameStats(game.id);
+                const stats = await this.gamesService.getGameStats(game.id);
                 return `
                     <div class="game-card ${game.status}">
                         <div class="game-icon">${game.icon}</div>
@@ -118,8 +119,7 @@ class DashboardServices {
 
         // Voeg globale startGame functie toe
         window.startGame = async (gameId) => {
-            const game = await gameService.startGame(gameId);
-            window.location.href = `games/${gameId}.html`;
+            await this.startGame(gameId);
         };
     }
 
@@ -283,6 +283,18 @@ class DashboardServices {
             </div>
         `;
         explanation.classList.add('show');
+    }
+
+    initializeGameButtons() {
+        document.querySelectorAll('.game-card button').forEach(button => {
+            const gameId = button.closest('.game-card').dataset.gameId;
+            button.addEventListener('click', () => this.startGame(gameId));
+        });
+    }
+
+    async startGame(gameId) {
+        await this.gamesService.startGameSession(gameId);
+        window.location.href = `/games/${gameId}.html`;
     }
 }
 

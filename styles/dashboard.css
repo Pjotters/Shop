@@ -1020,4 +1020,36 @@ body {
     border-radius: 15px;
     font-size: 0.8rem;
     font-weight: bold;
+}
+
+.leaderboard-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.leaderboard-title {
+    font-size: 1.5rem;
+    color: #FFD700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.no-scores {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
 } 

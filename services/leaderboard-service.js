@@ -47,4 +47,28 @@ export class LeaderboardService {
             });
         }
     }
+
+    async initializeLeaderboard() {
+        const gameIds = ['flappyBird', 'snake', 'pacman'];
+        
+        for (const gameId of gameIds) {
+            const leaderboardElement = document.querySelector(`#${gameId}Leaderboard`);
+            if (!leaderboardElement) continue;
+
+            const scores = await this.getGameLeaderboard(gameId);
+            
+            if (scores.length === 0) {
+                leaderboardElement.innerHTML = '<div class="no-scores">Nog geen scores beschikbaar</div>';
+                continue;
+            }
+
+            leaderboardElement.innerHTML = scores.map((entry, index) => `
+                <div class="leaderboard-entry">
+                    <div class="rank">#${index + 1}</div>
+                    <div class="player">${entry.username}</div>
+                    <div class="score">${entry.score} punten</div>
+                </div>
+            `).join('');
+        }
+    }
 } 
