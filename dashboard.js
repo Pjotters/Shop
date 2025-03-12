@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            new Dashboard(user);
+            const dashboard = new Dashboard(user);
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
         } catch (error) {
