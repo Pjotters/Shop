@@ -1,20 +1,22 @@
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #e74c3c;
-    --background-color: #1a1a1a;
-    --card-background: #2d2d2d;
-    --text-color: #ecf0f1;
+    --primary-color: #2193b0;
+    --secondary-color: #6dd5ed;
+    --accent-color: #ff6b6b;
+    --background-color: #1a1a2e;
+    --card-background: #16213e;
+    --text-color: #e2e8f0;
+    --success-color: #4ade80;
+    --hover-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --sidebar-width: 240px;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
+    background: linear-gradient(135deg, var(--background-color), #0f172a);
     color: var(--text-color);
-    font-family: 'Arial', sans-serif;
-    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
     display: flex;
 }
 
@@ -28,7 +30,9 @@ body {
 /* Verticaal menu */
 .tab-navigation {
     width: var(--sidebar-width);
-    background: var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
     padding: 20px 0;
     display: flex;
     flex-direction: column;
@@ -40,29 +44,36 @@ body {
 }
 
 .tab-btn {
+    width: 100%;
+    padding: 15px 25px;
+    margin: 5px 0;
+    border: none;
     background: transparent;
     color: var(--text-color);
-    border: none;
-    padding: 15px 20px;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-size: 1.1em;
+    transition: var(--hover-transition);
+    position: relative;
+    overflow: hidden;
 }
 
-.tab-btn i {
-    width: 24px;
-    text-align: center;
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: var(--secondary-color);
+    transition: var(--hover-transition);
 }
 
-.tab-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+.tab-btn:hover::after {
+    width: 100%;
 }
 
 .tab-btn.active {
-    background: var(--secondary-color);
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+    color: white;
 }
 
 /* Main content area */
@@ -149,18 +160,18 @@ header {
 }
 
 .game-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    transform: translateY(0);
-    border: 2px solid transparent;
+    padding: 20px;
+    text-align: center;
+    transition: var(--hover-transition);
+    position: relative;
+    overflow: hidden;
 }
 
 .game-card:hover {
-    transform: translateY(-10px);
-    border-color: #45B7AF;
-    box-shadow: 0 10px 20px rgba(69, 183, 175, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .game-card img {
@@ -245,12 +256,11 @@ header {
 }
 
 .points-display {
-    background: rgba(69, 183, 175, 0.2);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
 }
 
 .dashboard-grid {
@@ -330,8 +340,8 @@ header {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {
@@ -347,32 +357,25 @@ header {
 }
 
 .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
+    background: var(--background-color);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    height: 100vh;
 }
 
 .spinner {
     width: 50px;
     height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
+    border: 3px solid transparent;
+    border-top-color: var(--primary-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* Shop styling */
@@ -443,32 +446,6 @@ header {
 .buy-btn:hover {
     background: #c0392b;
     transform: scale(1.05);
-}
-
-.tab-navigation {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab-btn {
-    background: var(--card-background);
-    color: var(--text-color);
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 16px;
-}
-
-.tab-btn:hover {
-    background: var(--secondary-color);
-}
-
-.tab-btn.active {
-    background: var(--secondary-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Battle Pass Styling */
@@ -596,10 +573,19 @@ header {
 }
 
 .overview-panel {
-    background: var(--card-background);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    transition: var(--hover-transition);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.overview-panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
 }
 
 .stats-grid {
@@ -610,10 +596,33 @@ header {
 }
 
 .stat-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+    border-radius: 15px;
+    padding: 20px;
     text-align: center;
+    transition: var(--hover-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.stat-item:hover::before {
+    left: 100%;
 }
 
 .stat-label {
@@ -628,4 +637,10 @@ header {
     font-size: 1.5em;
     font-weight: bold;
     margin-top: 5px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 } 
