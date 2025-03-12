@@ -99,9 +99,17 @@
                     </div>
                 </div>
 
-                <div id="games" class="tab-pane active">
-                    <div class="games-grid">
-                        <!-- Games worden hier dynamisch geladen -->
+                <div id="games" class="tab-pane">
+                    <div class="games-container">
+                        <div class="games-header">
+                            <h2><i class="fas fa-gamepad"></i> Games</h2>
+                            <div class="games-filter">
+                                <button class="filter-btn active" data-filter="all">Alle Games</button>
+                                <button class="filter-btn" data-filter="popular">Populair</button>
+                                <button class="filter-btn" data-filter="new">Nieuw</button>
+                            </div>
+                        </div>
+                        <div class="games-grid"></div>
                     </div>
                 </div>
 

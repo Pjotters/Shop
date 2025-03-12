@@ -2,6 +2,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, onValue, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { BattlePassService } from './services/battlepass-service.js';
+import { GamesService } from './services/games-service.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
@@ -62,24 +63,56 @@ class DashboardServices {
         const gamesGrid = document.querySelector('.games-grid');
         if (!gamesGrid) return;
 
-        const games = [
-            { id: 'flappyBird', name: 'Flappy Bird', icon: '🐦', description: 'Vlieg door de obstakels!' },
-            { id: 'snake', name: 'Snake', icon: '🐍', description: 'Verzamel alle appels!' },
-            { id: 'pacman', name: 'Pacman', icon: '👻', description: 'Eet alle stippen!' }
-        ];
+        const gameService = new GamesService(this.user.uid);
+        const games = Object.values(gameService.games);
 
-        gamesGrid.innerHTML = games.map(game => `
-            <div class="game-card">
-                <div class="game-icon">${game.icon}</div>
-                <div class="game-info">
-                    <h3>${game.name}</h3>
-                    <p>${game.description}</p>
-                    <button onclick="window.location.href='games/${game.id}.html'" class="play-btn">
-                        <i class="fas fa-play"></i> Spelen
-                    </button>
-                </div>
-            </div>
-        `).join('');
+        // Filter functionaliteit
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const filter = e.target.dataset.filter;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const filteredGames = filter === 'all' 
+                    ? games 
+                    : games.filter(game => game.status === filter);
+                
+                renderGames(filteredGames);
+            });
+        });
+
+        const renderGames = async (gamesToRender) => {
+            const gamesHTML = await Promise.all(gamesToRender.map(async game => {
+                const stats = await gameService.getGameStats(game.id);
+                return `
+                    <div class="game-card ${game.status}">
+                        <div class="game-icon">${game.icon}</div>
+                        <div class="game-info">
+                            <h3>${game.name}</h3>
+                            <p>${game.description}</p>
+                            <div class="game-stats">
+                                <span><i class="fas fa-trophy"></i> ${stats.highScore}</span>
+                                <span><i class="fas fa-gamepad"></i> ${stats.playCount}x</span>
+                            </div>
+                            <button onclick="startGame('${game.id}')" class="play-btn">
+                                <i class="fas fa-play"></i> Spelen
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }));
+
+            gamesGrid.innerHTML = gamesHTML.join('');
+        };
+
+        // Initiële render
+        renderGames(games);
+
+        // Voeg globale startGame functie toe
+        window.startGame = async (gameId) => {
+            const game = await gameService.startGame(gameId);
+            window.location.href = `games/${gameId}.html`;
+        };
     }
 
     async loadShopItems() {
