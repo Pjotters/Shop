@@ -11,8 +11,7 @@ const firebaseConfig = {
   projectId: "pjotters-company",
   storageBucket: "pjotters-company.firebasestorage.app",
   messagingSenderId: "64413422793",
-  appId: "1:64413422793:web:37debb74f7c7d3ead6e918",
-  measurementId: "G-BHQ2S1TWTH"
+  appId: "1:64413422793:web:37debb74f7c7d3ead6e918"
 };
 
 // Initialize Firebase
