@@ -5,6 +5,7 @@ import { BattlePassService } from './services/battlepass-service.js';
 import { GamesService } from './services/games-service.js';
 import { DailyChallengesService } from './services/daily-challenges-service.js';
 import { AchievementService } from './services/achievement-service.js';
+import { QuizService } from './services/quiz-service.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
@@ -28,6 +29,7 @@ class DashboardServices {
         this.db = getDatabase();
         this.dailyChallenges = new DailyChallengesService(user.uid);
         this.achievements = new AchievementService(user.uid);
+        this.quizService = new QuizService(user.uid);
         this.setupTabNavigation();
     }
 
@@ -59,6 +61,8 @@ class DashboardServices {
                 await this.loadGames();
             } else if (targetId === '#battlepass') {
                 await this.loadBattlePass();
+            } else if (targetId === '#quiz') {
+                await this.loadDailyQuiz();
             }
         }
     }
@@ -217,6 +221,69 @@ class DashboardServices {
             `).join('');
         }
     }
+
+    async loadDailyQuiz() {
+        const quizContent = document.getElementById('quizContent');
+        if (!quizContent) return;
+
+        const question = await this.quizService.getDailyQuestion();
+        
+        if (question.completed) {
+            quizContent.innerHTML = `
+                <div class="quiz-completed">
+                    <h4>Je hebt de quiz van vandaag al voltooid!</h4>
+                    <p>Kom morgen terug voor een nieuwe vraag.</p>
+                    ${question.correct ? 
+                        `<div class="quiz-reward">
+                            <p>Je verdiende: <span>+${question.points} 🪙</span> <span>+${question.xp} XP</span></p>
+                        </div>` : 
+                        '<p>Helaas was je antwoord niet correct.</p>'
+                    }
+                </div>
+            `;
+            return;
+        }
+
+        quizContent.innerHTML = `
+            <div class="quiz-question">${question.question}</div>
+            <div class="quiz-answers">
+                ${question.answers.map((answer, index) => `
+                    <button class="quiz-answer" data-index="${index}">
+                        ${answer}
+                    </button>
+                `).join('')}
+            </div>
+            <div class="quiz-explanation"></div>
+        `;
+
+        // Event listeners voor antwoorden
+        quizContent.querySelectorAll('.quiz-answer').forEach(button => {
+            button.addEventListener('click', async () => {
+                const answerIndex = parseInt(button.dataset.index);
+                const result = await this.quizService.submitAnswer(question.id, answerIndex);
+                
+                this.showQuizResult(result, button);
+            });
+        });
+    }
+
+    showQuizResult(result, selectedButton) {
+        const answers = document.querySelectorAll('.quiz-answer');
+        answers.forEach(answer => answer.disabled = true);
+        
+        selectedButton.classList.add(result.correct ? 'correct' : 'incorrect');
+        
+        const explanation = document.querySelector('.quiz-explanation');
+        explanation.innerHTML = `
+            <p><i class="fas ${result.correct ? 'fa-check-circle' : 'fa-times-circle'}"></i> 
+            ${result.explanation}</p>
+            <div class="quiz-rewards">
+                <span>+${result.points} 🪙</span>
+                <span>+${result.xp} XP</span>
+            </div>
+        `;
+        explanation.classList.add('show');
+    }
 }
 
 // Debug functie
@@ -279,6 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await services.loadGames();
             await services.loadShopItems();
             await services.loadBattlePass();
+            await services.loadDailyQuiz();
 
             // Show content
             loadingScreen.style.display = 'none';
