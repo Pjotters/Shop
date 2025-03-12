@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 const firebaseConfig = {
     // Je bestaande Firebase configuratie
@@ -15,8 +15,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+export const auth = getAuth(app);
+export const db = getDatabase(app);
 
 // Helper functies voor database operaties
 export const dbRef = {
@@ -52,4 +52,4 @@ export const createNewUserData = (uid, email) => ({
   createdAt: serverTimestamp()
 });
 
-export { auth, db, ref, get, set, update, onValue };
+export { ref, get, set, update, onValue };

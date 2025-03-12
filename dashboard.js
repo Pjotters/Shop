@@ -1,4 +1,5 @@
-import { auth, db, ref, get, onValue } from './firebase-config.js';
+import { auth, db } from './firebase-config.js';
+import { ref, onValue, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
