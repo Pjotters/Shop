@@ -1,5 +1,5 @@
 import { CouponService } from './coupon-service.js';
-import { ref, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { ref, get, update } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
 import { db } from '../firebase-config.js';
 
 export class ShopService {

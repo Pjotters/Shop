@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Pjotters Games</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Firebase SDK's -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"></script>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div id="loading" class="loading-screen">
+        <div class="spinner"></div>
+        <p>Even geduld...</p>
+    </div>
+
+    <div id="content" class="dashboard-container" style="display: none;">
         <header>
             <h1 class="welcome-message">Laden...</h1>
             <div class="points-display">

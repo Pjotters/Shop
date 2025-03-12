@@ -5,13 +5,13 @@ import {
   onAuthStateChanged,
   signOut,
   updateProfile
-} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+} from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
 import { 
   ref, 
   set, 
   get,
   serverTimestamp 
-} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+} from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
 
 export const loginUser = async (email, password) => {
   try {
