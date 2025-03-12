@@ -1,0 +1,46 @@
+.leaderboard-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.leaderboard-list {
+    margin-top: 15px;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s;
+}
+
+.leaderboard-entry:hover {
+    transform: translateX(5px);
+}
+
+.leaderboard-rank {
+    font-weight: bold;
+    margin-right: 15px;
+    color: #FFD700;
+    min-width: 25px;
+}
+
+.leaderboard-avatar {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.leaderboard-username {
+    flex-grow: 1;
+}
+
+.leaderboard-score {
+    font-weight: bold;
+    color: #4CAF50;
+} 

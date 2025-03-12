@@ -1,7 +1,8 @@
-import { db, ref, get, update } from '../firebase-config.js';
+import { db, ref, get, update, serverTimestamp } from '../firebase-config.js';
 
 export class RewardsService {
-    constructor() {
+    constructor(userId) {
+        this.userId = userId;
         this.dailyRewards = {
             day1: { points: 100, icon: "🎁" },
             day2: { points: 200, icon: "💎" },
@@ -11,6 +12,30 @@ export class RewardsService {
             day6: { points: 600, icon: "💫" },
             day7: { points: 1000, icon: "🎉" }
         };
+    }
+
+    async claimReward(points) {
+        const userRef = ref(db, `users/${this.userId}`);
+        const snapshot = await get(userRef);
+        const userData = snapshot.val() || {};
+        
+        await update(userRef, {
+            points: (userData.points || 0) + points,
+            lastRewardClaim: serverTimestamp()
+        });
+        
+        return { success: true, points };
+    }
+
+    async updateUserReward(points, today) {
+        const userRef = ref(db, `users/${this.userId}`);
+        const streakRef = ref(db, `users/${this.userId}/dailyStreak`);
+        
+        await update(userRef, {
+            points: (userData.points || 0) + points,
+            'dailyStreak/currentStreak': streak.currentStreak + 1,
+            'dailyStreak/lastClaim': today
+        });
     }
 
     async claimDailyReward(userId) {
