@@ -17,6 +17,82 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Basis services
+class DashboardServices {
+    constructor(user) {
+        this.user = user;
+        this.db = getDatabase();
+    }
+
+    async loadGames() {
+        const gamesGrid = document.querySelector('.games-grid');
+        if (!gamesGrid) return;
+
+        const games = [
+            { id: 'flappyBird', name: 'Flappy Bird', icon: '🐦' },
+            { id: 'snake', name: 'Snake', icon: '🐍' },
+            { id: 'pacman', name: 'Pacman', icon: '👻' }
+        ];
+
+        gamesGrid.innerHTML = games.map(game => `
+            <div class="game-card">
+                <span class="game-icon">${game.icon}</span>
+                <h3>${game.name}</h3>
+                <button onclick="window.location.href='/games/${game.id}.html'">Spelen</button>
+            </div>
+        `).join('');
+    }
+
+    async loadShopItems() {
+        const shopContainer = document.querySelector('.shop-items');
+        if (!shopContainer) return;
+
+        // Gebruik de shopItems uit shop.js
+        const shopItems = {
+            characterSkins: [
+                { id: 'flappy_gold', name: 'Gouden Vogel', price: 1000, image: 'images/shop/flappy-gold.png', game: 'flappyBird' },
+                { id: 'snake_neon', name: 'Neon Slang', price: 800, image: 'images/shop/snake-neon.png', game: 'snake' }
+            ],
+            powerUps: [
+                { id: 'double_points', name: 'Dubbele Punten', price: 500, duration: '24 uur', description: 'Verdien 2x zoveel punten in alle games' },
+                { id: 'shield', name: 'Schild', price: 300, duration: '1 game', description: 'Één extra leven per game' }
+            ]
+        };
+
+        const html = `
+            <div class="shop-section">
+                <h2>Character Skins</h2>
+                <div class="shop-grid">
+                    ${shopItems.characterSkins.map(item => `
+                        <div class="shop-item">
+                            <img src="${item.image}" alt="${item.name}">
+                            <h3>${item.name}</h3>
+                            <p>${item.price} punten</p>
+                            <button onclick="purchaseItem('${item.id}', ${item.price})">Kopen</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="shop-section">
+                <h2>Power-Ups</h2>
+                <div class="shop-grid">
+                    ${shopItems.powerUps.map(item => `
+                        <div class="shop-item">
+                            <h3>${item.name}</h3>
+                            <p>${item.description}</p>
+                            <p>Duur: ${item.duration}</p>
+                            <p>${item.price} punten</p>
+                            <button onclick="purchaseItem('${item.id}', ${item.price})">Kopen</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        shopContainer.innerHTML = html;
+    }
+}
+
 // Debug functie
 function showError(message) {
     console.error(message);
@@ -47,9 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Initialize services
+        const services = new DashboardServices(user);
+
         // Load user data
         const userRef = ref(db, `users/${user.uid}`);
-        onValue(userRef, (snapshot) => {
+        onValue(userRef, async (snapshot) => {
             const userData = snapshot.val();
             console.log('User data:', userData); // Debug log
             
@@ -69,6 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pointsElement) {
                 pointsElement.textContent = userData.points || 0;
             }
+
+            // Load games
+            await services.loadGames();
+            await services.loadShopItems();
 
             // Show content
             loadingScreen.style.display = 'none';
