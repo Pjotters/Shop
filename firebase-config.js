@@ -1,7 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
 import { getDatabase, ref, get, set, update, onValue } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -18,7 +17,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
-export const analytics = getAnalytics(app);
 
 // Re-export database functies
 export { ref, get, set, update, onValue };

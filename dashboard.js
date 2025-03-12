@@ -1,5 +1,4 @@
-import { auth, db } from './firebase-config.js';
-import { ref, onValue } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
+import { auth, db, ref, onValue } from './firebase-config.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
 import { requireAuth } from './auth-helper.js';
 import { ShopService } from './services/shop-service.js';
@@ -12,13 +11,6 @@ import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    onValue(ref(db, '.info/connected'), (snapshot) => {
-        const connected = snapshot.val();
-        if (!connected) {
-            console.error('Geen verbinding met Firebase');
-        }
-    });
-
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
             window.location.replace('/login.html');
