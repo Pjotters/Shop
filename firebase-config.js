@@ -21,6 +21,9 @@ export const auth = getAuth(app);
 export const db = getDatabase(app);
 export const analytics = getAnalytics(app);
 
+// Re-export database functies
+export { ref, get, set, update, onValue };
+
 // Helper functies voor database operaties
 export const dbRef = {
     user: (uid) => ref(db, `users/${uid}`),
@@ -54,6 +57,3 @@ export const createNewUserData = (uid, email) => ({
   coupons: {},
   createdAt: serverTimestamp()
 });
-
-// Re-export database functies
-export { ref, get, set, update, onValue };
