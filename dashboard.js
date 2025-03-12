@@ -11,22 +11,16 @@ import { MissionsService } from './services/missions-service.js';
 import { PowerUpsService } from './services/power-ups-service.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const auth = getAuth();
+    const auth = getAuth();
+    
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.replace('/login.html');
+            return;
+        }
         
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace('/login.html');
-                return;
-            }
-            
-            const dashboard = new Dashboard(user);
-            await dashboard.initializeDashboard();
-        });
-    } catch (error) {
-        console.error('Auth error:', error);
-        window.location.replace('/login.html');
-    }
+        new Dashboard(user);
+    });
 });
 
 function loadUserData(user) {
@@ -55,15 +49,17 @@ function animateNumber(start, end, element) {
     const increment = (end - start) / steps;
     let current = start;
     
-    const timer = setInterval(() => {
+    const animate = () => {
         current += increment;
         if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            clearInterval(timer);
             element.textContent = end;
-        } else {
-            element.textContent = Math.round(current);
+            return;
         }
-    }, duration / steps);
+        element.textContent = Math.round(current);
+        requestAnimationFrame(animate);
+    };
+    
+    animate();
 }
 
 function updateRewards(points) {
@@ -97,6 +93,7 @@ class Dashboard {
             achievements: new AchievementService(),
             battlePass: new BattlePassService()
         };
+        this.initializeDashboard();
     }
 
     async initializeDashboard() {
@@ -117,10 +114,12 @@ class Dashboard {
                 welcomeMessage.textContent = `Welkom terug, ${username}!`;
             }
             
-            // Update punten
+            // Update punten met animatie
             const pointsElement = document.getElementById('totalPoints');
             if (pointsElement) {
-                pointsElement.textContent = userData.points || 0;
+                const currentPoints = parseInt(pointsElement.textContent) || 0;
+                const newPoints = userData.points || 0;
+                this.animateNumber(currentPoints, newPoints, pointsElement);
             }
         });
     }
@@ -133,15 +132,12 @@ class Dashboard {
             button.addEventListener('click', () => {
                 const target = button.getAttribute('data-tab-target');
                 
-                // Verwijder active class van alle tabs
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
                 
-                // Voeg active class toe aan geselecteerde tab
                 button.classList.add('active');
                 document.querySelector(target).classList.add('active');
                 
-                // Laad content voor specifieke tab
                 this.loadTabContent(target);
             });
         });
@@ -165,27 +161,24 @@ class Dashboard {
     }
 
     async loadGamesContent() {
-        const gamesGrid = document.querySelector('.games-grid');
-        gamesGrid.innerHTML = '<div class="loading-spinner"></div>';
+        const gamesRef = ref(db, 'games');
+        const snapshot = await get(gamesRef);
+        const games = snapshot.val() || {};
 
-        try {
-            const games = await this.fetchGames();
-            gamesGrid.innerHTML = games.map((game, index) => `
-                <div class="game-card" style="animation-delay: ${index * 0.1}s">
-                    <img src="${game.image}" alt="${game.title}">
-                    <h3>${game.title}</h3>
-                    <div class="game-stats">
-                        <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore}</span>
-                        <span><i class="fas fa-clock"></i> Gespeeld: ${game.timesPlayed}x</span>
-                    </div>
-                    <button class="play-button" onclick="window.location.href='/games/${game.id}'">
-                        Spelen
-                    </button>
+        const gamesGrid = document.querySelector('.games-grid');
+        gamesGrid.innerHTML = Object.entries(games).map(([id, game]) => `
+            <div class="game-card">
+                <img src="${game.image}" alt="${game.title}" onerror="this.src='images/placeholder.png'">
+                <h3>${game.title}</h3>
+                <div class="game-stats">
+                    <span><i class="fas fa-trophy"></i> Highscore: ${game.highscore || 0}</span>
+                    <span><i class="fas fa-clock"></i> Gespeeld: ${game.timesPlayed || 0}x</span>
                 </div>
-            `).join('');
-        } catch (error) {
-            this.showError('Kon games niet laden');
-        }
+                <a href="/games/${id}.html" class="play-button">
+                    <i class="fas fa-play"></i> Spelen
+                </a>
+            </div>
+        `).join('');
     }
 
     showError(message) {
@@ -198,9 +191,4 @@ class Dashboard {
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 3000);
     }
-}
-
-// Start de dashboard met alle animaties
-document.addEventListener('DOMContentLoaded', () => {
-    const dashboard = new Dashboard();
-}); 
+} 
