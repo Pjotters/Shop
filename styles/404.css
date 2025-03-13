@@ -1,0 +1,103 @@
+:root {
+    --primary: #45b7af;
+    --background: #1a1a2e;
+    --text: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 8rem;
+    margin: 0;
+    animation: bounce 2s infinite;
+}
+
+.bird {
+    display: inline-block;
+    animation: fly 1s infinite;
+}
+
+.game-container {
+    margin: 2rem auto;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 400px;
+    background: #000033;
+    border-radius: 10px;
+}
+
+.game-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+
+button {
+    background: var(--primary);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.navigation {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.home-btn, .login-btn {
+    text-decoration: none;
+    color: var(--text);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.home-btn {
+    background: var(--primary);
+}
+
+.login-btn {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes fly {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+} 
