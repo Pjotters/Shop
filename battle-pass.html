@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Pass - Pjotters Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="battle-pass.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="battle-pass-page">
+    <nav class="battle-pass-nav">
+        <button onclick="location.href='dashboard.html'">← Terug naar Dashboard</button>
+        <div class="user-stats">
+            <div class="battle-stars">
+                <i class="fas fa-star"></i>
+                <span id="battleStars">0</span> Battle Stars
+            </div>
+            <div class="user-level">
+                <i class="fas fa-trophy"></i>
+                Level <span id="userLevel">1</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="battle-pass-container">
+        <div class="battle-pass-header">
+            <h1>BATTLE PASS</h1>
+            <div class="season-info">
+                <span class="season-tag">UNCOMMON</span>
+                <h2>REALITY ZERO</h2>
+                <p>Chosen by fate, destined for greatness.</p>
+            </div>
+            <div class="progress-info">
+                <div class="stars-needed">
+                    Spend Battle Stars to claim rewards.
+                    <br>Level up to get more Battle Stars.
+                </div>
+                <div class="current-stars">
+                    <i class="fas fa-star"></i> <span id="currentStars">30</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="rewards-track">
+            <!-- Dynamisch gegenereerd door JavaScript -->
+        </div>
+
+        <div class="battle-pass-footer">
+            <span class="page-indicator">PAGE 1 / 14</span>
+            <button class="claim-reward-btn">CLAIM REWARD</button>
+            <button class="view-reward-btn">VIEW REWARD</button>
+        </div>
+    </div>
+
+    <script type="module" src="battle-pass.js"></script>
+</body>
+</html> 

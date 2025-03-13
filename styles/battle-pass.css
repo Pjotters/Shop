@@ -1,0 +1,91 @@
+.battle-pass-page {
+    background: linear-gradient(135deg, #1a1b4b 0%, #090979 100%);
+    min-height: 100vh;
+    color: white;
+}
+
+.battle-pass-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.battle-pass-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.season-tag {
+    background: #4CAF50;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.rewards-track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    overflow-x: auto;
+}
+
+.reward-item {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reward-item.locked {
+    filter: brightness(0.5);
+}
+
+.reward-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.reward-cost {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    border-radius: 10px;
+    font-size: 0.8em;
+}
+
+.battle-pass-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.claim-reward-btn, .view-reward-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.claim-reward-btn {
+    background: #FFD700;
+    color: black;
+}
+
+.view-reward-btn {
+    background: #4169E1;
+    color: white;
+} 
