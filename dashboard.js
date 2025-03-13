@@ -389,4 +389,53 @@ function updateRewards(points) {
             </button>
         </div>
     `).join('');
-} 
+}
+
+class Dashboard {
+    constructor(userId) {
+        this.userId = userId;
+        this.gamesService = new GamesService(userId);
+        this.initializeDashboard();
+    }
+
+    async initializeDashboard() {
+        const gamesContainer = document.querySelector('.games-container');
+        const games = this.gamesService.games;
+
+        for (const [gameId, game] of Object.entries(games)) {
+            const gameStats = await this.gamesService.initializeGame(gameId);
+            
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `
+                <div class="game-icon">${game.icon}</div>
+                <h3>${game.name}</h3>
+                <p>${game.description}</p>
+                <div class="game-stats">
+                    <span>🏆 ${gameStats.highScore}</span>
+                    <span>🎮 ${gameStats.playCount}x</span>
+                </div>
+                <button class="play-button" data-game="${gameId}">Spelen</button>
+            `;
+            
+            gamesContainer.appendChild(gameCard);
+        }
+
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const gameId = e.target.dataset.game;
+                window.location.href = `/games/${gameId}/index.html`;
+            });
+        });
+    }
+}
+
+// Initialiseer dashboard wanneer de pagina laadt
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = getCurrentUserId(); // Implementeer deze functie om de huidige user ID te krijgen
+    new Dashboard(userId);
+}); 

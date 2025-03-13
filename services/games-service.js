@@ -1,4 +1,4 @@
-import { db, ref, get, update, onValue } from '../firebase-config.js';
+import { db, ref, get, update, onValue, serverTimestamp } from '../firebase-config.js';
 import { GameRewardsService } from './game-rewards-service.js';
 
 export class GamesService {
@@ -41,8 +41,65 @@ export class GamesService {
                 difficulty: 'hard',
                 minPoints: 15,
                 maxPoints: 150
+            },
+            pjottersJump: {
+                id: 'pjottersJump',
+                name: 'Pjotters Jump',
+                icon: '🦘',
+                description: 'Spring over obstakels!',
+                highScore: 0,
+                playCount: 0,
+                status: 'new',
+                difficulty: 'medium',
+                minPoints: 10,
+                maxPoints: 100
+            },
+            spaceShooter: {
+                id: 'spaceShooter',
+                name: 'Space Shooter',
+                icon: '🚀',
+                description: 'Versla de aliens!',
+                highScore: 0,
+                playCount: 0,
+                status: 'new',
+                difficulty: 'hard',
+                minPoints: 15,
+                maxPoints: 150
+            },
+            wordPuzzle: {
+                id: 'wordPuzzle',
+                name: 'Word Puzzle',
+                icon: '📝',
+                description: 'Los woordpuzzels op!',
+                highScore: 0,
+                playCount: 0,
+                status: 'new',
+                difficulty: 'easy',
+                minPoints: 5,
+                maxPoints: 50
             }
         };
+    }
+
+    async initializeGame(gameId) {
+        const gameRef = ref(db, `users/${this.userId}/games/${gameId}`);
+        const gameData = (await get(gameRef)).val() || {};
+        
+        return {
+            highScore: gameData.highScore || 0,
+            playCount: gameData.playCount || 0
+        };
+    }
+
+    async updateGameStats(gameId, score, points) {
+        const gameRef = ref(db, `users/${this.userId}/games/${gameId}`);
+        const gameData = (await get(gameRef)).val() || {};
+        
+        await update(gameRef, {
+            highScore: Math.max(score, gameData.highScore || 0),
+            playCount: (gameData.playCount || 0) + 1,
+            lastPlayed: serverTimestamp()
+        });
     }
 
     async startGame(gameId) {
