@@ -1238,4 +1238,43 @@ body {
     gap: 1rem;
     overflow-x: auto;
     padding: 1rem;
+}
+
+/* Voeg toe aan bestaande dashboard.css */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--background-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff4444;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 } 
