@@ -1,0 +1,76 @@
+.game-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.game-modes button {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.game-modes button:hover {
+    background: #e0e0e0;
+}
+
+.game-modes button.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.game-area {
+    min-height: 300px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.power-up-btn {
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 20px;
+    background: #2196F3;
+    color: white;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.power-up-btn:hover {
+    opacity: 1;
+}
+
+.power-up-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.cooldown-message {
+    text-align: center;
+    padding: 20px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#cooldownTime {
+    font-weight: bold;
+    color: #856404;
+} 
