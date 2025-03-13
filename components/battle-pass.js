@@ -2,6 +2,7 @@ export class BattlePass {
     constructor(userId) {
         this.userId = userId;
         this.service = new BattlePassService(userId);
+        this.tierService = new TierService(userId);
         this.currentPage = 1;
         this.initializeBattlePass();
     }
@@ -72,5 +73,41 @@ export class BattlePass {
                 this.renderBattlePass();
             }
         });
+    }
+
+    async renderTierProgress(progress) {
+        const tierProgress = document.createElement('div');
+        tierProgress.className = 'tier-progress';
+        
+        const currentTierXP = this.tierService.tierLevels[progress.tier].xpNeeded;
+        const nextTierXP = this.tierService.tierLevels[progress.tier + 1]?.xpNeeded || currentTierXP;
+        const xpProgress = ((progress.experience - currentTierXP) / (nextTierXP - currentTierXP)) * 100;
+
+        tierProgress.innerHTML = `
+            <div class="tier-info">
+                <span class="current-tier">TIER ${progress.tier}</span>
+                <span class="xp-counter">${progress.experience} / ${nextTierXP} XP</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" style="width: ${xpProgress}%"></div>
+            </div>
+            <div class="stars-info">
+                <i class="fas fa-star"></i>
+                <span>${progress.stars} beschikbare stars</span>
+            </div>
+        `;
+
+        document.querySelector('.battlepass-progress').appendChild(tierProgress);
+    }
+
+    async addGameExperience(xpAmount) {
+        const result = await this.tierService.addExperience(xpAmount);
+        
+        if (result.earnedStars > 0) {
+            this.showReward(`Je hebt tier ${result.newTier} bereikt!`, 
+                           `+${result.earnedStars} Battle Stars verdiend!`);
+        }
+        
+        await this.renderBattlePass();
     }
 } 
