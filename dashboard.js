@@ -403,8 +403,6 @@ class Dashboard {
         const games = this.gamesService.games;
 
         for (const [gameId, game] of Object.entries(games)) {
-            const gameStats = await this.gamesService.initializeGame(gameId);
-            
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
             gameCard.innerHTML = `
@@ -412,30 +410,29 @@ class Dashboard {
                 <h3>${game.name}</h3>
                 <p>${game.description}</p>
                 <div class="game-stats">
-                    <span>🏆 ${gameStats.highScore}</span>
-                    <span>🎮 ${gameStats.playCount}x</span>
+                    <div class="stat">
+                        <i class="fas fa-trophy"></i>
+                        <span>Highscore: ${game.highScore || 0}</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Gespeeld: ${game.playCount || 0}x</span>
+                    </div>
                 </div>
-                <button class="play-button" data-game="${gameId}">Spelen</button>
+                <button class="play-button" onclick="window.location.href='games/${gameId}/index.html'">
+                    Spelen
+                </button>
             `;
             
             gamesContainer.appendChild(gameCard);
         }
-
-        this.addEventListeners();
-    }
-
-    addEventListeners() {
-        document.querySelectorAll('.play-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const gameId = e.target.dataset.game;
-                window.location.href = `/games/${gameId}/index.html`;
-            });
-        });
     }
 }
 
 // Initialiseer dashboard wanneer de pagina laadt
-document.addEventListener('DOMContentLoaded', () => {
-    const userId = getCurrentUserId(); // Implementeer deze functie om de huidige user ID te krijgen
-    new Dashboard(userId);
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = auth.currentUser;
+    if (user) {
+        const dashboard = new Dashboard(user.uid);
+    }
 }); 
