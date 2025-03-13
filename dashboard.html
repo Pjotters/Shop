@@ -3,216 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Pjotters Games</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
+    <title>Pjotters Games Dashboard</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/games.css">
-    <link rel="stylesheet" href="styles/battle-pass.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="loading" class="loading-screen">
-        <div class="spinner"></div>
-        <p>EVEN GEDULD... Poging tot inloggen...</p>
-    </div>
-
-    <div id="content" class="dashboard-container" style="display: none;">
-        <nav class="tab-navigation">
-            <button data-tab-target="#overview" class="tab-btn active">
-                <i class="fas fa-home"></i> Overzicht
-            </button>
-            <button data-tab-target="#games" class="tab-btn">
-                <i class="fas fa-gamepad"></i> Games
-            </button>
-            <button data-tab-target="#shop" class="tab-btn">
-                <i class="fas fa-store"></i> Shop
-            </button>
-            <button data-tab-target="#achievements" class="tab-btn">
-                <i class="fas fa-trophy"></i> Prestaties
-            </button>
-            <button data-tab-target="#battlepass" class="tab-btn">
-                <i class="fas fa-star"></i> Battle Pass
-            </button>
-            <button data-tab-target="#korting" class="tab-btn">
-                <i class="fas fa-percent"></i> Korting
-            </button>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Pjotters Logo">
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-tab="overview">
+                    <i class="fas fa-home"></i>
+                    <span>Overzicht</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="games">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Games</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="battlepass">
+                    <i class="fas fa-star"></i>
+                    <span>Battle Pass</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="shop">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="korting">
+                    <i class="fas fa-tags"></i>
+                    <span>Korting</span>
+                </a>
+            </div>
         </nav>
 
-        <div class="main-content">
-            <header>
-                <h1 class="welcome-message">Laden...</h1>
-                <div class="points-display">
-                    <i class="fas fa-coins"></i>
-                    <span id="totalPoints">0</span> punten
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div class="welcome-message"></div>
+                <div class="user-stats">
+                    <div class="points">
+                        <i class="fas fa-coins"></i>
+                        <span id="totalPoints">0</span> punten
+                    </div>
                 </div>
             </header>
 
-            <main class="tab-content">
-                <div id="overview" class="tab-pane active">
-                    <div class="overview-grid">
-                        <!-- Stats Panel -->
-                        <div class="overview-panel stats-panel">
-                            <h3><i class="fas fa-chart-bar"></i> Statistieken</h3>
-                            <div class="stats-grid">
-                                <div class="stat-item">
-                                    <span class="stat-label">Points</span>
-                                    <span class="stat-value" id="totalPoints">0</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Tier Sterren</span>
-                                    <span class="stat-value" id="tierStars">0</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Level</span>
-                                    <span class="stat-value" id="playerLevel">1</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Coupons Panel -->
-                        <div class="overview-panel coupons-panel">
-                            <h3><i class="fas fa-ticket-alt"></i> Mijn Coupons</h3>
-                            <div class="coupons-list" id="couponsList">
-                                <!-- Dynamisch geladen -->
-                            </div>
-                        </div>
-
-                        <!-- Orders Panel -->
-                        <div class="overview-panel orders-panel">
-                            <h3><i class="fas fa-shopping-bag"></i> Recente Bestellingen</h3>
-                            <div class="orders-list" id="ordersList">
-                                <!-- Dynamisch geladen -->
-                            </div>
-                        </div>
-
-                        <!-- Popular Game -->
-                        <div class="overview-panel popular-game">
-                            <h3><i class="fas fa-star"></i> Populaire Game</h3>
-                            <div id="popularGame">
-                                <!-- Dynamisch geladen -->
-                            </div>
-                        </div>
-
-                        <!-- Discounts -->
-                        <div class="overview-panel discounts-panel">
-                            <h3><i class="fas fa-percent"></i> Actieve Kortingen</h3>
-                            <div class="discounts-list" id="discountsList">
-                                <!-- Dynamisch geladen -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="games" class="tab-pane">
-                    <div class="games-container">
-                        <div class="games-header">
-                            <h2><i class="fas fa-gamepad"></i> Games</h2>
-                            <div class="games-filter">
-                                <button class="filter-btn active" data-filter="all">Alle Games</button>
-                                <button class="filter-btn" data-filter="popular">Populair</button>
-                                <button class="filter-btn" data-filter="new">Nieuw</button>
-                            </div>
-                        </div>
-                        <div class="games-grid"></div>
-                        <div class="game-sidebar">
-                            <div class="leaderboard-container">
-                                <h3>🏆 Leaderboard</h3>
-                                <div class="leaderboard-list" id="gameLeaderboard">
-                                    <!-- Dynamisch gevuld -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="shop" class="tab-pane">
-                    <div class="shop-items">
-                        <!-- Shop items worden hier geladen -->
-                    </div>
-                </div>
-
-                <div id="achievements" class="tab-pane">
-                    <div class="achievements-list">
-                        <!-- Prestaties worden hier geladen -->
-                    </div>
-                </div>
-
-                <div id="battlepass" class="tab-pane">
-                    <div class="battlepass-content">
-                        <div class="battlepass-header">
-                            <h2>BATTLE PASS</h2>
-                            <div class="battlepass-progress">
-                                <span class="tier-number">TIER 1/14</span>
-                                <div class="stars-display">
-                                    <i class="fas fa-star"></i>
-                                    <span>30</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rewards-track">
-                            <div class="rewards-grid">
-                                <!-- Rewards worden dynamisch geladen -->
-                            </div>
-                            <div class="page-indicator">PAGINA 1/14</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="korting" class="tab-pane">
-                    <div class="korting-content">
-                        <h2>Speciale Aanbiedingen</h2>
-                        
-                        <div class="coupon-container">
-                            <div class="coupon-card">
-                                <div class="coupon-amount">€5</div>
-                                <div class="coupon-description">
-                                    <h3>Gratis Coupon</h3>
-                                    <p>Verzilver 10.000 punten voor een €5 coupon</p>
-                                </div>
-                                <button class="claim-button" data-points="10000" data-value="5">Claim (10.000 punten)</button>
-                            </div>
-
-                            <div class="coupon-card">
-                                <div class="coupon-amount">€2</div>
-                                <div class="coupon-description">
-                                    <h3>Gratis Coupon</h3>
-                                    <p>Verzilver 5.000 punten voor een €2 coupon</p>
-                                </div>
-                                <button class="claim-button" data-points="5000" data-value="2">Claim (5.000 punten)</button>
-                            </div>
-
-                            <div class="coupon-card special">
-                                <img src="assets/images/pjottersbank.png" alt="Pjottersbank" class="bank-image">
-                                <div class="coupon-description">
-                                    <h3>Pjottersbank</h3>
-                                    <p>Exclusieve Pjottersbank voor 15.000 punten!</p>
-                                </div>
-                                <button class="claim-button" data-points="15000">Claim (15.000 punten)</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="daily-quiz-container">
-                    <div class="quiz-header">
-                        <h3><i class="fas fa-brain"></i> Dagelijkse Quiz</h3>
-                        <div class="quiz-streak">
-                            <i class="fas fa-fire"></i> <span id="quizStreak">0</span> dagen streak
-                        </div>
-                    </div>
-                    
-                    <div class="quiz-content" id="quizContent">
-                        <!-- Dynamisch geladen -->
-                    </div>
-                </div>
-            </main>
-        </div>
+            <div class="content-area">
+                <!-- Tabblad inhoud hier -->
+            </div>
+        </main>
     </div>
-
-
-    <script type="module" src="dashboard.js"></script>
 </body>
 </html> 
