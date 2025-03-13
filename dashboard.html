@@ -35,6 +35,9 @@
             <button data-tab-target="#battlepass" class="tab-btn">
                 <i class="fas fa-star"></i> Battle Pass
             </button>
+            <button data-tab-target="#korting" class="tab-btn">
+                <i class="fas fa-percent"></i> Korting
+            </button>
         </nav>
 
         <div class="main-content">
@@ -154,6 +157,41 @@
                                 <!-- Rewards worden dynamisch geladen -->
                             </div>
                             <div class="page-indicator">PAGINA 1/14</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="korting" class="tab-pane">
+                    <div class="korting-content">
+                        <h2>Speciale Aanbiedingen</h2>
+                        
+                        <div class="coupon-container">
+                            <div class="coupon-card">
+                                <div class="coupon-amount">€5</div>
+                                <div class="coupon-description">
+                                    <h3>Gratis Coupon</h3>
+                                    <p>Verzilver 10.000 punten voor een €5 coupon</p>
+                                </div>
+                                <button class="claim-button" data-points="10000" data-value="5">Claim (10.000 punten)</button>
+                            </div>
+
+                            <div class="coupon-card">
+                                <div class="coupon-amount">€2</div>
+                                <div class="coupon-description">
+                                    <h3>Gratis Coupon</h3>
+                                    <p>Verzilver 5.000 punten voor een €2 coupon</p>
+                                </div>
+                                <button class="claim-button" data-points="5000" data-value="2">Claim (5.000 punten)</button>
+                            </div>
+
+                            <div class="coupon-card special">
+                                <img src="assets/images/pjottersbank.png" alt="Pjottersbank" class="bank-image">
+                                <div class="coupon-description">
+                                    <h3>Pjottersbank</h3>
+                                    <p>Exclusieve Pjottersbank voor 15.000 punten!</p>
+                                </div>
+                                <button class="claim-button" data-points="15000">Claim (15.000 punten)</button>
+                            </div>
                         </div>
                     </div>
                 </div>

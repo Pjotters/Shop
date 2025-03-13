@@ -6,6 +6,7 @@ import { GamesService } from './services/games-service.js';
 import { DailyChallengesService } from './services/daily-challenges-service.js';
 import { AchievementService } from './services/achievement-service.js';
 import { QuizService } from './services/quiz-service.js';
+import { KortingService } from './services/korting-service.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
@@ -295,6 +296,25 @@ class DashboardServices {
     async startGame(gameId) {
         await this.gamesService.startGameSession(gameId);
         window.location.href = `/games/${gameId}.html`;
+    }
+
+    async initializeKortingTab() {
+        const kortingService = new KortingService(this.user.uid);
+        
+        document.querySelectorAll('.claim-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const points = parseInt(button.dataset.points);
+                const value = parseInt(button.dataset.value);
+                
+                try {
+                    await kortingService.claimCoupon(points, value);
+                    alert('Coupon succesvol geclaimd!');
+                    this.updateUserPoints(); // Ververs de punten weergave
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
     }
 }
 
