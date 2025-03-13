@@ -389,16 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Tab switching functionaliteit
-    const navLinks = document.querySelectorAll('.nav-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    navLinks.forEach(link => {
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             
             // Verwijder active class van alle links en tabs
-            navLinks.forEach(l => l.classList.remove('active'));
-            tabContents.forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             
             // Voeg active class toe aan geklikte link
             link.classList.add('active');
@@ -408,22 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetTab = document.getElementById(tabId);
             if (targetTab) {
                 targetTab.classList.add('active');
-                
-                // Laad specifieke tab content indien nodig
-                switch(tabId) {
-                    case 'shop':
-                        loadShopItems();
-                        break;
-                    case 'games':
-                        loadGames();
-                        break;
-                    case 'battlepass':
-                        loadBattlePass();
-                        break;
-                    case 'korting':
-                        loadKortingItems();
-                        break;
-                }
             }
         });
     });
