@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pjotters Jump - Pjotters Games</title>
+    <link rel="stylesheet" href="../../styles/games.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-page">
+    <nav class="game-nav">
+        <button id="backToDashboard">← Terug naar Dashboard</button>
+        <div class="game-stats">
+            <div class="score">Score: <span id="currentScore">0</span></div>
+            <div class="points">Punten: <span id="earnedPoints">0</span></div>
+            <div class="highscore">Highscore: <span id="highScore">0</span></div>
+        </div>
+        <div class="power-ups">
+            <div id="doubleJumpStatus" class="power-up-status">🦘</div>
+            <div id="shieldStatus" class="power-up-status">🛡️</div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-overlay" id="gameOverlay">
+            <button id="startGame">Start Game</button>
+            <div class="instructions">
+                <h3>Instructies</h3>
+                <p>Spatiebalk of klik om te springen</p>
+                <p>Verzamel sterren voor extra punten</p>
+                <p>Ontwijk obstakels</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html> 

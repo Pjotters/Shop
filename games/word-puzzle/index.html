@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Puzzle - Pjotters Games</title>
+    <link rel="stylesheet" href="../../styles/games.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-page">
+    <nav class="game-nav">
+        <button id="backToDashboard">← Terug naar Dashboard</button>
+        <div class="game-stats">
+            <div class="score">Score: <span id="currentScore">0</span></div>
+            <div class="points">Punten: <span id="earnedPoints">0</span></div>
+            <div class="games-left">Spellen over: <span id="gamesLeft">5</span></div>
+            <div class="timer">Tijd: <span id="timeLeft">60</span>s</div>
+        </div>
+        <div class="power-ups">
+            <button id="useHint" class="power-up-btn">💡 Hint</button>
+            <button id="useTimeBonus" class="power-up-btn">⏰ +30s</button>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-modes">
+            <button data-mode="anagram">Anagram</button>
+            <button data-mode="woordzoeker">Woordzoeker</button>
+            <button data-mode="cryptogram">Cryptogram</button>
+            <button data-mode="lettermix">Lettermix</button>
+        </div>
+
+        <div id="gameArea" class="game-area">
+            <!-- Dynamisch gevuld door JavaScript -->
+        </div>
+
+        <div class="cooldown-message" id="cooldownMessage" style="display: none;">
+            <p>Je hebt het maximaal aantal spellen gespeeld.</p>
+            <p>Wacht nog <span id="cooldownTime">30:00</span> minuten.</p>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html> 

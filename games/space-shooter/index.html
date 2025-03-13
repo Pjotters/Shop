@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Shooter - Pjotters Games</title>
+    <link rel="stylesheet" href="../../styles/games.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-page">
+    <nav class="game-nav">
+        <button id="backToDashboard">← Terug naar Dashboard</button>
+        <div class="game-stats">
+            <div class="score">Score: <span id="currentScore">0</span></div>
+            <div class="points">Punten: <span id="earnedPoints">0</span></div>
+            <div class="highscore">Highscore: <span id="highScore">0</span></div>
+        </div>
+        <div class="power-ups">
+            <div id="rapidFireStatus" class="power-up-status">🔥</div>
+            <div id="tripleShotStatus" class="power-up-status">🎯</div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="controls">
+            <div class="mobile-controls">
+                <button id="leftBtn">←</button>
+                <button id="rightBtn">→</button>
+                <button id="shootBtn">🔫</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html> 
