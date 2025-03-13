@@ -387,6 +387,46 @@ document.addEventListener('DOMContentLoaded', () => {
             showError(`Database error: ${error.message}`);
         });
     });
+
+    // Tab switching functionaliteit
+    const navLinks = document.querySelectorAll('.nav-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Verwijder active class van alle links en tabs
+            navLinks.forEach(l => l.classList.remove('active'));
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Voeg active class toe aan geklikte link
+            link.classList.add('active');
+            
+            // Activeer bijbehorende tab content
+            const tabId = link.getAttribute('data-tab');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+                
+                // Laad specifieke tab content indien nodig
+                switch(tabId) {
+                    case 'shop':
+                        loadShopItems();
+                        break;
+                    case 'games':
+                        loadGames();
+                        break;
+                    case 'battlepass':
+                        loadBattlePass();
+                        break;
+                    case 'korting':
+                        loadKortingItems();
+                        break;
+                }
+            }
+        });
+    });
 });
 
 function updateRewards(points) {
