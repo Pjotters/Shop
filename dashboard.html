@@ -50,9 +50,78 @@
             </header>
 
             <div class="content-area">
-                <!-- Tabblad inhoud hier -->
+                <!-- Overzicht Tab -->
+                <div class="tab-content active" id="overview">
+                    <div class="overview-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>Gespeelde Games</h3>
+                            <span id="totalGamesPlayed">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-star"></i>
+                            <h3>Battle Pass Niveau</h3>
+                            <span id="battlePassLevel">1</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-trophy"></i>
+                            <h3>Achievements</h3>
+                            <span id="totalAchievements">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Games Tab -->
+                <div class="tab-content" id="games">
+                    <div class="games-filters">
+                        <button class="filter-btn active" data-filter="all">Alle Games</button>
+                        <button class="filter-btn" data-filter="new">Nieuw</button>
+                        <button class="filter-btn" data-filter="popular">Populair</button>
+                    </div>
+                    <div class="games-grid"></div>
+                </div>
+
+                <!-- Battle Pass Tab -->
+                <div class="tab-content" id="battlepass">
+                    <div class="battlepass-header">
+                        <div class="tier-info">
+                            <span class="tier-number">TIER 1/14</span>
+                            <div class="stars-display">
+                                <i class="fas fa-star"></i>
+                                <span>0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rewards-track"></div>
+                </div>
+
+                <!-- Shop Tab -->
+                <div class="tab-content" id="shop">
+                    <div class="shop-grid">
+                        <div class="shop-category">
+                            <h2>Karakter Skins</h2>
+                            <div class="items-grid" id="characterSkins"></div>
+                        </div>
+                        <div class="shop-category">
+                            <h2>Power-ups</h2>
+                            <div class="items-grid" id="powerUps"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Korting Tab -->
+                <div class="tab-content" id="korting">
+                    <div class="korting-content">
+                        <h2>Speciale Aanbiedingen</h2>
+                        <div class="coupon-container">
+                            <!-- Coupon cards hier -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
+
+    <script type="module" src="dashboard.js"></script>
 </body>
 </html> 
