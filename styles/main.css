@@ -1,0 +1,28 @@
+:root {
+    --gradient-start: #2B32B2;
+    --gradient-end: #1488CC;
+    --button-primary: #00B4DB;
+    --button-hover: #0083B0;
+}
+
+body {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    min-height: 100vh;
+}
+
+.play-button {
+    background: var(--button-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+} 

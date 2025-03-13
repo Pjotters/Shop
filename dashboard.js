@@ -396,6 +396,49 @@ class Dashboard {
         this.userId = userId;
         this.gamesService = new GamesService(userId);
         this.initializeDashboard();
+        this.initializeGameLauncher();
+    }
+
+    initializeGameLauncher() {
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const gameId = e.target.closest('.game-card').dataset.gameId;
+                this.launchGame(gameId);
+            });
+        });
+    }
+
+    async launchGame(gameId) {
+        try {
+            // Start een nieuwe game sessie
+            await this.gamesService.startGameSession(gameId);
+            
+            // Navigeer naar de game pagina
+            window.location.href = `games/${gameId}/index.html`;
+        } catch (error) {
+            console.error('Fout bij het starten van de game:', error);
+            alert('Er is een fout opgetreden bij het starten van de game.');
+        }
+    }
+
+    createGameCard(game) {
+        return `
+            <div class="game-card" data-game-id="${game.id}">
+                <div class="game-icon">${game.icon}</div>
+                <h3>${game.name}</h3>
+                <p>${game.description}</p>
+                <div class="game-stats">
+                    <span class="highscore">
+                        <i class="fas fa-trophy"></i> ${game.highScore || 0}
+                    </span>
+                    <span class="plays">
+                        <i class="fas fa-gamepad"></i> ${game.playCount || 0}x
+                    </span>
+                </div>
+                <button class="play-button">Spelen</button>
+            </div>
+        `;
     }
 
     async initializeDashboard() {
@@ -405,24 +448,7 @@ class Dashboard {
         for (const [gameId, game] of Object.entries(games)) {
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
-            gameCard.innerHTML = `
-                <div class="game-icon">${game.icon}</div>
-                <h3>${game.name}</h3>
-                <p>${game.description}</p>
-                <div class="game-stats">
-                    <div class="stat">
-                        <i class="fas fa-trophy"></i>
-                        <span>Highscore: ${game.highScore || 0}</span>
-                    </div>
-                    <div class="stat">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Gespeeld: ${game.playCount || 0}x</span>
-                    </div>
-                </div>
-                <button class="play-button" onclick="window.location.href='games/${gameId}/index.html'">
-                    Spelen
-                </button>
-            `;
+            gameCard.innerHTML = this.createGameCard(game);
             
             gamesContainer.appendChild(gameCard);
         }
